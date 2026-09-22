@@ -203,19 +203,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
                   e.target.style.background = 'var(--brand-light-sand)';
                 }}
               />
-              <p style={{
-                fontSize: '10px',
-                color: 'var(--gray-400)',
-                marginTop: '6px',
-              }}>
-                Use <code style={{
-                  background: 'var(--gray-200)',
-                  padding: '2px 6px',
-                  borderRadius: '4px',
-                  color: 'var(--brand-charcoal)',
-                  fontFamily: "'JetBrains Mono', monospace",
-                }}>Steve2324</code> for Admin Mode
-              </p>
+
             </div>
 
             {error && (

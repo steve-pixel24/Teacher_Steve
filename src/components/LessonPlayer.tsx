@@ -8,15 +8,17 @@ import WordOrder from './WordOrder';
 import ContentRenderer from './ContentRenderer';
 import DiscussionPanel from './DiscussionPanel';
 import StoryPanel from './StoryPanel';
+import { updateItemProgress, completeItem } from '../utils/progress';
 
 interface LessonPlayerProps {
   lesson: Lesson;
   studentName: string;
   studentCode?: string;
   onBack: () => void;
+  onComplete?: (xpReward: number) => void;
 }
 
-export default function LessonPlayer({ lesson, studentName, studentCode, onBack }: LessonPlayerProps) {
+export default function LessonPlayer({ lesson, studentName, studentCode, onBack, onComplete }: LessonPlayerProps) {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<Set<number>>(new Set());
   const [totalSeconds, setTotalSeconds] = useState(lesson.duration * 60);
@@ -30,6 +32,24 @@ export default function LessonPlayer({ lesson, studentName, studentCode, onBack 
     }, 1000);
     return () => clearInterval(interval);
   }, []);
+
+  // Track progress
+  useEffect(() => {
+    const progress = Math.round((completedSections.size / lesson.sections.length) * 100);
+    updateItemProgress('lesson', lesson.id, {
+      status: progress === 100 ? 'completed' : 'in-progress',
+      progress,
+    });
+  }, [completedSections, lesson.id, lesson.sections.length]);
+
+  const handleFinish = () => {
+    const xpReward = 50; // Base XP for completing a lesson
+    completeItem('lesson', lesson.id, xpReward);
+    if (onComplete) {
+      onComplete(xpReward);
+    }
+    onBack();
+  };
 
   const formatTime = (seconds: number) => {
     const m = Math.floor(seconds / 60);
@@ -198,8 +218,8 @@ export default function LessonPlayer({ lesson, studentName, studentCode, onBack 
                 Next →
               </button>
             ) : (
-              <button onClick={onBack} className="btn btn-success">
-                ✓ Finish Lesson
+              <button onClick={handleFinish} className="btn btn-success">
+                ✓ Finish Lesson (+50 XP)
               </button>
             )}
           </div>
