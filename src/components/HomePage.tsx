@@ -278,20 +278,6 @@ export default function HomePage({
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer style={{
-        borderTop: '1px solid rgba(255, 255, 255, 0.4)',
-        padding: '20px 24px',
-        textAlign: 'center',
-        background: 'rgba(255, 255, 255, 0.3)',
-        backdropFilter: 'blur(10px)',
-        WebkitBackdropFilter: 'blur(10px)',
-      }}>
-        <p style={{ fontSize: '12px', color: '#94A3B8', margin: 0 }}>
-          Built for Preply teachers · Interactive lessons that make learning fun 🚀
-        </p>
-      </footer>
     </div>
   );
 }

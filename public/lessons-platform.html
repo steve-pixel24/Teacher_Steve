@@ -38,18 +38,19 @@ body::before {
 .animate-fade-in { animation: fadeIn 0.4s ease-out; }
 .animate-slide-up { animation: slideUp 0.5s ease-out; }
 
-/* Header Banner */
-.header-banner { position: relative; width: 100%; height: 64px; overflow: hidden; background: linear-gradient(90deg, #E65100 0%, #FF9800 35%, #FFC107 55%, #FFFFFF 100%); }
-.header-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(230,81,0,0.7), rgba(230,81,0,0.4)); clip-path: polygon(0 0, 55% 0, 40% 100%, 0 100%); }
-.header-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,152,0,0.85), rgba(255,152,0,0.5)); clip-path: polygon(15% 0, 65% 0, 50% 100%, 0% 100%); }
-.hg1 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.8), rgba(255,193,7,0.4)); clip-path: polygon(30% 0, 72% 0, 58% 100%, 15% 100%); z-index: 1; }
-.hg2 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.6), rgba(255,255,255,0.3)); clip-path: polygon(45% 0, 80% 0, 68% 100%, 32% 100%); z-index: 2; }
-.hg3 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.8)); clip-path: polygon(58% 0, 88% 0, 78% 100%, 48% 100%); z-index: 3; }
-.hg4 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); clip-path: polygon(70% 0, 100% 0, 100% 100%, 60% 100%); z-index: 4; }
+/* Header Banner - Centered title with refined geometric design */
+.header-banner { position: relative; width: 100%; height: 72px; overflow: hidden; background: linear-gradient(90deg, #E65100 0%, #FF9800 30%, #FFC107 55%, #FFFFFF 100%); }
+.header-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(230,81,0,0.85), rgba(230,81,0,0.6)); clip-path: polygon(0 0, 48% 0, 32% 100%, 0 100%); z-index: 1; }
+.header-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,152,0,0.8), rgba(255,152,0,0.55)); clip-path: polygon(12% 0, 58% 0, 42% 100%, 0% 100%); z-index: 2; }
+.hg1 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.75), rgba(255,193,7,0.5)); clip-path: polygon(25% 0, 68% 0, 52% 100%, 10% 100%); z-index: 3; }
+.hg2 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.6), rgba(255,255,255,0.4)); clip-path: polygon(40% 0, 78% 0, 62% 100%, 25% 100%); z-index: 4; }
+.hg3 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.7)); clip-path: polygon(55% 0, 88% 0, 72% 100%, 40% 100%); z-index: 5; }
+.hg4 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.65), rgba(255,255,255,0.85)); clip-path: polygon(68% 0, 95% 0, 82% 100%, 55% 100%); z-index: 6; }
+.hg5 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.75), rgba(255,255,255,0.95)); clip-path: polygon(80% 0, 100% 0, 100% 100%, 68% 100%); z-index: 7; }
 .banner-line { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #E65100, #FF9800, #FFC107, transparent 70%); z-index: 10; }
-.banner-content { position: relative; z-index: 20; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
+.banner-content { position: relative; z-index: 20; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: center; }
 
-/* Cards - Enhanced Glassmorphism */
+/* Cards - Frosted glass transparency */
 .card { background: rgba(255,255,255,0.75); backdrop-filter: blur(10px); -webkit-backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.5); border-radius: 16px; padding: 24px; box-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04); transition: all 0.3s ease; }
 .card:hover { background: rgba(255,255,255,0.85); border-color: rgba(255,255,255,0.7); box-shadow: 0 8px 30px rgba(0,0,0,0.08), 0 2px 8px rgba(0,0,0,0.04); }
 .card-interactive { cursor: pointer; }
@@ -70,11 +71,13 @@ body::before {
 .btn-secondary:hover { background: rgba(255,255,255,0.85); }
 
 /* Login */
-.login-card { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); padding: 48px 40px; }
-.login-input { width: 100%; background: rgba(255,255,255,0.9); border: 1px solid rgba(148,163,184,0.2); border-radius: 12px; padding: 14px 18px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 16px; letter-spacing: 0.05em; outline: none; transition: all 0.2s; }
+.login-card { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); padding: 48px 40px; }
+.login-input { width: 100%; background: rgba(255,255,255,0.9); border: 1px solid rgba(148,163,184,0.2); border-radius: 12px; padding: 14px 18px; color: var(--text-primary); font-size: 16px; outline: none; transition: all 0.2s; }
 .login-input:focus { border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(255,152,0,0.1); }
+.login-input-mono { font-family: 'JetBrains Mono', monospace; letter-spacing: 0.05em; }
 .login-btn { width: 100%; background: var(--text-primary); color: white; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; padding: 14px 24px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; margin-top: 24px; }
-.login-btn:hover { background: #0f172a; transform: translateY(-1px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.login-btn:hover:not(:disabled) { background: #0f172a; transform: translateY(-1px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
+.login-btn:disabled { opacity: 0.6; cursor: not-allowed; }
 
 /* Progress */
 .progress-track { height: 4px; background: rgba(255,255,255,0.4); }
@@ -127,13 +130,14 @@ body::before {
 /* Streak */
 .streak-fire { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: linear-gradient(135deg, rgba(255,152,0,0.15), rgba(255,193,7,0.15)); border: 1px solid rgba(255,152,0,0.25); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--orange-deep); }
 
-@media (max-width: 640px) { .card { padding: 18px; } .flashcard-container { height: 200px; } .header-banner { height: 56px; } }
+@media (max-width: 640px) { .card { padding: 18px; } .flashcard-container { height: 200px; } .header-banner { height: 60px; } }
 </style>
 </head>
 <body>
 <div id="app"></div>
 <script>
-const STUDENTS = { 'NICOLAS':'Nicolas', 'MARIA':'Maria', 'JOHN':'John', 'ANNA':'Anna', 'PEDRO':'Pedro', 'SOPHIE':'Sophie', 'DEMO':'Demo Student', 'STEVE2324':'Teacher Steve' };
+const VALID_CODES = ['STEVE2324','NICOLAS','MARIA','JOHN','ANNA','PEDRO','SOPHIE','DEMO'];
+const ADMIN_NAME = 'steve';
 const ADMIN_CODE = 'STEVE2324';
 
 const FUN_FACTS = [
@@ -194,7 +198,7 @@ function render() {
 }
 
 function bannerHTML(rightContent='', compact=false) {
-  return `<div class="header-banner" style="${compact?'height:56px':''}"><div class="hg1"></div><div class="hg2"></div><div class="hg3"></div><div class="hg4"></div><div class="banner-line"></div><div class="banner-content"><div style="display:flex;align-items:center;gap:12px"><div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">🎓</div><div><h1 class="font-space" style="font-size:${compact?'16':'18'}px;font-weight:700;color:#1E293B;margin:0;line-height:1.2;text-shadow:0 1px 2px rgba(255,255,255,0.5)">Teacher Steve's</h1></div></div><div style="display:flex;align-items:center;gap:12px">${rightContent}</div></div></div>`;
+  return `<div class="header-banner" style="${compact?'height:60px':''}"><div class="hg1"></div><div class="hg2"></div><div class="hg3"></div><div class="hg4"></div><div class="hg5"></div><div class="banner-line"></div><div class="banner-content"><div style="display:flex;align-items:center;gap:14px"><div style="width:${compact?'36':'40'}px;height:${compact?'36':'40'}px;border-radius:${compact?'10':'12'}px;background:rgba(255,255,255,0.95);display:flex;align-items:center;justify-content:center;font-size:${compact?'18':'20'}px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">🎓</div><h1 class="font-space" style="font-size:${compact?'20':'26'}px;font-weight:700;color:#1E293B;margin:0;line-height:1.2;text-shadow:0 1px 2px rgba(255,255,255,0.5);letter-spacing:-0.02em">Teacher Steve's</h1></div>${rightContent?`<div style="position:absolute;right:24px;top:50%;transform:translateY(-50%);display:flex;align-items:center;gap:12px">${rightContent}</div>`:''}</div></div>`;
 }
 
 function renderLogin() {
@@ -205,21 +209,55 @@ function renderLogin() {
     <div style="width:100%;max-width:420px;position:relative;z-index:10;margin-top:40px" class="animate-fade-in">
       <form id="loginForm" class="login-card">
         <h2 class="font-space" style="font-size:28px;font-weight:600;color:#1E293B;margin:0 0 32px">Sign in</h2>
-        <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Enter Code</label>
-        <input type="text" id="codeInput" class="login-input" autofocus />
+        <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Student Name</label>
+        <input type="text" id="nameInput" class="login-input" placeholder="Enter your name" autofocus style="margin-bottom:20px" />
+        <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Student Code</label>
+        <input type="text" id="codeInput" class="login-input login-input-mono" placeholder="Enter your code" />
         <div id="loginError" style="margin-top:12px;font-size:14px;color:#ef4444;display:none"></div>
-        <button type="submit" class="login-btn">Start Learning</button>
+        <button type="submit" id="loginBtn" class="login-btn" disabled>Start Learning</button>
       </form>
     </div></div>`;
 }
 
 function attachLoginEvents() {
+  const nameInput = document.getElementById('nameInput');
+  const codeInput = document.getElementById('codeInput');
+  const loginBtn = document.getElementById('loginBtn');
+
+  const updateBtnState = () => {
+    loginBtn.disabled = !(nameInput.value.trim() && codeInput.value.trim());
+  };
+  nameInput.addEventListener('input', updateBtnState);
+  codeInput.addEventListener('input', updateBtnState);
+
+  nameInput.addEventListener('focus', () => { nameInput.style.borderColor='#FF9800'; nameInput.style.boxShadow='0 0 0 3px rgba(255,152,0,0.1)'; });
+  nameInput.addEventListener('blur', () => { nameInput.style.borderColor='rgba(148,163,184,0.2)'; nameInput.style.boxShadow='none'; });
+  codeInput.addEventListener('focus', () => { codeInput.style.borderColor='#FF9800'; codeInput.style.boxShadow='0 0 0 3px rgba(255,152,0,0.1)'; });
+  codeInput.addEventListener('blur', () => { codeInput.style.borderColor='rgba(148,163,184,0.2)'; codeInput.style.boxShadow='none'; });
+
   document.getElementById('loginForm').addEventListener('submit', e => {
     e.preventDefault();
-    const code = document.getElementById('codeInput').value.trim().toUpperCase();
-    const name = STUDENTS[code];
-    if (name) { state.studentName=name; state.studentCode=code; state.isAdmin=(code===ADMIN_CODE); state.view='home'; render(); }
-    else { const err=document.getElementById('loginError'); err.textContent='Invalid code. Please check with your teacher.'; err.style.display='block'; }
+    const trimmedName = nameInput.value.trim();
+    const upperCode = codeInput.value.trim().toUpperCase();
+    const err = document.getElementById('loginError');
+
+    if (!trimmedName) { err.textContent='Please enter your name.'; err.style.display='block'; return; }
+    if (!VALID_CODES.includes(upperCode)) { err.textContent='Invalid code. Please check with your teacher.'; err.style.display='block'; return; }
+
+    err.style.display = 'none';
+
+    // Admin logic: name="Steve" + code="STEVE2324"
+    if (trimmedName.toLowerCase() === ADMIN_NAME && upperCode === ADMIN_CODE) {
+      state.studentName = 'Teacher Steve';
+      state.studentCode = upperCode;
+      state.isAdmin = true;
+    } else {
+      state.studentName = trimmedName;
+      state.studentCode = upperCode;
+      state.isAdmin = false;
+    }
+    state.view = 'home';
+    render();
   });
 }
 
@@ -235,16 +273,16 @@ function renderHome() {
   ];
 
   return `<div style="min-height:100vh">
-    ${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:12px;color:#64748B">${state.isAdmin?'👑':'👤'} ${state.studentName}</span></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:14px">⭐</span><span class="font-space" style="font-size:14px;font-weight:600;color:#E65100" id="scoreDisplay">${state.score}</span></div><button id="logoutBtn" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 16px;font-size:13px;color:#64748B;cursor:pointer;font-weight:500">🚪 Exit</button>`)}
+    ${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:12px;color:#64748B">${state.isAdmin?'👑':'👤'} ${state.studentName}</span></div><div style="display:flex;align-items:center;gap:6px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:14px">⭐</span><span class="font-space" style="font-size:14px;font-weight:600;color:#E65100" id="scoreDisplay">${state.score}</span></div><button id="logoutBtn" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 16px;font-size:13px;color:#64748B;cursor:pointer;font-weight:500">🚪 Exit</button>`)}
     <div style="padding:32px 24px 24px"><div style="max-width:1200px;margin:0 auto" class="animate-fade-in">
       <h2 class="font-space" style="font-size:32px;font-weight:700;color:#1E293B;margin:0 0 8px">${state.isAdmin?'Welcome back, Teacher Steve 👑':'Welcome back, '+state.studentName+' 👋'}</h2>
       <p style="color:#64748B;font-size:16px;max-width:600px">${state.isAdmin?'You have full administrative access.':'Choose a category below to start learning. Track your progress and earn points!'}</p>
     </div></div>
     <div style="padding:0 24px 32px"><div style="max-width:1200px;margin:0 auto"><div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:20px">
-      ${cats.map((c,i)=>`<div class="card card-interactive animate-slide-up cat-card" data-cat="${c.id}" style="animation-delay:${i*0.1}s;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid ${c.border};cursor:pointer"><div style="display:flex;align-items:flex-start;gap:16px"><div style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;background:${c.color}">${c.icon}</div><div style="flex:1"><h3 class="font-space" style="font-size:20px;font-weight:600;color:#1E293B;margin:0 0 6px">${c.title}</h3><p style="font-size:14px;color:#64748B;line-height:1.5;margin:0 0 12px">${c.desc}</p><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:${c.color};border-radius:20px;font-size:12px;font-weight:600;color:#1E293B"><span>${c.count}</span><span style="opacity:0.7">available</span></div></div></div></div>`).join('')}
+      ${cats.map((c,i)=>`<div class="card card-interactive animate-slide-up cat-card" data-cat="${c.id}" style="animation-delay:${i*0.1}s;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid ${c.border};cursor:pointer"><div style="display:flex;align-items:flex-start;gap:16px"><div style="width:56px;height:56px;border-radius:16px;display:flex;align-items:center;justify-content:center;font-size:28px;flex-shrink:0;background:${c.color}">${c.icon}</div><div style="flex:1"><h3 class="font-space" style="font-size:20px;font-weight:600;color:#1E293B;margin:0 0 6px">${c.title}</h3><p style="font-size:14px;color:#64748B;line-height:1.5;margin:0 0 12px">${c.desc}</p><div style="display:inline-flex;align-items:center;gap:6px;padding:4px 12px;background:${c.color};border-radius:20px;font-size:12px;font-weight:600;color:#1E293B"><span>${c.count}</span><span style="opacity:0.7">available</span></div></div></div></div>`).join('')}
     </div></div></div>
     <div style="padding:0 24px 32px"><div style="max-width:1200px;margin:0 auto">
-      <div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(59,130,246,0.2)">
+      <div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(59,130,246,0.2)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px">
           <h3 class="font-space" style="font-size:18px;font-weight:600;color:#1E293B;margin:0">💡 Fun Fact of the Moment</h3>
           <div style="display:flex;gap:8px"><button id="factPrev" style="background:rgba(255,255,255,0.75);border:1px solid rgba(59,130,246,0.2);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:14px;color:#64748B">←</button><button id="factNext" style="background:rgba(255,255,255,0.75);border:1px solid rgba(59,130,246,0.2);border-radius:8px;width:32px;height:32px;cursor:pointer;font-size:14px;color:#64748B">→</button></div>
@@ -261,7 +299,7 @@ function renderHome() {
       </div>
     </div></div>
     <div style="padding:0 24px 48px"><div style="max-width:1200px;margin:0 auto">
-      <div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,152,0,0.2)">
+      <div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,152,0,0.2)">
         <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:20px"><h3 class="font-space" style="font-size:18px;font-weight:600;color:#1E293B;margin:0">📖 Word of the Day</h3><div style="padding:4px 12px;background:rgba(255,152,0,0.1);border-radius:20px;font-size:12px;font-weight:600;color:#E65100">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}</div></div>
         <div style="background:rgba(255,152,0,0.05);border-radius:16px;padding:24px;margin-bottom:20px;border:1px solid rgba(255,152,0,0.15)">
           <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:12px;flex-wrap:wrap"><h2 class="font-space" style="font-size:32px;font-weight:700;color:#E65100;margin:0">${word.word}</h2><span style="font-size:14px;font-style:italic;color:#64748B">${word.pos}</span><span class="font-mono" style="font-size:13px;color:#94A3B8">${word.pron}</span></div>
@@ -275,8 +313,7 @@ function renderHome() {
         <p style="font-size:12px;color:#94A3B8;margin:12px 0 0;font-style:italic">💡 Earn 10 points for each correct sentence!</p>
       </div>
     </div></div>
-    ${state.isAdmin?`<div style="padding:0 24px 48px"><div style="max-width:1200px;margin:0 auto"><div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,152,0,0.2)"><h3 class="font-space" style="font-size:20px;font-weight:600;color:#E65100;margin:0 0 16px">👑 Admin Panel</h3><p style="color:#64748B;font-size:14px;margin:0 0 20px">Administrative controls and student management features.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn btn-primary">Manage Lessons</button><button class="btn btn-secondary">View Student Progress</button><button class="btn btn-secondary">Edit Content</button></div></div></div></div>`:''}
-    <footer style="border-top:1px solid rgba(255,255,255,0.4);padding:20px 24px;text-align:center;background:rgba(255,255,255,0.3);backdrop-filter:blur(10px)"><p style="font-size:12px;color:#94A3B8;margin:0">Built for Preply teachers · Interactive lessons that make learning fun 🚀</p></footer>
+    ${state.isAdmin?`<div style="padding:0 24px 48px"><div style="max-width:1200px;margin:0 auto"><div class="card" style="background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,152,0,0.2)"><h3 class="font-space" style="font-size:20px;font-weight:600;color:#E65100;margin:0 0 16px">👑 Admin Panel</h3><p style="color:#64748B;font-size:14px;margin:0 0 20px">Administrative controls and student management features.</p><div style="display:flex;gap:12px;flex-wrap:wrap"><button class="btn btn-primary">Manage Lessons</button><button class="btn btn-secondary">View Student Progress</button><button class="btn btn-secondary">Edit Content</button></div></div></div></div>`:''}
   </div>`;
 }
 
@@ -323,10 +360,10 @@ function startTimer() { if(state.timerInterval)clearInterval(state.timerInterval
 
 function renderLesson() {
   const l=state.activeLesson, s=l.sections[state.currentSection], p=((state.currentSection+1)/l.sections.length)*100;
-  return `<div style="min-height:100vh">${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:12px;color:#64748B">${state.studentName}</span></div><div class="font-space" style="font-size:14px;font-weight:600;color:#1E293B;background:rgba(255,255,255,0.7);padding:8px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.5)" id="timer">${Math.floor(state.totalSeconds/60)}:${(state.totalSeconds%60).toString().padStart(2,'0')}</div>`, true)}
-    <div style="background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.5);padding:12px 24px"><div style="max-width:1024px;margin:0 auto;display:flex;align-items:center;gap:12px"><button id="backBtn" style="background:rgba(255,255,255,0.7);border:1px solid rgba(30,41,59,0.1);border-radius:8px;padding:6px 12px;font-size:13px;color:#64748B;cursor:pointer">← Back</button><h1 class="font-space" style="font-size:15px;font-weight:600;color:#1E293B;margin:0">${l.title}</h1></div></div>
+  return `<div style="min-height:100vh">${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.75);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.5);border-radius:12px;padding:8px 14px"><span style="font-size:12px;color:#64748B">${state.studentName}</span></div><div class="font-space" style="font-size:14px;font-weight:600;color:#1E293B;background:rgba(255,255,255,0.7);padding:8px 14px;border-radius:12px;border:1px solid rgba(255,255,255,0.5)" id="timer">${Math.floor(state.totalSeconds/60)}:${(state.totalSeconds%60).toString().padStart(2,'0')}</div>`, true)}
+    <div style="background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.5);padding:12px 24px"><div style="max-width:1024px;margin:0 auto;display:flex;align-items:center;gap:12px"><button id="backBtn" style="background:rgba(255,255,255,0.7);border:1px solid rgba(30,41,59,0.1);border-radius:8px;padding:6px 12px;font-size:13px;color:#64748B;cursor:pointer">← Back</button><h1 class="font-space" style="font-size:15px;font-weight:600;color:#1E293B;margin:0">${l.title}</h1></div></div>
     <div class="progress-track"><div class="progress-fill" style="width:${p}%"></div></div>
-    <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.4);padding:8px 24px;overflow-x:auto"><div style="max-width:1024px;margin:0 auto;display:flex;gap:4px">${l.sections.map((sec,i)=>`<button class="section-nav-btn" data-section="${i}" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;border:none;background:${i===state.currentSection?'rgba(255,152,0,0.12)':'transparent'};color:${i===state.currentSection?'#E65100':state.completedSections.has(i)?'#10b981':'#64748B'}">${state.completedSections.has(i)?'✓':i+1+'.'} ${sec.title}</button>`).join('')}</div></div>
+    <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.4);padding:8px 24px;overflow-x:auto"><div style="max-width:1024px;margin:0 auto;display:flex;gap:4px">${l.sections.map((sec,i)=>`<button class="section-nav-btn" data-section="${i}" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;border:none;background:${i===state.currentSection?'rgba(255,152,0,0.12)':'transparent'};color:${i===state.currentSection?'#E65100':state.completedSections.has(i)?'#10b981':'#64748B'}">${state.completedSections.has(i)?'✓':i+1+'.'} ${sec.title}</button>`).join('')}</div></div>
     <div style="max-width:1024px;margin:0 auto;padding:32px 24px"><div class="animate-fade-in"><div style="margin-bottom:24px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px"><span class="tag tag-${s.type==='quiz'?'green':s.type==='flashcards'?'purple':s.type==='matching'?'amber':'blue'}">${s.type==='quiz'?'✏️ Quiz':s.type==='flashcards'?'🃏 Flashcards':s.type==='matching'?'🔗 Match':s.type==='discussion'?'💬 Discuss':'📖 Learn'}</span><span style="font-size:12px;color:#94A3B8">· ${s.duration} min</span></div><h2 class="font-space" style="font-size:24px;font-weight:700;color:#1E293B">${s.title}</h2></div><div id="sectionContent">${renderSectionContent(s)}</div><div style="display:flex;align-items:center;justify-content:space-between;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.4)"><button id="prevBtn" ${state.currentSection===0?'disabled style="opacity:0.3;cursor:not-allowed"':''} class="btn btn-secondary">← Previous</button><span style="font-size:12px;color:#64748B">${state.currentSection+1} of ${l.sections.length}</span>${state.currentSection<l.sections.length-1?`<button id="nextBtn" class="btn btn-primary">Next →</button>`:`<button id="finishBtn" class="btn" style="background:linear-gradient(135deg,#10b981,#059669);color:white">✓ Finish Lesson</button>`}</div></div></div></div>`;
 }
 

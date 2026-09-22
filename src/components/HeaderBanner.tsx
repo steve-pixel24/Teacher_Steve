@@ -8,18 +8,19 @@ export default function HeaderBanner({ subtitle, rightContent, compact }: Header
   return (
     <header
       className="header-banner"
-      style={{ height: compact ? '56px' : '64px' }}
+      style={{ height: compact ? '56px' : '72px' }}
     >
-      {/* Geometric layers */}
+      {/* Geometric layers - clean overlapping diagonal blocks at 45° */}
       <div className="header-geo-1" />
       <div className="header-geo-2" />
       <div className="header-geo-3" />
       <div className="header-geo-4" />
+      <div className="header-geo-5" />
 
       {/* Bottom accent line */}
       <div className="header-banner-line" />
 
-      {/* Content */}
+      {/* Centered content */}
       <div
         style={{
           position: 'relative',
@@ -30,58 +31,65 @@ export default function HeaderBanner({ subtitle, rightContent, compact }: Header
           padding: '0 24px',
           display: 'flex',
           alignItems: 'center',
-          justifyContent: 'space-between',
+          justifyContent: 'center',
         }}
       >
-        {/* Left: Brand */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '14px' }}>
           <div
             style={{
-              width: '36px',
-              height: '36px',
-              borderRadius: '10px',
-              background: 'rgba(255,255,255,0.9)',
+              width: '40px',
+              height: '40px',
+              borderRadius: '12px',
+              background: 'rgba(255,255,255,0.95)',
               display: 'flex',
               alignItems: 'center',
               justifyContent: 'center',
-              fontSize: '18px',
+              fontSize: '20px',
               boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
             }}
           >
             🎓
           </div>
-          <div>
-            <h1
-              className="font-space"
+          <h1
+            className="font-space"
+            style={{
+              fontSize: compact ? '20px' : '26px',
+              fontWeight: 700,
+              color: '#1E293B',
+              margin: 0,
+              lineHeight: 1.2,
+              textShadow: '0 1px 2px rgba(255,255,255,0.5)',
+              letterSpacing: '-0.02em',
+            }}
+          >
+            Teacher Steve's
+          </h1>
+          {subtitle && (
+            <span
               style={{
-                fontSize: compact ? '16px' : '18px',
-                fontWeight: 700,
-                color: '#1E293B',
-                margin: 0,
-                lineHeight: 1.2,
-                textShadow: '0 1px 2px rgba(255,255,255,0.5)',
+                fontSize: '12px',
+                fontWeight: 500,
+                color: '#64748B',
+                letterSpacing: '0.02em',
+                marginLeft: '8px',
               }}
             >
-              Teacher Steve's
-            </h1>
-            {subtitle && (
-              <span
-                style={{
-                  fontSize: '11px',
-                  fontWeight: 500,
-                  color: '#64748B',
-                  letterSpacing: '0.02em',
-                }}
-              >
-                {subtitle}
-              </span>
-            )}
-          </div>
+              {subtitle}
+            </span>
+          )}
         </div>
 
-        {/* Right: Custom content */}
+        {/* Right content - absolutely positioned */}
         {rightContent && (
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <div style={{
+            position: 'absolute',
+            right: '24px',
+            top: '50%',
+            transform: 'translateY(-50%)',
+            display: 'flex',
+            alignItems: 'center',
+            gap: '12px',
+          }}>
             {rightContent}
           </div>
         )}

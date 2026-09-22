@@ -4,20 +4,12 @@ interface LoginScreenProps {
   onLogin: (name: string, code: string, isAdmin: boolean) => void;
 }
 
-const STUDENTS: Record<string, string> = {
-  'NICOLAS': 'Nicolas',
-  'MARIA': 'Maria',
-  'JOHN': 'John',
-  'ANNA': 'Anna',
-  'PEDRO': 'Pedro',
-  'SOPHIE': 'Sophie',
-  'DEMO': 'Demo Student',
-  'STEVE2324': 'Teacher Steve',
-};
-
+const VALID_CODES = ['STEVE2324', 'NICOLAS', 'MARIA', 'JOHN', 'ANNA', 'PEDRO', 'SOPHIE', 'DEMO'];
+const ADMIN_NAME = 'Steve';
 const ADMIN_CODE = 'STEVE2324';
 
 export default function LoginScreen({ onLogin }: LoginScreenProps) {
+  const [name, setName] = useState('');
   const [code, setCode] = useState('');
   const [error, setError] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -28,14 +20,27 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
     setError('');
 
     setTimeout(() => {
+      const trimmedName = name.trim();
       const upperCode = code.trim().toUpperCase();
-      const name = STUDENTS[upperCode];
-      if (name) {
-        const isAdmin = upperCode === ADMIN_CODE;
-        onLogin(name, upperCode, isAdmin);
-      } else {
+
+      if (!trimmedName) {
+        setError('Please enter your name.');
+        setIsLoading(false);
+        return;
+      }
+
+      if (!VALID_CODES.includes(upperCode)) {
         setError('Invalid code. Please check with your teacher.');
         setIsLoading(false);
+        return;
+      }
+
+      // Admin logic: name="Steve" + code="STEVE2324"
+      if (trimmedName.toLowerCase() === ADMIN_NAME.toLowerCase() && upperCode === ADMIN_CODE) {
+        onLogin('Teacher Steve', upperCode, true);
+      } else {
+        // Regular student login - use their entered name
+        onLogin(trimmedName, upperCode, false);
       }
     }, 600);
   };
@@ -128,13 +133,44 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
           </h2>
 
           <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#1E293B', marginBottom: '8px' }}>
-            Enter Code
+            Student Name
+          </label>
+          <input
+            type="text"
+            value={name}
+            onChange={(e) => { setName(e.target.value); setError(''); }}
+            placeholder="Enter your name"
+            autoFocus
+            style={{
+              width: '100%',
+              background: 'rgba(255, 255, 255, 0.9)',
+              border: '1px solid rgba(148, 163, 184, 0.2)',
+              borderRadius: '12px',
+              padding: '14px 18px',
+              color: '#1E293B',
+              fontSize: '16px',
+              outline: 'none',
+              transition: 'all 0.2s',
+              marginBottom: '20px',
+            }}
+            onFocus={(e) => {
+              e.target.style.borderColor = '#FF9800';
+              e.target.style.boxShadow = '0 0 0 3px rgba(255, 152, 0, 0.1)';
+            }}
+            onBlur={(e) => {
+              e.target.style.borderColor = 'rgba(148, 163, 184, 0.2)';
+              e.target.style.boxShadow = 'none';
+            }}
+          />
+
+          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#1E293B', marginBottom: '8px' }}>
+            Student Code
           </label>
           <input
             type="text"
             value={code}
             onChange={(e) => { setCode(e.target.value); setError(''); }}
-            autoFocus
+            placeholder="Enter your code"
             style={{
               width: '100%',
               background: 'rgba(255, 255, 255, 0.9)',
@@ -166,7 +202,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
           <button
             type="submit"
-            disabled={isLoading || !code.trim()}
+            disabled={isLoading || !name.trim() || !code.trim()}
             style={{
               width: '100%',
               background: '#1E293B',
@@ -177,13 +213,13 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
               padding: '14px 24px',
               border: 'none',
               borderRadius: '12px',
-              cursor: isLoading || !code.trim() ? 'not-allowed' : 'pointer',
+              cursor: isLoading || !name.trim() || !code.trim() ? 'not-allowed' : 'pointer',
               transition: 'all 0.2s',
               marginTop: '24px',
-              opacity: isLoading || !code.trim() ? 0.6 : 1,
+              opacity: isLoading || !name.trim() || !code.trim() ? 0.6 : 1,
             }}
             onMouseEnter={(e) => {
-              if (!isLoading && code.trim()) {
+              if (!isLoading && name.trim() && code.trim()) {
                 e.currentTarget.style.background = '#0f172a';
                 e.currentTarget.style.transform = 'translateY(-1px)';
                 e.currentTarget.style.boxShadow = '0 10px 25px rgba(0, 0, 0, 0.2)';

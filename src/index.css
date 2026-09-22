@@ -148,62 +148,68 @@ body::before {
 .header-banner {
   position: relative;
   width: 100%;
-  height: 64px;
+  height: 72px;
   overflow: hidden;
-  background: linear-gradient(90deg, var(--orange-deep) 0%, var(--orange-primary) 35%, var(--amber) 55%, var(--white) 100%);
+  background: linear-gradient(90deg, #E65100 0%, #FF9800 30%, #FFC107 55%, #FFFFFF 100%);
 }
 
-/* Geometric shapes layer */
+/* Clean overlapping diagonal blocks at 45° with opacities 0.4 to 0.85 */
 .header-banner::before {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    /* Large parallelogram - deep orange */
-    linear-gradient(135deg, rgba(230, 81, 0, 0.7) 0%, rgba(230, 81, 0, 0.4) 100%);
-  clip-path: polygon(0 0, 55% 0, 40% 100%, 0 100%);
+  background: linear-gradient(135deg, rgba(230, 81, 0, 0.85) 0%, rgba(230, 81, 0, 0.6) 100%);
+  clip-path: polygon(0 0, 48% 0, 32% 100%, 0 100%);
+  z-index: 1;
 }
 
 .header-banner::after {
   content: '';
   position: absolute;
   inset: 0;
-  background:
-    /* Mid parallelogram - vibrant orange */
-    linear-gradient(135deg, rgba(255, 152, 0, 0.85) 0%, rgba(255, 152, 0, 0.5) 100%);
-  clip-path: polygon(15% 0, 65% 0, 50% 100%, 0% 100%);
+  background: linear-gradient(135deg, rgba(255, 152, 0, 0.8) 0%, rgba(255, 152, 0, 0.55) 100%);
+  clip-path: polygon(12% 0, 58% 0, 42% 100%, 0% 100%);
+  z-index: 2;
 }
 
 .header-geo-1 {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.8) 0%, rgba(255, 193, 7, 0.4) 100%);
-  clip-path: polygon(30% 0, 72% 0, 58% 100%, 15% 100%);
-  z-index: 1;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.75) 0%, rgba(255, 193, 7, 0.5) 100%);
+  clip-path: polygon(25% 0, 68% 0, 52% 100%, 10% 100%);
+  z-index: 3;
 }
 
 .header-geo-2 {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 193, 7, 0.6) 0%, rgba(255, 255, 255, 0.3) 100%);
-  clip-path: polygon(45% 0, 80% 0, 68% 100%, 32% 100%);
-  z-index: 2;
+  background: linear-gradient(135deg, rgba(255, 193, 7, 0.6) 0%, rgba(255, 255, 255, 0.4) 100%);
+  clip-path: polygon(40% 0, 78% 0, 62% 100%, 25% 100%);
+  z-index: 4;
 }
 
 .header-geo-3 {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.8) 100%);
-  clip-path: polygon(58% 0, 88% 0, 78% 100%, 48% 100%);
-  z-index: 3;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0.7) 100%);
+  clip-path: polygon(55% 0, 88% 0, 72% 100%, 40% 100%);
+  z-index: 5;
 }
 
 .header-geo-4 {
   position: absolute;
   inset: 0;
-  background: linear-gradient(135deg, rgba(255, 255, 255, 0.7) 0%, rgba(255, 255, 255, 0.95) 100%);
-  clip-path: polygon(70% 0, 100% 0, 100% 100%, 60% 100%);
-  z-index: 4;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.65) 0%, rgba(255, 255, 255, 0.85) 100%);
+  clip-path: polygon(68% 0, 95% 0, 82% 100%, 55% 100%);
+  z-index: 6;
+}
+
+.header-geo-5 {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.75) 0%, rgba(255, 255, 255, 0.95) 100%);
+  clip-path: polygon(80% 0, 100% 0, 100% 100%, 68% 100%);
+  z-index: 7;
 }
 
 /* Thin accent line at bottom of banner */
@@ -213,7 +219,7 @@ body::before {
   left: 0;
   right: 0;
   height: 2px;
-  background: linear-gradient(90deg, var(--orange-deep), var(--orange-primary), var(--amber), transparent 70%);
+  background: linear-gradient(90deg, #E65100, #FF9800, #FFC107, transparent 70%);
   z-index: 10;
 }
 
