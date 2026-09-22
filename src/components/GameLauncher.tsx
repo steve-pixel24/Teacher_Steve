@@ -1,6 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Game } from '../data/games';
 import { completeItem, updateItemProgress } from '../utils/progress';
+import { GrammarDash } from './GrammarDash';
+import { IdiomMatch } from './IdiomMatch';
 
 interface GameLauncherProps {
   game: Game;
@@ -16,6 +18,14 @@ const WORDS = [
 ];
 
 export const GameLauncher: React.FC<GameLauncherProps> = ({ game, onBack, onComplete }) => {
+  // Route to specific game components
+  if (game.id === 'grammar-dash') {
+    return <GrammarDash onBack={onBack} onComplete={onComplete} />;
+  }
+
+  if (game.id === 'idiom-match') {
+    return <IdiomMatch onBack={onBack} onComplete={onComplete} />;
+  }
   const [currentWord, setCurrentWord] = useState('');
   const [scrambledWord, setScrambledWord] = useState('');
   const [userInput, setUserInput] = useState('');
