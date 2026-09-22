@@ -109,7 +109,11 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
           )}
 
           {/* Center: Title */}
-          <div style={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+          <div style={{ 
+            textAlign: 'center', 
+            flex: 1,
+            padding: '0 20px',
+          }}>
             <h1
               className="font-heading"
               style={{
