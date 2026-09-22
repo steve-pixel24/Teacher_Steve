@@ -3,12 +3,13 @@ import HeaderBanner from './HeaderBanner';
 import FunFactsCarousel from './FunFactsCarousel';
 import WordOfDay from './WordOfDay';
 import StudentManagement from './StudentManagement';
+import { vocabSubcategories } from '../data/vocabulary';
 import { getLevelInfo, getLevelColor, loadStudents } from '../utils/xpSystem';
 
 interface HomePageProps {
   lessons: Lesson[];
   onSelectLesson: (lesson: Lesson) => void;
-  onOpenCategory: (category: 'lessons' | 'stories' | 'tests' | 'games') => void;
+  onOpenCategory: (category: 'lessons' | 'vocabulary' | 'stories' | 'tests' | 'games') => void;
   studentName: string;
   studentCode: string;
   isAdmin: boolean;
@@ -50,6 +51,16 @@ export default function HomePage({
       color: 'rgba(227, 108, 36, 0.1)',
       borderColor: 'rgba(227, 108, 36, 0.2)',
       action: () => onOpenCategory('lessons'),
+    },
+    {
+      id: 'vocabulary' as const,
+      icon: '📝',
+      title: 'Vocabulary',
+      description: 'Themed vocabulary for jobs, scenarios & more',
+      count: vocabSubcategories.length,
+      color: 'rgba(139, 92, 246, 0.08)',
+      borderColor: 'rgba(139, 92, 246, 0.15)',
+      action: () => onOpenCategory('vocabulary'),
     },
     {
       id: 'stories' as const,

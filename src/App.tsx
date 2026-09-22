@@ -6,6 +6,8 @@ import { CategoryGrid } from './components/CategoryGrid';
 import { StoryReader } from './components/StoryReader';
 import { TestEngine } from './components/TestEngine';
 import { GameLauncher } from './components/GameLauncher';
+import { VocabularyCategory } from './components/VocabularyCategory';
+import { VocabularyPractice } from './components/VocabularyPractice';
 import { AchievementsModal, AchievementToast } from './components/AchievementsModal';
 import { ProfileModal } from './components/ProfileModal';
 import { DictionaryWidget } from './components/DictionaryWidget';
@@ -13,12 +15,13 @@ import { lessons, Lesson } from './data/lessons';
 import { stories, Story } from './data/stories';
 import { tests, Test } from './data/tests';
 import { games, Game } from './data/games';
+import { VocabSubcategory } from './data/vocabulary';
 import { Achievement, checkAchievements, trackLoginStreak, loadAchievements } from './utils/achievements';
 import { getCompletionStats } from './utils/progress';
 import { getLevelInfo } from './utils/xpSystem';
 
-type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game';
-type CategoryType = 'lessons' | 'stories' | 'tests' | 'games';
+type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'vocabPractice';
+type CategoryType = 'lessons' | 'vocabulary' | 'stories' | 'tests' | 'games';
 
 export default function App() {
   const [view, setView] = useState<AppView>('login');
@@ -29,6 +32,7 @@ export default function App() {
   const [activeStory, setActiveStory] = useState<Story | null>(null);
   const [activeTest, setActiveTest] = useState<Test | null>(null);
   const [activeGame, setActiveGame] = useState<Game | null>(null);
+  const [activeVocabSubcategory, setActiveVocabSubcategory] = useState<VocabSubcategory | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryType | null>(null);
   const [studentScore, setStudentScore] = useState(0);
   
@@ -80,9 +84,18 @@ export default function App() {
     setView('game');
   };
 
+  const openVocabSubcategory = (subcategory: VocabSubcategory) => {
+    setActiveVocabSubcategory(subcategory);
+    setView('vocabPractice');
+  };
+
   const openCategory = (category: CategoryType) => {
     setActiveCategory(category);
-    setView('category');
+    if (category === 'vocabulary') {
+      setView('vocabulary');
+    } else {
+      setView('category');
+    }
   };
 
   const handleSelectItem = (type: CategoryType, id: string) => {
@@ -108,11 +121,16 @@ export default function App() {
 
   // Smart routing: return to category grid, not dashboard
   const goBackToCategory = () => {
-    setView('category');
+    if (activeCategory === 'vocabulary') {
+      setView('vocabulary');
+    } else {
+      setView('category');
+    }
     setActiveLesson(null);
     setActiveStory(null);
     setActiveTest(null);
     setActiveGame(null);
+    setActiveVocabSubcategory(null);
   };
 
   const goBackToDashboard = () => {
@@ -121,6 +139,7 @@ export default function App() {
     setActiveStory(null);
     setActiveTest(null);
     setActiveGame(null);
+    setActiveVocabSubcategory(null);
     setActiveCategory(null);
   };
 
@@ -133,6 +152,7 @@ export default function App() {
     setActiveStory(null);
     setActiveTest(null);
     setActiveGame(null);
+    setActiveVocabSubcategory(null);
     setActiveCategory(null);
     setStudentScore(0);
   };
@@ -242,6 +262,19 @@ export default function App() {
       {view === 'game' && activeGame && (
         <GameLauncher
           game={activeGame}
+          onBack={goBackToCategory}
+          onComplete={addScore}
+        />
+      )}
+      {view === 'vocabulary' && (
+        <VocabularyCategory
+          onBack={goBackToDashboard}
+          onSelectSubcategory={openVocabSubcategory}
+        />
+      )}
+      {view === 'vocabPractice' && activeVocabSubcategory && (
+        <VocabularyPractice
+          subcategory={activeVocabSubcategory}
           onBack={goBackToCategory}
           onComplete={addScore}
         />

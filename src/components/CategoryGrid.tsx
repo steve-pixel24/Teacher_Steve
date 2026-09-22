@@ -5,7 +5,7 @@ import { tests } from '../data/tests';
 import { games } from '../data/games';
 import { getItemProgress } from '../utils/progress';
 
-type CategoryType = 'lessons' | 'stories' | 'tests' | 'games';
+type CategoryType = 'lessons' | 'vocabulary' | 'stories' | 'tests' | 'games';
 
 interface CategoryGridProps {
   category: CategoryType;
@@ -17,6 +17,11 @@ const categoryConfig = {
   lessons: {
     icon: '📖',
     title: 'Lessons',
+    color: 'var(--brand-orange)',
+  },
+  vocabulary: {
+    icon: '📝',
+    title: 'Vocabulary',
     color: 'var(--brand-orange)',
   },
   stories: {

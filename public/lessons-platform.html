@@ -262,6 +262,175 @@ const games=[
   {id:'idiom-match',title:'Idiom Match',icon:'💡',description:'Match idioms with meanings.',highScore:2100,category:'Vocabulary'}
 ];
 
+// Vocabulary Subcategories
+const vocabSubcategories=[
+  {id:'medical-healthcare',title:'Medical & Healthcare',icon:'🏥',description:'Essential vocabulary for doctors, nurses, and healthcare settings.',level:'B2',wordCount:12,parentCategory:'jobs',
+    words:[
+      {word:'diagnosis',phonetic:'/ˌdaɪ.əɡˈnoʊ.sɪs/',pos:'noun',definition:'The identification of a disease or condition.',example:'The doctor made a quick diagnosis after examining the patient.',synonyms:['identification','detection']},
+      {word:'prescription',phonetic:'/prɪˈskrɪp.ʃən/',pos:'noun',definition:'A written order for medicine from a doctor.',example:'The pharmacist filled my prescription for antibiotics.',synonyms:['medication order']},
+      {word:'symptom',phonetic:'/ˈsɪmp.təm/',pos:'noun',definition:'A physical sign of disease or illness.',example:'Common symptoms of the flu include fever and body aches.',synonyms:['sign','indication']},
+      {word:'chronic',phonetic:'/ˈkrɒn.ɪk/',pos:'adjective',definition:'Persisting for a long time or constantly recurring.',example:'She has been dealing with chronic back pain for years.',synonyms:['persistent','long-term']},
+      {word:'referral',phonetic:'/rɪˈfɜː.rəl/',pos:'noun',definition:'The act of directing someone to another professional.',example:'My GP gave me a referral to see a specialist.',synonyms:['recommendation']},
+      {word:'prognosis',phonetic:'/prɒɡˈnoʊ.sɪs/',pos:'noun',definition:'The likely course and outcome of a disease.',example:'The prognosis for full recovery is very positive.',synonyms:['outlook','forecast']},
+      {word:'ward',phonetic:'/wɔːrd/',pos:'noun',definition:'A separate room or area in a hospital for patients.',example:'She was moved to the surgical ward after her operation.',synonyms:['unit','department']},
+      {word:'outpatient',phonetic:'/ˈaʊt.peɪ.ʃənt/',pos:'noun',definition:'A patient who receives treatment without staying overnight.',example:'The procedure is done on an outpatient basis.',synonyms:['day patient']},
+      {word:'triage',phonetic:'/ˈtri.ɑːʒ/',pos:'noun',definition:'The process of sorting patients by urgency of treatment.',example:'The nurse performed triage to prioritize the most critical cases.',synonyms:['sorting','prioritization']},
+      {word:'dosage',phonetic:'/ˈdoʊ.sɪdʒ/',pos:'noun',definition:'The size or frequency of a dose of medicine.',example:'The doctor adjusted the dosage based on the patient\'s weight.',synonyms:['dose','amount']},
+      {word:'sterile',phonetic:'/ˈster.aɪl/',pos:'adjective',definition:'Free from bacteria or other living microorganisms.',example:'All surgical instruments must be completely sterile.',synonyms:['sanitized','disinfected']},
+      {word:'malpractice',phonetic:'/ˈmæl.præk.tɪs/',pos:'noun',definition:'Improper or unethical professional conduct.',example:'The hospital was sued for medical malpractice.',synonyms:['negligence','misconduct']}
+    ]},
+  {id:'tech-it',title:'Technology & IT',icon:'💻',description:'Vocabulary for software, hardware, and the tech industry.',level:'B1',wordCount:12,parentCategory:'jobs',
+    words:[
+      {word:'deploy',phonetic:'/dɪˈplɔɪ/',pos:'verb',definition:'To put software or systems into use.',example:'We plan to deploy the new update next Monday.',synonyms:['launch','release']},
+      {word:'bandwidth',phonetic:'/ˈbænd.wɪdθ/',pos:'noun',definition:'The maximum data transfer rate of a network.',example:'Streaming video requires a lot of bandwidth.',synonyms:['capacity','throughput']},
+      {word:'algorithm',phonetic:'/ˈæl.ɡə.rɪð.əm/',pos:'noun',definition:'A set of rules or steps for solving a problem.',example:'The search algorithm ranks results by relevance.',synonyms:['procedure','formula']},
+      {word:'debug',phonetic:'/diːˈbʌɡ/',pos:'verb',definition:'To find and fix errors in computer code.',example:'I spent three hours debugging the application.',synonyms:['troubleshoot','fix']},
+      {word:'scalable',phonetic:'/ˈskeɪ.lə.bəl/',pos:'adjective',definition:'Able to grow or handle increased demand.',example:'We need a scalable solution for our growing user base.',synonyms:['expandable','flexible']},
+      {word:'interface',phonetic:'/ˈɪn.tə.feɪs/',pos:'noun',definition:'A point where two systems or users interact.',example:'The user interface should be simple and intuitive.',synonyms:['UI','dashboard']},
+      {word:'encryption',phonetic:'/ɪnˈkrɪp.ʃən/',pos:'noun',definition:'The process of converting data into a coded format.',example:'End-to-end encryption keeps your messages private.',synonyms:['encoding','scrambling']},
+      {word:'latency',phonetic:'/ˈleɪ.tən.si/',pos:'noun',definition:'The delay before data transfer begins.',example:'High latency can make video calls frustrating.',synonyms:['delay','lag']},
+      {word:'iterate',phonetic:'/ˈɪt.ə.reɪt/',pos:'verb',definition:'To repeat a process to improve something.',example:'We iterate on the design based on user feedback.',synonyms:['refine','repeat']},
+      {word:'repository',phonetic:'/rɪˈpɒz.ɪ.tɔː.ri/',pos:'noun',definition:'A central location where data or code is stored.',example:'All our code is kept in a shared repository.',synonyms:['storage','archive']},
+      {word:'firewall',phonetic:'/ˈfaɪə.wɔːl/',pos:'noun',definition:'A security system that monitors network traffic.',example:'The firewall blocked the suspicious connection attempt.',synonyms:['security barrier']},
+      {word:'agile',phonetic:'/ˈædʒ.aɪl/',pos:'adjective',definition:'A flexible approach to project management.',example:'Our team uses agile methodology for software development.',synonyms:['flexible','adaptive']}
+    ]},
+  {id:'business-finance',title:'Business & Finance',icon:'💼',description:'Professional vocabulary for corporate and financial environments.',level:'B2',wordCount:12,parentCategory:'jobs',
+    words:[
+      {word:'revenue',phonetic:'/ˈrev.ən.juː/',pos:'noun',definition:'Income generated from business activities.',example:'The company\'s annual revenue exceeded $10 million.',synonyms:['income','earnings']},
+      {word:'stakeholder',phonetic:'/ˈsteɪkˌhoʊl.dər/',pos:'noun',definition:'A person with an interest in a business.',example:'We need to present the results to all stakeholders.',synonyms:['investor','shareholder']},
+      {word:'leverage',phonetic:'/ˈlev.ər.ɪdʒ/',pos:'verb',definition:'To use something to maximum advantage.',example:'We can leverage our existing customer base for growth.',synonyms:['utilize','exploit']},
+      {word:'benchmark',phonetic:'/ˈbentʃ.mɑːk/',pos:'noun',definition:'A standard used for comparison.',example:'This report sets a new benchmark for the industry.',synonyms:['standard','reference point']},
+      {word:'dividend',phonetic:'/ˈdɪv.ɪ.dend/',pos:'noun',definition:'A payment made to shareholders from profits.',example:'Shareholders received a dividend of $2 per share.',synonyms:['payout','return']},
+      {word:'liability',phonetic:'/ˌlaɪ.əˈbɪl.ɪ.ti/',pos:'noun',definition:'A financial obligation or debt.',example:'The company\'s liabilities exceed its assets.',synonyms:['debt','obligation']},
+      {word:'merger',phonetic:'/ˈmɜː.dʒər/',pos:'noun',definition:'The combining of two companies into one.',example:'The merger created the largest bank in the country.',synonyms:['combination','union']},
+      {word:'audit',phonetic:'/ˈɔː.dɪt/',pos:'noun',definition:'An official inspection of financial accounts.',example:'The annual audit revealed no irregularities.',synonyms:['inspection','review']},
+      {word:'procurement',phonetic:'/prəˈkjʊə.mənt/',pos:'noun',definition:'The process of obtaining goods or services.',example:'Our procurement team negotiated a better deal with suppliers.',synonyms:['purchasing','acquisition']},
+      {word:'quarterly',phonetic:'/ˈkwɔː.tə.li/',pos:'adjective',definition:'Occurring every three months.',example:'The quarterly report showed a 15% increase in sales.',synonyms:['three-monthly','periodic']},
+      {word:'portfolio',phonetic:'/pɔːtˈfoʊ.li.oʊ/',pos:'noun',definition:'A range of investments held by a person or organization.',example:'She diversified her portfolio across different sectors.',synonyms:['holdings','investments']},
+      {word:'compliance',phonetic:'/kəmˈplaɪ.əns/',pos:'noun',definition:'The act of following rules and regulations.',example:'The company ensures full compliance with data protection laws.',synonyms:['conformity','adherence']}
+    ]},
+  {id:'hospitality-tourism',title:'Hospitality & Tourism',icon:'🏨',description:'Vocabulary for hotels, restaurants, travel, and tourism.',level:'B1',wordCount:12,parentCategory:'jobs',
+    words:[
+      {word:'itinerary',phonetic:'/aɪˈtɪn.ər.er.i/',pos:'noun',definition:'A planned route or journey.',example:'Our itinerary includes visits to three cities in five days.',synonyms:['schedule','route']},
+      {word:'amenity',phonetic:'/əˈmiː.nɪ.ti/',pos:'noun',definition:'A desirable or useful feature of a place.',example:'The hotel offers amenities like a pool, gym, and spa.',synonyms:['facility','feature']},
+      {word:'concierge',phonetic:'/kɒn.siˈeəʒ/',pos:'noun',definition:'A hotel staff member who assists guests.',example:'The concierge arranged a taxi and restaurant reservation.',synonyms:['attendant','porter']},
+      {word:'reservation',phonetic:'/ˌrez.əˈveɪ.ʃən/',pos:'noun',definition:'An arrangement to secure something in advance.',example:'I\'d like to make a reservation for two at 7 PM.',synonyms:['booking','appointment']},
+      {word:'complimentary',phonetic:'/ˌkɒm.plɪˈmen.tər.i/',pos:'adjective',definition:'Given free as a courtesy.',example:'The hotel provides complimentary breakfast for all guests.',synonyms:['free','gratis']},
+      {word:'excursion',phonetic:'/ɪkˈskɜː.ʃən/',pos:'noun',definition:'A short journey or trip, especially for leisure.',example:'We booked an excursion to the nearby island.',synonyms:['trip','outing']},
+      {word:'vacancy',phonetic:'/ˈveɪ.kən.si/',pos:'noun',definition:'An unoccupied room or position.',example:'Do you have any vacancies for this weekend?',synonyms:['availability','opening']},
+      {word:'surcharge',phonetic:'/ˈsɜː.tʃɑːdʒ/',pos:'noun',definition:'An additional charge added to the basic price.',example:'There\'s a 10% surcharge for service during holidays.',synonyms:['extra charge','fee']},
+      {word:'check-in',phonetic:'/ˈtʃek.ɪn/',pos:'noun',definition:'The process of registering at a hotel or airport.',example:'Check-in time is at 3 PM.',synonyms:['registration','arrival']},
+      {word:'layover',phonetic:'/ˈleɪˌoʊ.vər/',pos:'noun',definition:'A period of waiting between connecting flights.',example:'We had a three-hour layover in Dubai.',synonyms:['stopover','connection']},
+      {word:'housekeeping',phonetic:'/ˈhaʊsˌkiː.pɪŋ/',pos:'noun',definition:'The department that cleans and maintains hotel rooms.',example:'Please call housekeeping if you need extra towels.',synonyms:['cleaning service']},
+      {word:'all-inclusive',phonetic:'/ˌɔːl.ɪnˈkluː.sɪv/',pos:'adjective',definition:'Including everything in one price.',example:'We booked an all-inclusive resort for our vacation.',synonyms:['comprehensive','complete']}
+    ]},
+  {id:'travel-airport',title:'Travel & Airport',icon:'✈️',description:'Essential phrases and vocabulary for airports and flying.',level:'B1',wordCount:12,parentCategory:'scenarios',
+    words:[
+      {word:'boarding pass',phonetic:'/ˈbɔː.dɪŋ pɑːs/',pos:'noun',definition:'A card that allows you to board an airplane.',example:'Please have your boarding pass ready at the gate.',synonyms:['flight ticket']},
+      {word:'customs',phonetic:'/ˈkʌs.təmz/',pos:'noun',definition:'The place where luggage is checked at a border.',example:'We had to declare our purchases at customs.',synonyms:['border control']},
+      {word:'terminal',phonetic:'/ˈtɜː.mɪ.nəl/',pos:'noun',definition:'A building at an airport for passengers.',example:'Our flight departs from Terminal 2.',synonyms:['concourse']},
+      {word:'delayed',phonetic:'/dɪˈleɪd/',pos:'adjective',definition:'Made to happen later than planned.',example:'Our flight was delayed by two hours due to weather.',synonyms:['postponed','late']},
+      {word:'connecting flight',phonetic:'/kəˈnek.tɪŋ flaɪt/',pos:'noun',definition:'A flight you take after arriving from another.',example:'I have a connecting flight in Frankfurt.',synonyms:['transfer flight']},
+      {word:'carry-on',phonetic:'/ˈkær.i.ɒn/',pos:'noun',definition:'Luggage you take into the airplane cabin.',example:'Each passenger is allowed one carry-on bag.',synonyms:['hand luggage']},
+      {word:'gate',phonetic:'/ɡeɪt/',pos:'noun',definition:'The area where passengers board a plane.',example:'Boarding for flight BA123 begins at Gate 14.',synonyms:['departure gate']},
+      {word:'turbulence',phonetic:'/ˈtɜː.bjʊ.ləns/',pos:'noun',definition:'Rough, unstable air during a flight.',example:'Please fasten your seatbelt — we\'re experiencing turbulence.',synonyms:['rough air']},
+      {word:'aisle',phonetic:'/aɪl/',pos:'noun',definition:'A passage between seats.',example:'Could I have an aisle seat, please?',synonyms:['passage','walkway']},
+      {word:'overbooked',phonetic:'/ˌoʊ.vərˈbʊkt/',pos:'adjective',definition:'Having more reservations than available seats.',example:'The flight was overbooked, so they offered compensation.',synonyms:['fully booked']},
+      {word:'baggage claim',phonetic:'/ˈbæɡ.ɪdʒ kleɪm/',pos:'noun',definition:'The area where passengers collect their luggage.',example:'After landing, follow the signs to baggage claim.',synonyms:['luggage collection']},
+      {word:'transit',phonetic:'/ˈtræn.zɪt/',pos:'noun',definition:'The act of passing through a place on the way.',example:'We were in transit for six hours at the airport.',synonyms:['transfer','layover']}
+    ]},
+  {id:'restaurant-dining',title:'Restaurant & Dining',icon:'🍽️',description:'Vocabulary for ordering food and dining out.',level:'A2',wordCount:12,parentCategory:'scenarios',
+    words:[
+      {word:'appetizer',phonetic:'/ˈæp.ɪ.taɪ.zər/',pos:'noun',definition:'A small dish served before the main course.',example:'Would you like to start with an appetizer?',synonyms:['starter']},
+      {word:'entrée',phonetic:'/ˈɒn.tr eɪ/',pos:'noun',definition:'The main course of a meal.',example:'For my entrée, I\'ll have the grilled salmon.',synonyms:['main course']},
+      {word:'cutlery',phonetic:'/ˈkʌt.lər.i/',pos:'noun',definition:'Knives, forks, and spoons used for eating.',example:'Could we have some extra cutlery, please?',synonyms:['utensils'],uk:'cutlery',us:'silverware'},
+      {word:'reservation',phonetic:'/ˌrez.əˈveɪ.ʃən/',pos:'noun',definition:'An advance booking for a table.',example:'I have a reservation under the name Smith.',synonyms:['booking']},
+      {word:'bill',phonetic:'/bɪl/',pos:'noun',definition:'A list of charges for food and drinks.',example:'Could we have the bill, please?',synonyms:['check','invoice'],uk:'bill',us:'check'},
+      {word:'tip',phonetic:'/tɪp/',pos:'noun',definition:'An extra payment for good service.',example:'I always leave a 15% tip for good service.',synonyms:['gratuity']},
+      {word:'dietary',phonetic:'/ˈdaɪ.ə.ter.i/',pos:'adjective',definition:'Related to the food someone eats.',example:'Do you have any dietary restrictions or allergies?',synonyms:['nutritional']},
+      {word:'beverage',phonetic:'/ˈbev.ər.ɪdʒ/',pos:'noun',definition:'A drink, especially one other than water.',example:'Would you like a beverage with your meal?',synonyms:['drink']},
+      {word:'dessert',phonetic:'/dɪˈzɜːt/',pos:'noun',definition:'A sweet course eaten at the end of a meal.',example:'The chocolate dessert was absolutely delicious.',synonyms:['sweet','pudding']},
+      {word:'special',phonetic:'/ˈspeʃ.əl/',pos:'noun',definition:'A dish offered in addition to the regular menu.',example:'What\'s today\'s special?',synonyms:['feature','daily dish']},
+      {word:'allergen',phonetic:'/ˈæl.ə.dʒən/',pos:'noun',definition:'A substance that causes an allergic reaction.',example:'Please inform us of any allergens in the dish.',synonyms:['allergy trigger']},
+      {word:'takeaway',phonetic:'/ˈteɪk.ə.weɪ/',pos:'noun',definition:'Food prepared to be eaten elsewhere.',example:'Let\'s get a takeaway tonight — I don\'t feel like cooking.',synonyms:['takeout'],uk:'takeaway',us:'takeout'}
+    ]},
+  {id:'shopping-retail',title:'Shopping & Retail',icon:'🛍️',description:'Vocabulary for shopping, returns, and customer service.',level:'A2',wordCount:10,parentCategory:'scenarios',
+    words:[
+      {word:'refund',phonetic:'/ˈriː.fʌnd/',pos:'noun',definition:'A return of money for a purchased item.',example:'I\'d like a refund — this shirt doesn\'t fit.',synonyms:['reimbursement']},
+      {word:'discount',phonetic:'/ˈdɪs.kaʊnt/',pos:'noun',definition:'A reduction in the usual price.',example:'They\'re offering a 20% discount this weekend.',synonyms:['reduction','sale']},
+      {word:'receipt',phonetic:'/rɪˈsiːt/',pos:'noun',definition:'A written proof of purchase.',example:'Keep your receipt in case you need to return the item.',synonyms:['proof of purchase']},
+      {word:'bargain',phonetic:'/ˈbɑː.ɡɪn/',pos:'noun',definition:'Something bought for less than its usual price.',example:'These shoes were a real bargain — only $20!',synonyms:['deal','steal']},
+      {word:'stock',phonetic:'/stɒk/',pos:'noun',definition:'The supply of goods available for sale.',example:'I\'m sorry, we don\'t have that size in stock.',synonyms:['supply','inventory']},
+      {word:'fitting room',phonetic:'/ˈfɪt.ɪŋ ruːm/',pos:'noun',definition:'A small room where you try on clothes.',example:'The fitting rooms are at the back of the store.',synonyms:['changing room']},
+      {word:'warranty',phonetic:'/ˈwɒr.ən.ti/',pos:'noun',definition:'A written guarantee of product quality.',example:'This TV comes with a two-year warranty.',synonyms:['guarantee']},
+      {word:'checkout',phonetic:'/ˈtʃek.aʊt/',pos:'noun',definition:'The place where you pay for goods.',example:'There\'s a long queue at the checkout.',synonyms:['cashier','till']},
+      {word:'exchange',phonetic:'/ɪksˈtʃeɪndʒ/',pos:'verb',definition:'To give something and receive something else.',example:'Can I exchange this for a larger size?',synonyms:['swap','trade']},
+      {word:'clearance',phonetic:'/ˈklɪə.rəns/',pos:'noun',definition:'A sale to get rid of old stock.',example:'Everything in the clearance section is 50% off.',synonyms:['sale','markdown']}
+    ]},
+  {id:'family-members',title:'Family Members',icon:'👨‍👩‍👧‍👦',description:'Vocabulary for talking about family relationships.',level:'A1',wordCount:12,parentCategory:'people',
+    words:[
+      {word:'sibling',phonetic:'/ˈsɪb.lɪŋ/',pos:'noun',definition:'A brother or sister.',example:'Do you have any siblings?',synonyms:[]},
+      {word:'spouse',phonetic:'/spaʊz/',pos:'noun',definition:'A husband or wife.',example:'You\'re welcome to bring your spouse to the event.',synonyms:['partner']},
+      {word:'nephew',phonetic:'/ˈnev.juː/',pos:'noun',definition:'The son of your brother or sister.',example:'My nephew just turned five years old.',synonyms:[]},
+      {word:'niece',phonetic:'/niːs/',pos:'noun',definition:'The daughter of your brother or sister.',example:'My niece lives in London.',synonyms:[]},
+      {word:'relative',phonetic:'/ˈrel.ə.tɪv/',pos:'noun',definition:'A member of your family.',example:'We have relatives visiting from abroad.',synonyms:['family member']},
+      {word:'stepfather',phonetic:'/ˈstepˌfɑː.ðər/',pos:'noun',definition:'The husband of your mother (not your biological father).',example:'My stepfather is very kind and supportive.',synonyms:[]},
+      {word:'half-sister',phonetic:'/ˈhɑːf ˈsɪs.tər/',pos:'noun',definition:'A sister who shares one parent with you.',example:'My half-sister and I have the same mother.',synonyms:[]},
+      {word:'godparent',phonetic:'/ˈɡɒdˌpeə.rənt/',pos:'noun',definition:'A person who promises to help a child\'s upbringing.',example:'Her godparents gave her a beautiful gift.',synonyms:[]},
+      {word:'twin',phonetic:'/twɪn/',pos:'noun',definition:'One of two children born at the same time.',example:'My twins start school next September.',synonyms:[]},
+      {word:'only child',phonetic:'/ˌoʊn.li ˈtʃaɪld/',pos:'noun',definition:'A child with no brothers or sisters.',example:'As an only child, I learned to entertain myself.',synonyms:[]},
+      {word:'in-law',phonetic:'/ˈɪn.lɔː/',pos:'noun',definition:'A relative by marriage.',example:'My mother-in-law is coming to visit next week.',synonyms:[]},
+      {word:'guardian',phonetic:'/ˈɡɑː.di.ən/',pos:'noun',definition:'A person who is legally responsible for a child.',example:'After her parents passed, her aunt became her guardian.',synonyms:['protector']}
+    ]},
+  {id:'workplace-colleagues',title:'Workplace & Colleagues',icon:'👔',description:'Vocabulary for describing coworkers and workplace relationships.',level:'B1',wordCount:10,parentCategory:'people',
+    words:[
+      {word:'colleague',phonetic:'/ˈkɒl.iːɡ/',pos:'noun',definition:'A person you work with.',example:'My colleague and I are working on the same project.',synonyms:['coworker']},
+      {word:'supervisor',phonetic:'/ˈsuː.pə.vaɪ.zər/',pos:'noun',definition:'A person who oversees your work.',example:'I need to ask my supervisor for approval.',synonyms:['manager','boss']},
+      {word:'subordinate',phonetic:'/səˈbɔː.dɪ.nət/',pos:'noun',definition:'A person who is lower in rank.',example:'A good leader treats subordinates with respect.',synonyms:['junior']},
+      {word:'mentor',phonetic:'/ˈmen.tɔːr/',pos:'noun',definition:'An experienced person who guides another.',example:'She found a great mentor in her first job.',synonyms:['advisor','guide']},
+      {word:'intern',phonetic:'/ˈɪn.tɜːn/',pos:'noun',definition:'A student or trainee working to gain experience.',example:'The intern showed great potential during the summer.',synonyms:['trainee']},
+      {word:'counterpart',phonetic:'/ˈkaʊn.tə.pɑːt/',pos:'noun',definition:'A person in a similar role in another organization.',example:'I met with my counterpart from the London office.',synonyms:['equivalent']},
+      {word:'acquaintance',phonetic:'/əˈkweɪn.tən.s/',pos:'noun',definition:'A person you know slightly but aren\'t close to.',example:'He\'s not a friend — just an acquaintance from work.',synonyms:['contact']},
+      {word:'peer',phonetic:'/pɪr/',pos:'noun',definition:'A person of the same level or status.',example:'She is highly respected by her peers.',synonyms:['equal']},
+      {word:'freelancer',phonetic:'/ˈfriː.læn.sər/',pos:'noun',definition:'A self-employed person offering services.',example:'We hired a freelancer to design our website.',synonyms:['contractor']},
+      {word:'executive',phonetic:'/ɪɡˈzek.jʊ.tɪv/',pos:'noun',definition:'A person with senior managerial responsibilities.',example:'She was promoted to senior executive last year.',synonyms:['manager','director']}
+    ]},
+  {id:'home-household',title:'Home & Household',icon:'🏠',description:'Everyday vocabulary for home life and household tasks.',level:'A2',wordCount:10,parentCategory:'daily',
+    words:[
+      {word:'landlord',phonetic:'/ˈlænd.lɔːd/',pos:'noun',definition:'A person who rents out property.',example:'My landlord agreed to fix the leaking roof.',synonyms:['property owner']},
+      {word:'tenant',phonetic:'/ˈten.ənt/',pos:'noun',definition:'A person who rents property.',example:'The tenant has lived here for three years.',synonyms:['renter']},
+      {word:'mortgage',phonetic:'/ˈmɔː.ɡɪdʒ/',pos:'noun',definition:'A loan for buying a house.',example:'We finally paid off our mortgage after 25 years.',synonyms:['home loan']},
+      {word:'utilities',phonetic:'/juːˈtɪl.ɪ.tiz/',pos:'noun',definition:'Services like electricity, water, and gas.',example:'Utilities are included in the rent.',synonyms:['services','bills']},
+      {word:'furniture',phonetic:'/ˈfɜː.nɪ.tʃər/',pos:'noun',definition:'Movable objects like tables and chairs.',example:'We bought new furniture for the living room.',synonyms:['furnishings']},
+      {word:'appliance',phonetic:'/əˈplaɪ.əns/',pos:'noun',definition:'A device for a specific household task.',example:'The kitchen has all modern appliances.',synonyms:['device','machine']},
+      {word:'renovation',phonetic:'/ˌren.əˈveɪ.ʃən/',pos:'noun',definition:'The process of repairing and improving a building.',example:'The renovation took three months to complete.',synonyms:['remodel']},
+      {word:'chore',phonetic:'/tʃɔːr/',pos:'noun',definition:'A routine task, especially a household one.',example:'I hate doing the dishes — it\'s my least favorite chore.',synonyms:['task','duty']},
+      {word:'neighborhood',phonetic:'/ˈneɪ.bə.hʊd/',pos:'noun',definition:'The area around where you live.',example:'It\'s a quiet neighborhood with friendly people.',synonyms:['community']},
+      {word:'maintenance',phonetic:'/ˈmeɪn.tɪ.nən.s/',pos:'noun',definition:'Work to keep something in good condition.',example:'Regular maintenance prevents bigger problems.',synonyms:['upkeep','care']}
+    ]},
+  {id:'food-cooking',title:'Food & Cooking',icon:'🍳',description:'Vocabulary for cooking methods, ingredients, and food preparation.',level:'A2',wordCount:10,parentCategory:'daily',
+    words:[
+      {word:'ingredient',phonetic:'/ɪnˈɡriː.di.ənt/',pos:'noun',definition:'A component used in cooking.',example:'Fresh ingredients make the best dishes.',synonyms:['component']},
+      {word:'recipe',phonetic:'/ˈres.ɪ.pi/',pos:'noun',definition:'Instructions for preparing a dish.',example:'This recipe serves four people.',synonyms:['formula']},
+      {word:'simmer',phonetic:'/ˈsɪm.ər/',pos:'verb',definition:'To cook just below boiling point.',example:'Let the soup simmer for 20 minutes.',synonyms:['stew']},
+      {word:'marinate',phonetic:'/ˈmær.ɪ.neɪt/',pos:'verb',definition:'To soak food in a flavored liquid.',example:'Marinate the chicken overnight for the best flavor.',synonyms:['soak']},
+      {word:'garnish',phonetic:'/ˈɡɑː.nɪʃ/',pos:'verb',definition:'To decorate a dish with small items.',example:'Garnish the plate with fresh herbs before serving.',synonyms:['decorate']},
+      {word:'seasoning',phonetic:'/ˈsiː.zən.ɪŋ/',pos:'noun',definition:'Salt, pepper, and spices added to food.',example:'Add more seasoning — it tastes bland.',synonyms:['spices']},
+      {word:'bake',phonetic:'/beɪk/',pos:'verb',definition:'To cook food in an oven.',example:'Bake the cake at 180°C for 30 minutes.',synonyms:['oven-cook']},
+      {word:'saute',phonetic:'/ˈsoʊ.teɪ/',pos:'verb',definition:'To fry quickly in a small amount of oil.',example:'Sauté the onions until they\'re golden.',synonyms:['pan-fry']},
+      {word:'portion',phonetic:'/ˈpɔː.ʃən/',pos:'noun',definition:'An amount of food served to one person.',example:'The portions at this restaurant are huge!',synonyms:['serving']},
+      {word:'organic',phonetic:'/ɔːˈɡæn.ɪk/',pos:'adjective',definition:'Food produced without artificial chemicals.',example:'I prefer to buy organic vegetables.',synonyms:['natural']}
+    ]}
+];
+
+const vocabParentCategories={
+  jobs:{id:'jobs',title:'Jobs & Professions',icon:'💼',description:'Industry-specific vocabulary'},
+  scenarios:{id:'scenarios',title:'Real-Life Scenarios',icon:'🌍',description:'Everyday situations and contexts'},
+  people:{id:'people',title:'People & Relationships',icon:'👥',description:'Vocabulary about people in your life'},
+  daily:{id:'daily',title:'Daily Life',icon:'🏡',description:'Home, food, and everyday activities'},
+  academic:{id:'academic',title:'Academic & Study',icon:'🎓',description:'University and research vocabulary'}
+};
+
 // Dictionary
 const dictionary=[
   {word:'color',phonetic:'/ˈkʌl.ər/',pos:'noun',def:'The property of objects producing different sensations on the eye.',synonyms:['hue','shade','tint'],example:'The color of the sky changes throughout the day.',uk:'colour',us:'color',hasComparison:true},
@@ -338,7 +507,7 @@ function loadProfile(){return ls(STORAGE_KEYS.profile)||{avatar:'🎓',title:'La
 function saveProfile(p){ls(STORAGE_KEYS.profile,p)}
 
 // ==================== STATE ====================
-let state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,factIndex:0};
+let state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,activeVocabSubcategory:null,factIndex:0};
 let toastQueue=[];
 
 // ==================== RENDER ====================
@@ -347,6 +516,8 @@ function render(){
   if(state.view==='login')app.innerHTML=renderLogin();
   else if(state.view==='home')app.innerHTML=renderHome();
   else if(state.view==='category')app.innerHTML=renderCategory();
+  else if(state.view==='vocabulary')app.innerHTML=renderCategory();
+  else if(state.view==='vocabPractice')app.innerHTML=renderVocabPractice();
   else if(state.view==='lesson')app.innerHTML=renderLessonView();
   else if(state.view==='story')app.innerHTML=renderStoryView();
   else if(state.view==='test')app.innerHTML=renderTestView();
@@ -403,6 +574,7 @@ function renderHome(){
   const lc=getLevelColor(li.level);
   const cats=[
     {id:'lessons',icon:'📖',title:'Lessons',desc:'Grammar, vocabulary & core skills.',count:lessons.length,color:'rgba(227,108,36,.1)'},
+    {id:'vocabulary',icon:'📝',title:'Vocabulary',desc:'Themed vocabulary for jobs, scenarios & more.',count:vocabSubcategories.length,color:'rgba(139,92,246,.08)'},
     {id:'stories',icon:'📚',title:'Stories',desc:'Interactive reading & comprehension.',count:stories.length,color:'rgba(43,45,49,.08)'},
     {id:'tests',icon:'📝',title:'Tests',desc:'Assessments & progress checks.',count:tests.length,color:'rgba(227,108,36,.08)'},
     {id:'games',icon:'🎮',title:'Games',desc:'Fun challenges with high scores.',count:games.length,color:'rgba(53,57,94,.08)'}
@@ -517,7 +689,7 @@ function renderAdminPanel(){
 // ==================== CATEGORY GRID ====================
 function renderCategory(){
   const cat=state.activeCategory;
-  const config={lessons:{icon:'📖',title:'Lessons'},stories:{icon:'📚',title:'Stories'},tests:{icon:'📝',title:'Tests'},games:{icon:'🎮',title:'Games'}}[cat];
+  const config={lessons:{icon:'📖',title:'Lessons'},vocabulary:{icon:'📝',title:'Vocabulary'},stories:{icon:'📚',title:'Stories'},tests:{icon:'📝',title:'Tests'},games:{icon:'🎮',title:'Games'}}[cat];
   let tiles='';
 
   if(cat==='lessons'){
@@ -536,6 +708,39 @@ function renderCategory(){
           <span class="btn btn-primary btn-sm">${done?'Review →':prog?'Continue →':'Start →'}</span>
         </div>
       </div>`}).join('');
+  }else if(cat==='vocabulary'){
+    const grouped=Object.entries(vocabParentCategories).map(([key,info])=>({
+      ...info,
+      subcategories:vocabSubcategories.filter(s=>s.parentCategory===key)
+    }));
+    tiles=grouped.map(group=>group.subcategories.length>0?`
+      <div style="margin-bottom:40px">
+        <h2 class="font-heading" style="font-size:20px;font-weight:700;color:var(--brand-charcoal);margin-bottom:16px;display:flex;align-items:center;gap:12px">
+          <span style="font-size:28px">${group.icon}</span>${group.title}
+        </h2>
+        <p style="font-size:14px;color:var(--gray-500);margin-bottom:20px">${group.description}</p>
+        <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:20px">
+          ${group.subcategories.map(sub=>{
+            const p=getItemProgress('vocabulary',sub.id);
+            const done=p&&p.status==='completed';
+            return`<div class="category-tile" onclick="openVocabSubcategory('${sub.id}')" style="position:relative">
+              ${done?'<div style="position:absolute;top:12px;right:12px;background:var(--green);color:white;padding:4px 8px;border-radius:6px;font-size:11px;font-weight:700">✅ Done</div>':''}
+              <div style="display:flex;align-items:center;gap:12px;margin-bottom:12px">
+                <span style="font-size:32px">${sub.icon}</span>
+                <div>
+                  <h3 class="font-heading" style="font-size:16px;font-weight:700;color:var(--brand-charcoal);margin:0">${sub.title}</h3>
+                  <span class="tag tag-blue" style="font-size:10px;margin-top:4px">${sub.level}</span>
+                </div>
+              </div>
+              <p style="font-size:13px;color:var(--gray-500);margin:0 0 12px;line-height:1.5">${sub.description}</p>
+              <div style="display:flex;justify-content:space-between;align-items:center;padding-top:12px;border-top:1px solid var(--gray-100)">
+                <span style="font-size:12px;color:var(--gray-500)">${sub.wordCount} words</span>
+                <span class="btn btn-primary btn-sm">${done?'Review →':'Start Learning →'}</span>
+              </div>
+            </div>`}).join('')}
+        </div>
+      </div>
+    `:'').join('');
   }else if(cat==='stories'){
     tiles=stories.map(s=>{const p=getItemProgress('story',s.id);const done=p&&p.status==='completed';return`
       <div class="category-tile" onclick="openStory('${s.id}')" style="position:relative">
@@ -593,6 +798,177 @@ function renderCategory(){
       <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:24px">${tiles}</div>
     </div>
   </div>`;
+}
+
+// ==================== VOCABULARY PRACTICE VIEW ====================
+function renderVocabPractice(){
+  const sub=state.activeVocabSubcategory;
+  if(!sub)return'';
+  const vps=vocabPracticeState;
+  const currentWord=sub.words[vps.wordIndex];
+  
+  let content='';
+  
+  if(vps.mode==='learn'){
+    content=`
+      <div class="card" style="text-align:center;padding:48px">
+        <div style="margin-bottom:24px"><span style="font-size:12px;color:var(--gray-500)">Word ${vps.wordIndex+1} of ${sub.words.length}</span></div>
+        <h2 class="font-heading" style="font-size:36px;font-weight:800;color:var(--brand-charcoal);margin-bottom:8px">${currentWord.word}</h2>
+        <p class="font-mono" style="font-size:14px;color:var(--gray-400);margin-bottom:16px">${currentWord.phonetic}</p>
+        <span class="tag tag-blue" style="margin-bottom:24px">${currentWord.pos}</span>
+        ${vps.showDefinition?`
+          <div style="margin-top:24px;text-align:left">
+            <div style="background:var(--brand-light-sand);padding:20px;border-radius:12px;margin-bottom:16px">
+              <p style="font-size:16px;color:var(--brand-charcoal);margin-bottom:12px"><strong>Definition:</strong> ${currentWord.definition}</p>
+              <p style="font-size:14px;color:var(--gray-600);font-style:italic">"${currentWord.example}"</p>
+              ${currentWord.synonyms.length>0?`<div style="margin-top:12px"><span style="font-size:13px;font-weight:600;color:var(--brand-charcoal)">Synonyms: </span><span style="font-size:13px;color:var(--gray-600)">${currentWord.synonyms.join(', ')}</span></div>`:''}
+              ${currentWord.uk&&currentWord.us?`<div style="margin-top:12px;display:flex;gap:12px"><span style="font-size:13px">🇬🇧 ${currentWord.uk}</span><span style="font-size:13px">🇺🇸 ${currentWord.us}</span></div>`:''}
+            </div>
+          </div>
+        `:`<button onclick="vocabPracticeState.showDefinition=true;render()" class="btn btn-primary" style="margin-top:24px">Show Definition</button>`}
+        <div style="margin-top:32px;display:flex;justify-content:center;gap:12px">
+          <button onclick="vocabPrev()" class="btn btn-secondary" ${vps.wordIndex===0?'disabled style="opacity:.5"':''}>← Previous</button>
+          <button onclick="vocabNext()" class="btn btn-primary" ${vps.wordIndex===sub.words.length-1?'disabled style="opacity:.5"':''}>Next →</button>
+        </div>
+      </div>
+    `;
+  }else if(vps.mode==='quiz'){
+    content=`
+      <h3 class="font-heading" style="font-size:20px;font-weight:700;color:var(--brand-charcoal);margin-bottom:24px">Match the word with its definition</h3>
+      <div style="display:flex;flex-direction:column;gap:24px">
+        ${sub.words.map((word,wordIndex)=>{
+          const options=generateVocabQuizOptions(word,sub.words);
+          return`<div class="card" style="padding:20px">
+            <h4 style="font-size:18px;font-weight:700;color:var(--brand-charcoal);margin-bottom:12px">${word.word}</h4>
+            <div style="display:flex;flex-direction:column;gap:8px">
+              ${options.map((opt,optIndex)=>`<button onclick="vocabQuizAnswer(${wordIndex},${optIndex})" ${vps.quizSubmitted?'disabled':''} style="padding:12px 16px;background:${vps.quizSubmitted?(opt===word.definition?'rgba(16,185,129,.1)':vps.quizAnswers[wordIndex]===optIndex?'rgba(239,68,68,.1)':'var(--white)'):vps.quizAnswers[wordIndex]===optIndex?'var(--brand-orange-light)':'var(--white)'};border:2px solid ${vps.quizSubmitted?(opt===word.definition?'var(--green)':vps.quizAnswers[wordIndex]===optIndex?'var(--red)':'var(--gray-200)'):vps.quizAnswers[wordIndex]===optIndex?'var(--brand-orange)':'var(--gray-200)'};border-radius:8px;font-size:14px;color:var(--brand-charcoal);cursor:${vps.quizSubmitted?'default':'pointer'};text-align:left">${opt}</button>`).join('')}
+            </div>
+          </div>`}).join('')}
+      </div>
+      ${!vps.quizSubmitted?`<button onclick="vocabQuizSubmit()" class="btn btn-primary" style="margin-top:24px;width:100%">Submit Quiz</button>`:`
+        <div class="card" style="margin-top:24px;text-align:center;padding:32px">
+          <div style="font-size:48px;margin-bottom:16px">${vps.quizAnswers.filter((a,i)=>a===generateVocabQuizOptions(sub.words[i],sub.words).indexOf(sub.words[i].definition)).length===sub.words.length?'🏆':'👍'}</div>
+          <h3 style="font-size:20px;font-weight:700;color:var(--brand-charcoal);margin-bottom:8px">Quiz Complete!</h3>
+          <p style="font-size:14px;color:var(--gray-600)">You earned XP for completing this vocabulary quiz.</p>
+        </div>
+      `}
+    `;
+  }else if(vps.mode==='matching'){
+    const shuffledRight=vps.matchingPairs.shuffled||shuffleArray(sub.words.map((_,i)=>i));
+    if(!vps.matchingPairs.shuffled)vps.matchingPairs.shuffled=shuffledRight;
+    
+    content=`
+      <h3 class="font-heading" style="font-size:20px;font-weight:700;color:var(--brand-charcoal);margin-bottom:24px">Match words with their definitions</h3>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:24px">
+        <div>
+          <h4 style="font-size:14px;font-weight:600;color:var(--gray-500);margin-bottom:12px">Words</h4>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${sub.words.map((word,index)=>`<button onclick="vocabMatchClick('left',${index})" ${vps.matchingPairs.matched.has(index)?'disabled':''} style="padding:12px 16px;background:${vps.matchingPairs.matched.has(index)?'rgba(16,185,129,.1)':vps.matchingPairs.left===index?'var(--brand-orange-light)':'var(--white)'};border:2px solid ${vps.matchingPairs.matched.has(index)?'var(--green)':vps.matchingPairs.left===index?'var(--brand-orange)':'var(--gray-200)'};border-radius:8px;font-size:14px;font-weight:600;color:${vps.matchingPairs.matched.has(index)?'var(--green)':'var(--brand-charcoal)'};cursor:${vps.matchingPairs.matched.has(index)?'default':'pointer'};text-align:left">${word.word}${vps.matchingPairs.matched.has(index)?' ✓':''}</button>`).join('')}
+          </div>
+        </div>
+        <div>
+          <h4 style="font-size:14px;font-weight:600;color:var(--gray-500);margin-bottom:12px">Definitions</h4>
+          <div style="display:flex;flex-direction:column;gap:8px">
+            ${shuffledRight.map((wordIndex,shuffledIndex)=>{const word=sub.words[wordIndex];return`<button onclick="vocabMatchClick('right',${shuffledIndex})" ${vps.matchingPairs.matched.has(wordIndex)?'disabled':''} style="padding:12px 16px;background:${vps.matchingPairs.matched.has(wordIndex)?'rgba(16,185,129,.1)':vps.matchingPairs.right===shuffledIndex?'var(--brand-orange-light)':'var(--white)'};border:2px solid ${vps.matchingPairs.matched.has(wordIndex)?'var(--green)':vps.matchingPairs.right===shuffledIndex?'var(--brand-orange)':'var(--gray-200)'};border-radius:8px;font-size:13px;color:${vps.matchingPairs.matched.has(wordIndex)?'var(--green)':'var(--brand-charcoal)'};cursor:${vps.matchingPairs.matched.has(wordIndex)?'default':'pointer'};text-align:left">${word.definition}${vps.matchingPairs.matched.has(wordIndex)?' ✓':''}</button>`}).join('')}
+          </div>
+        </div>
+      </div>
+      ${vps.matchingPairs.matched.size===sub.words.length?`
+        <div class="card" style="margin-top:24px;text-align:center;padding:32px">
+          <div style="font-size:48px;margin-bottom:16px">🎉</div>
+          <h3 style="font-size:20px;font-weight:700;color:var(--brand-charcoal);margin-bottom:8px">All Matched!</h3>
+          <p style="font-size:14px;color:var(--gray-600)">You earned 30 XP for completing the matching game.</p>
+        </div>
+      `:''}
+    `;
+  }
+  
+  return`<div style="min-height:100vh">
+    ${bannerHTML('',true)}
+    <div style="background:var(--brand-charcoal);padding:16px 24px;display:flex;align-items:center;justify-content:space-between">
+      <div style="display:flex;align-items:center;gap:16px">
+        <button onclick="goBackToCategory()" class="btn btn-secondary btn-sm" style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);color:white">← Back</button>
+        <div>
+          <h1 class="font-heading" style="font-size:20px;font-weight:700;color:white;margin:0">${sub.icon} ${sub.title}</h1>
+          <p style="font-size:12px;color:rgba(255,255,255,.6);margin:2px 0 0">${sub.wordCount} words · ${sub.level}</p>
+        </div>
+      </div>
+    </div>
+    <div style="background:var(--white);border-bottom:1px solid var(--gray-200);padding:12px 24px;display:flex;gap:8px">
+      <button onclick="setVocabMode('learn')" style="padding:8px 16px;background:${vps.mode==='learn'?'var(--brand-orange)':'var(--gray-100)'};color:${vps.mode==='learn'?'white':'var(--brand-charcoal)'};border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">📖 Learn</button>
+      <button onclick="setVocabMode('quiz')" style="padding:8px 16px;background:${vps.mode==='quiz'?'var(--brand-orange)':'var(--gray-100)'};color:${vps.mode==='quiz'?'white':'var(--brand-charcoal)'};border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">❓ Quiz</button>
+      <button onclick="setVocabMode('matching')" style="padding:8px 16px;background:${vps.mode==='matching'?'var(--brand-orange)':'var(--gray-100)'};color:${vps.mode==='matching'?'white':'var(--brand-charcoal)'};border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">🔗 Match</button>
+    </div>
+    <div style="max-width:800px;margin:0 auto;padding:32px 24px">${content}</div>
+  </div>`;
+}
+
+function generateVocabQuizOptions(word,allWords){
+  const correct=word.definition;
+  const others=allWords.filter(w=>w.word!==word.word).sort(()=>Math.random()-.5).slice(0,3).map(w=>w.definition);
+  return[correct,...others].sort(()=>Math.random()-.5);
+}
+
+function shuffleArray(arr){
+  const a=[...arr];
+  for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]]}
+  return a;
+}
+
+function setVocabMode(mode){vocabPracticeState.mode=mode;render()}
+function vocabPrev(){if(vocabPracticeState.wordIndex>0){vocabPracticeState.wordIndex--;vocabPracticeState.showDefinition=false;render()}}
+function vocabNext(){const sub=state.activeVocabSubcategory;if(vocabPracticeState.wordIndex<sub.words.length-1){vocabPracticeState.wordIndex++;vocabPracticeState.showDefinition=false;render()}}
+function vocabQuizAnswer(wordIndex,optIndex){vocabPracticeState.quizAnswers[wordIndex]=optIndex;render()}
+function vocabQuizSubmit(){
+  vocabPracticeState.quizSubmitted=true;
+  const sub=state.activeVocabSubcategory;
+  const correct=vocabPracticeState.quizAnswers.filter((a,i)=>a===generateVocabQuizOptions(sub.words[i],sub.words).indexOf(sub.words[i].definition)).length;
+  const xpReward=Math.round((correct/sub.words.length)*50);
+  completeItem('vocabulary',sub.id,xpReward);
+  state.score+=xpReward;
+  const students=loadStudents();const s=students.find(x=>x.code===state.studentCode);
+  if(s){s.xp+=xpReward;s.activitiesCompleted=(s.activitiesCompleted||0)+1;saveStudents(students)}
+  render();
+}
+function vocabMatchClick(side,index){
+  const sub=state.activeVocabSubcategory;
+  const mp=vocabPracticeState.matchingPairs;
+  const shuffledRight=mp.shuffled;
+  
+  if(side==='left'){
+    if(mp.matched.has(index))return;
+    mp.left=index;
+    if(mp.right!==null){
+      const rightWordIndex=shuffledRight[mp.right];
+      if(index===rightWordIndex){
+        mp.matched.add(index);
+        mp.left=null;mp.right=null;
+        if(mp.matched.size===sub.words.length){
+          completeItem('vocabulary',sub.id,30);
+          state.score+=30;
+          const students=loadStudents();const s=students.find(x=>x.code===state.studentCode);
+          if(s){s.xp+=30;s.activitiesCompleted=(s.activitiesCompleted||0)+1;saveStudents(students)}
+        }
+      }else{setTimeout(()=>{mp.left=null;mp.right=null;render()},800)}
+    }
+  }else{
+    const wordIndex=shuffledRight[index];
+    if(mp.matched.has(wordIndex))return;
+    mp.right=index;
+    if(mp.left!==null){
+      if(mp.left===wordIndex){
+        mp.matched.add(wordIndex);
+        mp.left=null;mp.right=null;
+        if(mp.matched.size===sub.words.length){
+          completeItem('vocabulary',sub.id,30);
+          state.score+=30;
+          const students=loadStudents();const s=students.find(x=>x.code===state.studentCode);
+          if(s){s.xp+=30;s.activitiesCompleted=(s.activitiesCompleted||0)+1;saveStudents(students)}
+        }
+      }else{setTimeout(()=>{mp.left=null;mp.right=null;render()},800)}
+    }
+  }
+  render();
 }
 
 // ==================== LESSON VIEW ====================
@@ -1003,8 +1379,20 @@ function showDictDetail(word){
 // ==================== ACTIONS ====================
 function doLogout(){state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,factIndex:0};lessonState={section:0,completed:new Set(),timer:0,timerInterval:null};render()}
 function goHome(){state.view='home';state.activeLesson=null;state.activeStory=null;state.activeTest=null;state.activeGame=null;state.activeCategory=null;render()}
-function goBackToCategory(){state.view='category';state.activeLesson=null;state.activeStory=null;state.activeTest=null;state.activeGame=null;lessonState={section:0,completed:new Set(),timer:0,timerInterval:null};storyState={page:0,fontSize:16,done:false};testState={q:0,answers:[],submitted:false,score:0};stopGame();gameState={word:'',scrambled:'',input:'',score:0,time:60,over:false,done:false,timer:null};render()}
-function openCategory(c){state.activeCategory=c;state.view='category';render()}
+function goBackToCategory(){if(state.activeCategory==='vocabulary'){state.view='vocabulary'}else{state.view='category'}state.activeLesson=null;state.activeStory=null;state.activeTest=null;state.activeGame=null;state.activeVocabSubcategory=null;lessonState={section:0,completed:new Set(),timer:0,timerInterval:null};storyState={page:0,fontSize:16,done:false};testState={q:0,answers:[],submitted:false,score:0};stopGame();gameState={word:'',scrambled:'',input:'',score:0,time:60,over:false,done:false,timer:null};vocabPracticeState={mode:'learn',wordIndex:0,showDefinition:false,quizAnswers:[],quizSubmitted:false,matchingPairs:{left:null,right:null,matched:new Set()}};render()}
+function openCategory(c){state.activeCategory=c;if(c==='vocabulary'){state.view='vocabulary'}else{state.view='category'}render()}
+
+function openVocabSubcategory(id){
+  const sub=vocabSubcategories.find(s=>s.id===id);
+  if(sub){
+    state.activeVocabSubcategory=sub;
+    state.view='vocabPractice';
+    vocabPracticeState={mode:'learn',wordIndex:0,showDefinition:false,quizAnswers:new Array(sub.words.length).fill(null),quizSubmitted:false,matchingPairs:{left:null,right:null,matched:new Set()}};
+    render();
+  }
+}
+
+let vocabPracticeState={mode:'learn',wordIndex:0,showDefinition:false,quizAnswers:[],quizSubmitted:false,matchingPairs:{left:null,right:null,matched:new Set()}};
 
 function openLesson(id){state.activeLesson=lessons.find(l=>l.id===id);lessonState={section:0,completed:new Set(),timer:0,timerInterval:null};state.view='lesson';updateProgress('lesson',id,{status:'in-progress',progress:0});render()}
 function openStory(id){state.activeStory=stories.find(s=>s.id===id);storyState={page:0,fontSize:16,done:false};state.view='story';updateProgress('story',id,{status:'in-progress',progress:0});render()}
