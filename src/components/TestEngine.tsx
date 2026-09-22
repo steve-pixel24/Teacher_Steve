@@ -8,48 +8,27 @@ interface TestEngineProps {
   onComplete: (xpReward: number) => void;
 }
 
-interface Question {
-  id: number;
-  question: string;
-  options: string[];
-  correctAnswer: number;
-  explanation: string;
-}
-
-// Generate sample questions based on test type
-function generateQuestions(test: Test): Question[] {
-  const questions: Question[] = [];
-  
-  for (let i = 0; i < test.questionCount; i++) {
-    questions.push({
-      id: i,
-      question: `Sample question ${i + 1} for ${test.title}`,
-      options: ['Option A', 'Option B', 'Option C', 'Option D'],
-      correctAnswer: Math.floor(Math.random() * 4),
-      explanation: `This is the explanation for question ${i + 1}.`,
-    });
-  }
-  
-  return questions;
-}
-
 export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
-  const [answers, setAnswers] = useState<(number | null)[]>(new Array(test.questionCount).fill(null));
+  const [answers, setAnswers] = useState<(number | null)[]>(new Array(test.questions.length).fill(null));
   const [showResults, setShowResults] = useState(false);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showExplanation, setShowExplanation] = useState(false);
 
-  const questions = generateQuestions(test);
+  const questions = test.questions;
+  const currentQ = questions[currentQuestion];
 
   const handleAnswer = (answerIndex: number) => {
     const newAnswers = [...answers];
     newAnswers[currentQuestion] = answerIndex;
     setAnswers(newAnswers);
+    setShowExplanation(true);
   };
 
   const nextQuestion = () => {
-    if (currentQuestion < test.questionCount - 1) {
+    if (currentQuestion < questions.length - 1) {
       setCurrentQuestion(currentQuestion + 1);
+      setShowExplanation(false);
     } else {
       setShowResults(true);
     }
@@ -58,6 +37,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
   const prevQuestion = () => {
     if (currentQuestion > 0) {
       setCurrentQuestion(currentQuestion - 1);
+      setShowExplanation(false);
     }
   };
 
@@ -74,7 +54,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
   const handleSubmit = () => {
     if (!isCompleted) {
       const score = calculateScore();
-      const percentage = (score / test.questionCount) * 100;
+      const percentage = (score / questions.length) * 100;
       
       // Award XP based on performance
       let xpEarned = 0;
@@ -94,7 +74,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
 
   if (showResults) {
     const score = calculateScore();
-    const percentage = Math.round((score / test.questionCount) * 100);
+    const percentage = Math.round((score / questions.length) * 100);
 
     return (
       <div style={{ minHeight: '100vh', background: 'var(--brand-sand)' }}>
@@ -130,7 +110,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
               color: 'var(--gray-600)',
               marginBottom: '32px',
             }}>
-              You answered {score} out of {test.questionCount} questions correctly
+              You answered {score} out of {questions.length} questions correctly
             </p>
 
             {!isCompleted && (
@@ -233,7 +213,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
           </button>
           <div style={{ display: 'flex', alignItems: 'center', gap: '16px' }}>
             <span style={{ fontSize: '14px', color: 'var(--gray-600)' }}>
-              Question {currentQuestion + 1} of {test.questionCount}
+              Question {currentQuestion + 1} of {questions.length}
             </span>
             <span style={{
               padding: '4px 12px',
@@ -264,30 +244,76 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
             marginBottom: '32px',
             lineHeight: 1.4,
           }}>
-            {question.question}
+            {currentQ.question}
           </h2>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '32px' }}>
-            {question.options.map((option, index) => (
-              <button
-                key={index}
-                onClick={() => handleAnswer(index)}
-                style={{
-                  padding: '16px 20px',
-                  background: answers[currentQuestion] === index ? 'var(--brand-orange)' : 'var(--white)',
-                  color: answers[currentQuestion] === index ? 'var(--white)' : 'var(--brand-charcoal)',
-                  border: `2px solid ${answers[currentQuestion] === index ? 'var(--brand-orange)' : 'var(--gray-300)'}`,
-                  borderRadius: '8px',
-                  fontSize: '15px',
-                  textAlign: 'left',
-                  cursor: 'pointer',
-                  transition: 'all 0.2s ease',
-                }}
-              >
-                {option}
-              </button>
-            ))}
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
+            {currentQ.options.map((option, index) => {
+              const isSelected = answers[currentQuestion] === index;
+              const isCorrect = index === currentQ.correctAnswer;
+              const showResult = showExplanation && answers[currentQuestion] !== null;
+              
+              let bgColor = 'var(--white)';
+              let borderColor = 'var(--gray-300)';
+              let textColor = 'var(--brand-charcoal)';
+              
+              if (showResult) {
+                if (isCorrect) {
+                  bgColor = 'rgba(16, 185, 129, 0.1)';
+                  borderColor = 'var(--green)';
+                  textColor = 'var(--green)';
+                } else if (isSelected && !isCorrect) {
+                  bgColor = 'rgba(239, 68, 68, 0.1)';
+                  borderColor = 'var(--red)';
+                  textColor = 'var(--red)';
+                }
+              } else if (isSelected) {
+                bgColor = 'var(--brand-orange)';
+                borderColor = 'var(--brand-orange)';
+                textColor = 'var(--white)';
+              }
+              
+              return (
+                <button
+                  key={index}
+                  onClick={() => !showExplanation && handleAnswer(index)}
+                  disabled={showExplanation}
+                  style={{
+                    padding: '16px 20px',
+                    background: bgColor,
+                    color: textColor,
+                    border: `2px solid ${borderColor}`,
+                    borderRadius: '8px',
+                    fontSize: '15px',
+                    textAlign: 'left',
+                    cursor: showExplanation ? 'default' : 'pointer',
+                    transition: 'all 0.2s ease',
+                  }}
+                >
+                  {option}
+                </button>
+              );
+            })}
           </div>
+
+          {showExplanation && (
+            <div style={{
+              padding: '16px',
+              background: 'var(--brand-light-sand)',
+              borderRadius: '8px',
+              marginBottom: '24px',
+              border: '1px solid var(--gray-200)',
+            }}>
+              <p style={{
+                fontSize: '14px',
+                color: 'var(--brand-charcoal)',
+                margin: 0,
+                lineHeight: 1.6,
+              }}>
+                <strong style={{ color: 'var(--brand-orange)' }}>Explanation:</strong> {currentQ.explanation}
+              </p>
+            </div>
+          )}
 
           {/* Navigation */}
           <div style={{
@@ -310,7 +336,7 @@ export const TestEngine: React.FC<TestEngineProps> = ({ test, onBack, onComplete
               className="btn-primary"
               style={{ opacity: answers[currentQuestion] === null ? 0.5 : 1 }}
             >
-              {currentQuestion === test.questionCount - 1 ? 'Finish Test' : 'Next →'}
+              {currentQuestion === questions.length - 1 ? 'Finish Test' : 'Next →'}
             </button>
           </div>
         </div>
