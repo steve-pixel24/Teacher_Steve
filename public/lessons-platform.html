@@ -159,7 +159,7 @@ body{font-family:'Inter',sans-serif;color:var(--brand-graphite);min-height:100vh
 <script>
 // ==================== DATA ====================
 const ADMIN_NAME='steve',ADMIN_CODE='2324';
-const STORAGE_KEYS={students:'tss_students',progress:'tss_progress',achievements:'tss_achievements',streak:'tss_streak',wordSubs:'tss_word_subs',perfectTests:'tss_perfect',profile:'tss_profile'};
+const STORAGE_KEYS={students:'tss_students',progress:'tss_progress',achievements:'tss_achievements',streak:'tss_streak',wordSubs:'tss_word_subs',perfectTests:'tss_perfect',profile:'tss_profile',feedback:'tss_feedback',features:'tss_features',bugs:'tss_bugs'};
 
 // Lessons
 const lessons=[
@@ -697,6 +697,107 @@ function trackLoginStreak(){const today=new Date().toDateString();const data=ls(
 function loadProfile(){return ls(STORAGE_KEYS.profile)||{avatar:'🎓',title:'Language Learner'}}
 function saveProfile(p){ls(STORAGE_KEYS.profile,p)}
 
+// Feedback System
+const DEFAULT_FEATURES=[
+  {id:'feat-1',title:'More Business English Content',description:'Add lessons focused on professional workplace communication, emails, and meetings.',votes:0,votedBy:[],status:'proposed',createdAt:new Date().toISOString(),createdBy:'system'},
+  {id:'feat-2',title:'Speaking Practice with Recording',description:'Allow students to record themselves speaking and get feedback on pronunciation.',votes:0,votedBy:[],status:'proposed',createdAt:new Date().toISOString(),createdBy:'system'},
+  {id:'feat-3',title:'Mobile App Version',description:'Create a mobile app so students can practice on their phones.',votes:0,votedBy:[],status:'proposed',createdAt:new Date().toISOString(),createdBy:'system'},
+  {id:'feat-4',title:'More Story Genres',description:'Add sci-fi, mystery, and adventure stories for reading practice.',votes:0,votedBy:[],status:'proposed',createdAt:new Date().toISOString(),createdBy:'system'},
+  {id:'feat-5',title:'Progress Charts & Analytics',description:'Visual charts showing learning progress over time.',votes:0,votedBy:[],status:'proposed',createdAt:new Date().toISOString(),createdBy:'system'}
+];
+
+function loadFeedback(){return ls(STORAGE_KEYS.feedback)||[]}
+function saveFeedback(f){ls(STORAGE_KEYS.feedback,f)}
+function submitFeedback(type,message,rating,category){
+  const feedback=loadFeedback();
+  feedback.push({
+    id:`feedback-${Date.now()}`,
+    type,
+    message,
+    rating,
+    category,
+    submittedAt:new Date().toISOString(),
+    studentName:state.studentName,
+    studentCode:state.studentCode,
+    status:'new'
+  });
+  saveFeedback(feedback);
+}
+
+function loadFeatures(){
+  const stored=ls(STORAGE_KEYS.features);
+  if(stored)return stored;
+  saveFeatures(DEFAULT_FEATURES);
+  return DEFAULT_FEATURES;
+}
+function saveFeatures(f){ls(STORAGE_KEYS.features,f)}
+function voteFeature(featureId){
+  const features=loadFeatures();
+  const feature=features.find(f=>f.id===featureId);
+  if(feature&&!feature.votedBy.includes(state.studentCode)){
+    feature.votes++;
+    feature.votedBy.push(state.studentCode);
+    saveFeatures(features);
+  }
+  return features;
+}
+function unvoteFeature(featureId){
+  const features=loadFeatures();
+  const feature=features.find(f=>f.id===featureId);
+  if(feature&&feature.votedBy.includes(state.studentCode)){
+    feature.votes--;
+    feature.votedBy=feature.votedBy.filter(code=>code!==state.studentCode);
+    saveFeatures(features);
+  }
+  return features;
+}
+function submitFeatureRequest(title,description){
+  const features=loadFeatures();
+  features.push({
+    id:`feat-${Date.now()}`,
+    title,
+    description,
+    votes:1,
+    votedBy:[state.studentCode],
+    status:'proposed',
+    createdAt:new Date().toISOString(),
+    createdBy:state.studentName
+  });
+  saveFeatures(features);
+  return features;
+}
+
+function loadBugs(){return ls(STORAGE_KEYS.bugs)||[]}
+function saveBugs(b){ls(STORAGE_KEYS.bugs,b)}
+function submitBugReport(title,description,severity){
+  const bugs=loadBugs();
+  bugs.push({
+    id:`bug-${Date.now()}`,
+    title,
+    description,
+    severity,
+    status:'new',
+    reportedAt:new Date().toISOString(),
+    reportedBy:state.studentName
+  });
+  saveBugs(bugs);
+  return bugs;
+}
+
+function getFeedbackStats(){
+  const feedback=loadFeedback();
+  const features=loadFeatures();
+  const bugs=loadBugs();
+  return{
+    totalFeedback:feedback.length,
+    newFeedback:feedback.filter(f=>f.status==='new').length,
+    totalFeatures:features.length,
+    totalVotes:features.reduce((sum,f)=>sum+f.votes,0),
+    totalBugs:bugs.length,
+    openBugs:bugs.filter(b=>b.status!=='fixed').length
+  };
+}
+
 // ==================== STATE ====================
 let state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,activeVocabSubcategory:null,factIndex:0,showTip:false};
 
@@ -740,6 +841,7 @@ function render(){
   else if(state.view==='story')app.innerHTML=renderStoryView();
   else if(state.view==='test')app.innerHTML=renderTestView();
   else if(state.view==='game')app.innerHTML=renderGameView();
+  else if(state.view==='adminFeedback')app.innerHTML=renderAdminFeedback();
   attachEvents();
 }
 
@@ -801,7 +903,7 @@ function renderHome(){
   const fact=FUN_FACTS[state.factIndex];
 
   return`<div style="min-height:100vh">
-    ${bannerHTML(`<button onclick="openModal('dictionary')" class="header-btn hide-mobile">📖 Dictionary</button><button onclick="openModal('achievements')" class="header-btn hide-mobile">🏆 Achievements</button><button onclick="openModal('profile')" class="header-btn" style="font-size:20px">${profile.avatar}</button><div style="display:flex;align-items:center;gap:6px;background:rgba(227,108,36,.15);backdrop-filter:blur(10px);border:1px solid rgba(227,108,36,.3);border-radius:12px;padding:8px 14px"><span style="font-size:14px">⭐</span><span class="font-heading" style="font-size:14px;font-weight:600;color:white">${xp}</span></div><button onclick="doLogout()" class="header-btn">🚪 Exit</button>`)}
+    ${bannerHTML(`<button onclick="openModal('dictionary')" class="header-btn hide-mobile">📖 Dictionary</button><button onclick="openModal('achievements')" class="header-btn hide-mobile">🏆 Achievements</button><button onclick="openModal('feedback')" class="header-btn hide-mobile">💬 Feedback</button>${state.isAdmin?`<button onclick="state.view='adminFeedback';render()" class="header-btn hide-mobile" style="background:rgba(227,108,36,.2);border:1px solid rgba(227,108,36,.4)">📊 Admin Feedback</button>`:''}<button onclick="openModal('profile')" class="header-btn" style="font-size:20px">${profile.avatar}</button><div style="display:flex;align-items:center;gap:6px;background:rgba(227,108,36,.15);backdrop-filter:blur(10px);border:1px solid rgba(227,108,36,.3);border-radius:12px;padding:8px 14px"><span style="font-size:14px">⭐</span><span class="font-heading" style="font-size:14px;font-weight:600;color:white">${xp}</span></div><button onclick="doLogout()" class="header-btn">🚪 Exit</button>`)}
     
     <div style="padding:32px 24px 24px"><div style="max-width:1200px;margin:0 auto" class="animate-fade-in">
       <div class="card" style="padding:24px 32px;border-left:4px solid var(--brand-orange);display:flex;align-items:center;justify-content:space-between;gap:24px;flex-wrap:wrap">
@@ -1481,6 +1583,79 @@ function renderGameView(){
   </div>`;
 }
 
+function renderAdminFeedback(){
+  const stats=getFeedbackStats();
+  const feedback=loadFeedback();
+  const features=loadFeatures().sort((a,b)=>b.votes-a.votes);
+  const bugs=loadBugs();
+  return`<div style="min-height:100vh;background:var(--brand-sand)">
+    <div style="background:var(--white);border-bottom:1px solid var(--gray-200);padding:16px 24px;position:sticky;top:0;z-index:10">
+      <div style="max-width:1200px;margin:0 auto;display:flex;align-items:center;justify-content:space-between">
+        <button onclick="goHome()" class="btn btn-secondary">← Back to Dashboard</button>
+        <h1 class="font-heading" style="font-size:24px;font-weight:800;color:var(--brand-charcoal);margin:0">💬 Feedback Management</h1>
+        <div style="width:120px"></div>
+      </div>
+    </div>
+    <div style="max-width:1200px;margin:0 auto;padding:32px 24px">
+      <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:16px;margin-bottom:24px">
+        <div class="card" style="text-align:center;padding:24px">
+          <div style="font-size:36px;margin-bottom:8px">📝</div>
+          <div style="font-size:32px;font-weight:800;color:var(--brand-orange);margin-bottom:4px">${stats.totalFeedback}</div>
+          <div style="font-size:14px;color:var(--gray-600)">Total Feedback</div>
+        </div>
+        <div class="card" style="text-align:center;padding:24px">
+          <div style="font-size:36px;margin-bottom:8px">💡</div>
+          <div style="font-size:32px;font-weight:800;color:var(--brand-orange);margin-bottom:4px">${stats.totalVotes}</div>
+          <div style="font-size:14px;color:var(--gray-600)">Total Votes</div>
+        </div>
+        <div class="card" style="text-align:center;padding:24px">
+          <div style="font-size:36px;margin-bottom:8px">🐛</div>
+          <div style="font-size:32px;font-weight:800;color:var(--brand-orange);margin-bottom:4px">${stats.openBugs}</div>
+          <div style="font-size:14px;color:var(--gray-600)">Open Bugs</div>
+        </div>
+        <div class="card" style="text-align:center;padding:24px">
+          <div style="font-size:36px;margin-bottom:8px">⭐</div>
+          <div style="font-size:32px;font-weight:800;color:var(--brand-orange);margin-bottom:4px">${feedback.filter(f=>f.rating).length>0?(feedback.filter(f=>f.rating).reduce((sum,f)=>sum+(f.rating||0),0)/feedback.filter(f=>f.rating).length).toFixed(1):'N/A'}</div>
+          <div style="font-size:14px;color:var(--gray-600)">Avg Rating</div>
+        </div>
+      </div>
+      <div class="card" style="padding:24px;margin-bottom:24px">
+        <h3 class="font-heading" style="font-size:18px;font-weight:700;color:var(--brand-charcoal);margin:0 0 16px">Top Feature Requests</h3>
+        <div style="display:flex;flex-direction:column;gap:12px">
+          ${features.slice(0,5).map((f,i)=>`<div style="display:flex;align-items:center;gap:16px;padding:12px;background:var(--brand-light-sand);border-radius:8px">
+            <div style="font-size:24px;font-weight:800;color:${i===0?'var(--brand-orange)':'var(--gray-500)'};min-width:40px">#${i+1}</div>
+            <div style="flex:1">
+              <div style="font-size:14px;font-weight:600;color:var(--brand-charcoal)">${f.title}</div>
+              <div style="font-size:12px;color:var(--gray-600)">${f.description}</div>
+            </div>
+            <div style="font-size:18px;font-weight:700;color:var(--brand-orange)">👍 ${f.votes}</div>
+          </div>`).join('')}
+        </div>
+      </div>
+      <div class="card" style="padding:24px;margin-bottom:24px">
+        <h3 class="font-heading" style="font-size:18px;font-weight:700;color:var(--brand-charcoal);margin:0 0 16px">Recent Feedback</h3>
+        ${feedback.length===0?'<div style="text-align:center;padding:40px;color:var(--gray-500)"><div style="font-size:48px;margin-bottom:12px">📝</div><p>No feedback yet</p></div>':
+        `<div style="display:flex;flex-direction:column;gap:12px">
+          ${feedback.slice(0,5).map(f=>`<div style="padding:16px;background:var(--brand-light-sand);border-radius:8px;border:1px solid var(--gray-200)">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+              <div>
+                <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+                  <span style="padding:2px 8px;background:${f.type==='general'?'var(--blue)':'var(--green)'};color:white;border-radius:4px;font-size:11px;font-weight:600">${f.type==='general'?'💭 General':'📚 Topic'}</span>
+                  ${f.rating?`<span style="font-size:14px">${'⭐'.repeat(f.rating)}</span>`:''}
+                </div>
+                <div style="font-size:13px;color:var(--gray-600)">From: ${f.studentName} • ${new Date(f.submittedAt).toLocaleDateString()}</div>
+              </div>
+              <span style="padding:4px 8px;background:${f.status==='new'?'var(--blue)':f.status==='reviewed'?'var(--brand-orange)':'var(--green)'};color:white;border-radius:4px;font-size:11px;font-weight:600;text-transform:capitalize">${f.status}</span>
+            </div>
+            ${f.category?`<div style="font-size:12px;color:var(--gray-600);margin-bottom:8px">Category: ${f.category}</div>`:''}
+            <div style="font-size:14px;color:var(--brand-charcoal);line-height:1.6">${f.message}</div>
+          </div>`).join('')}
+        </div>`}
+      </div>
+    </div>
+  </div>`;
+}
+
 // ==================== MODALS ====================
 function openModal(type){
   const overlay=document.createElement('div');
@@ -1492,11 +1667,13 @@ function openModal(type){
   else if(type==='achievements')overlay.innerHTML=renderAchievementsModal();
   else if(type==='profile')overlay.innerHTML=renderProfileModal();
   else if(type==='dictionary')overlay.innerHTML=renderDictionaryModal();
+  else if(type==='feedback')overlay.innerHTML=renderFeedbackModal();
   
   document.body.appendChild(overlay);
   if(type==='achievements')attachAchievementEvents();
   if(type==='profile')attachProfileEvents();
   if(type==='dictionary')attachDictionaryEvents();
+  if(type==='feedback')attachFeedbackEvents();
 }
 
 function closeModal(){const m=document.getElementById('activeModal');if(m)m.remove()}
@@ -1719,6 +1896,212 @@ function showDictDetail(word){
       <div style="background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.2);border-radius:8px;padding:16px"><div style="font-size:24px;margin-bottom:8px">🇺🇸</div><div style="font-size:11px;font-weight:700;color:var(--red);text-transform:uppercase;margin-bottom:4px">American</div><div style="font-size:18px;font-weight:700;color:var(--brand-charcoal);margin-bottom:4px">${entry.us}</div></div>
     </div></div>`:''}
   </div>`;
+}
+
+function renderFeedbackModal(){
+  const features=loadFeatures();
+  return`<div class="modal-content" style="max-width:700px" onclick="event.stopPropagation()">
+    <div class="modal-header">
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+        <div>
+          <h2 class="font-heading" style="font-size:24px;font-weight:800;color:var(--brand-charcoal);margin:0 0 4px">💬 Share Your Feedback</h2>
+          <p style="font-size:14px;color:var(--gray-600);margin:0">Help us improve the platform</p>
+        </div>
+        <button onclick="closeModal()" style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px;color:var(--gray-500)">✕</button>
+      </div>
+      <div style="display:flex;gap:8px">
+        <button onclick="showFeedbackTab('feedback')" id="tab-feedback" style="padding:8px 16px;background:var(--brand-orange);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">📝 Feedback</button>
+        <button onclick="showFeedbackTab('features')" id="tab-features" style="padding:8px 16px;background:var(--gray-100);color:var(--brand-charcoal);border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">💡 Features</button>
+        <button onclick="showFeedbackTab('bugs')" id="tab-bugs" style="padding:8px 16px;background:var(--gray-100);color:var(--brand-charcoal);border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">🐛 Report Bug</button>
+      </div>
+    </div>
+    <div class="modal-body" id="feedbackContent">
+      <div id="feedback-form">
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">What would you like to share?</label>
+          <div style="display:flex;gap:8px">
+            <button onclick="setFeedbackType('general')" id="type-general" style="flex:1;padding:12px;background:var(--brand-orange);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">💭 General Feedback</button>
+            <button onclick="setFeedbackType('topic')" id="type-topic" style="flex:1;padding:12px;background:var(--gray-100);color:var(--brand-charcoal);border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer">📚 Suggest a Topic</button>
+          </div>
+        </div>
+        <div id="rating-section" style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">How would you rate your experience?</label>
+          <div style="display:flex;gap:8px">
+            ${[1,2,3,4,5].map(i=>`<button onclick="setRating(${i})" class="rating-star" data-rating="${i}" style="font-size:32px;background:none;border:none;cursor:pointer;filter:grayscale(100%);transition:all .2s">⭐</button>`).join('')}
+          </div>
+        </div>
+        <div id="category-section" style="margin-bottom:20px;display:none">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">What category?</label>
+          <select id="feedback-category" style="width:100%;padding:10px 14px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite)">
+            <option value="">Select a category...</option>
+            <option value="grammar">Grammar</option>
+            <option value="vocabulary">Vocabulary</option>
+            <option value="speaking">Speaking</option>
+            <option value="listening">Listening</option>
+            <option value="reading">Reading</option>
+            <option value="writing">Writing</option>
+            <option value="business">Business English</option>
+            <option value="travel">Travel English</option>
+            <option value="other">Other</option>
+          </select>
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Your message</label>
+          <textarea id="feedback-message" placeholder="Tell us what you think..." style="width:100%;min-height:120px;padding:12px 16px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite);resize:vertical;font-family:Inter,sans-serif"></textarea>
+        </div>
+        <div id="feedback-error" style="display:none;margin-bottom:16px;padding:12px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:8px;color:var(--red);font-size:14px"></div>
+        <button onclick="submitFeedbackForm()" class="btn btn-primary" style="width:100%">Submit Feedback</button>
+      </div>
+      <div id="features-form" style="display:none">
+        <h3 style="font-size:16px;font-weight:700;color:var(--brand-charcoal);margin-bottom:12px">Vote for features you'd like to see</h3>
+        <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">
+          ${features.map(f=>`<div style="background:var(--brand-light-sand);border:1px solid var(--gray-200);border-radius:12px;padding:16px">
+            <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:8px">
+              <div style="flex:1">
+                <h4 style="font-size:14px;font-weight:700;color:var(--brand-charcoal);margin:0 0 4px">${f.title}</h4>
+                <p style="font-size:13px;color:var(--gray-600);margin:0;line-height:1.5">${f.description}</p>
+              </div>
+              <button onclick="toggleFeatureVote('${f.id}')" id="vote-${f.id}" style="background:${f.votedBy.includes(state.studentCode)?'var(--brand-orange)':'var(--gray-100)'};color:${f.votedBy.includes(state.studentCode)?'white':'var(--brand-charcoal)'};border:none;border-radius:8px;padding:8px 16px;font-size:13px;font-weight:600;cursor:pointer;margin-left:12px">👍 ${f.votes}</button>
+            </div>
+            <div style="font-size:11px;color:var(--gray-500)">Proposed by ${f.createdBy}</div>
+          </div>`).join('')}
+        </div>
+        <div style="border-top:1px solid var(--gray-200);padding-top:20px">
+          <h3 style="font-size:16px;font-weight:700;color:var(--brand-charcoal);margin-bottom:12px">Or suggest a new feature</h3>
+          <div style="margin-bottom:16px">
+            <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Feature title</label>
+            <input type="text" id="feature-title" placeholder="e.g., Add more games" style="width:100%;padding:10px 14px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite)">
+          </div>
+          <div style="margin-bottom:16px">
+            <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Description</label>
+            <textarea id="feature-description" placeholder="Describe the feature you'd like to see..." style="width:100%;min-height:100px;padding:12px 16px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite);resize:vertical;font-family:Inter,sans-serif"></textarea>
+          </div>
+          <button onclick="submitFeatureForm()" class="btn btn-primary" style="width:100%">Submit Feature Request</button>
+        </div>
+      </div>
+      <div id="bugs-form" style="display:none">
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Bug title</label>
+          <input type="text" id="bug-title" placeholder="e.g., Quiz not loading" style="width:100%;padding:10px 14px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite)">
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Severity</label>
+          <div style="display:flex;gap:8px">
+            <button onclick="setBugSeverity('low')" id="severity-low" style="flex:1;padding:10px;background:var(--green);color:white;border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-transform:capitalize">Low</button>
+            <button onclick="setBugSeverity('medium')" id="severity-medium" style="flex:1;padding:10px;background:var(--gray-100);color:var(--brand-charcoal);border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-transform:capitalize">Medium</button>
+            <button onclick="setBugSeverity('high')" id="severity-high" style="flex:1;padding:10px;background:var(--gray-100);color:var(--brand-charcoal);border:none;border-radius:8px;font-size:13px;font-weight:600;cursor:pointer;text-transform:capitalize">High</button>
+          </div>
+        </div>
+        <div style="margin-bottom:20px">
+          <label style="display:block;font-size:13px;font-weight:600;color:var(--brand-charcoal);margin-bottom:8px">Description</label>
+          <textarea id="bug-description" placeholder="Describe what happened and how to reproduce the bug..." style="width:100%;min-height:120px;padding:12px 16px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:14px;color:var(--brand-graphite);resize:vertical;font-family:Inter,sans-serif"></textarea>
+        </div>
+        <button onclick="submitBugForm()" class="btn btn-primary" style="width:100%">Submit Bug Report</button>
+      </div>
+    </div>
+  </div>`;
+}
+
+let feedbackType='general';
+let feedbackRating=0;
+let bugSeverity='medium';
+
+function showFeedbackTab(tab){
+  document.getElementById('feedback-form').style.display=tab==='feedback'?'block':'none';
+  document.getElementById('features-form').style.display=tab==='features'?'block':'none';
+  document.getElementById('bugs-form').style.display=tab==='bugs'?'block':'none';
+  document.getElementById('tab-feedback').style.background=tab==='feedback'?'var(--brand-orange)':'var(--gray-100)';
+  document.getElementById('tab-feedback').style.color=tab==='feedback'?'white':'var(--brand-charcoal)';
+  document.getElementById('tab-features').style.background=tab==='features'?'var(--brand-orange)':'var(--gray-100)';
+  document.getElementById('tab-features').style.color=tab==='features'?'white':'var(--brand-charcoal)';
+  document.getElementById('tab-bugs').style.background=tab==='bugs'?'var(--brand-orange)':'var(--gray-100)';
+  document.getElementById('tab-bugs').style.color=tab==='bugs'?'white':'var(--brand-charcoal)';
+}
+
+function setFeedbackType(type){
+  feedbackType=type;
+  document.getElementById('type-general').style.background=type==='general'?'var(--brand-orange)':'var(--gray-100)';
+  document.getElementById('type-general').style.color=type==='general'?'white':'var(--brand-charcoal)';
+  document.getElementById('type-topic').style.background=type==='topic'?'var(--brand-orange)':'var(--gray-100)';
+  document.getElementById('type-topic').style.color=type==='topic'?'white':'var(--brand-charcoal)';
+  document.getElementById('rating-section').style.display=type==='general'?'block':'none';
+  document.getElementById('category-section').style.display=type==='topic'?'block':'none';
+}
+
+function setRating(rating){
+  feedbackRating=rating;
+  document.querySelectorAll('.rating-star').forEach((star,i)=>{
+    star.style.filter=i<rating?'none':'grayscale(100%)';
+  });
+}
+
+function setBugSeverity(severity){
+  bugSeverity=severity;
+  ['low','medium','high'].forEach(s=>{
+    const btn=document.getElementById(`severity-${s}`);
+    btn.style.background=s===severity?(s==='high'?'var(--red)':s==='medium'?'var(--brand-orange)':'var(--green)'):'var(--gray-100)';
+    btn.style.color=s===severity?'white':'var(--brand-charcoal)';
+  });
+}
+
+function submitFeedbackForm(){
+  const message=document.getElementById('feedback-message').value.trim();
+  const error=document.getElementById('feedback-error');
+  if(!message){
+    error.textContent='Please enter a message';
+    error.style.display='block';
+    return;
+  }
+  const rating=feedbackType==='general'?feedbackRating:undefined;
+  const category=feedbackType==='topic'?document.getElementById('feedback-category').value:undefined;
+  submitFeedback(feedbackType,message,rating,category);
+  error.style.display='none';
+  closeModal();
+  alert('Thank you for your feedback!');
+}
+
+function submitFeatureForm(){
+  const title=document.getElementById('feature-title').value.trim();
+  const description=document.getElementById('feature-description').value.trim();
+  if(!title||!description){
+    alert('Please fill in both title and description');
+    return;
+  }
+  submitFeatureRequest(title,description);
+  closeModal();
+  alert('Thank you for your feature request!');
+}
+
+function submitBugForm(){
+  const title=document.getElementById('bug-title').value.trim();
+  const description=document.getElementById('bug-description').value.trim();
+  if(!title||!description){
+    alert('Please fill in both title and description');
+    return;
+  }
+  submitBugReport(title,description,bugSeverity);
+  closeModal();
+  alert('Thank you for reporting this bug!');
+}
+
+function toggleFeatureVote(featureId){
+  const features=loadFeatures();
+  const feature=features.find(f=>f.id===featureId);
+  if(feature.votedBy.includes(state.studentCode)){
+    unvoteFeature(featureId);
+  }else{
+    voteFeature(featureId);
+  }
+  closeModal();
+  openModal('feedback');
+  showFeedbackTab('features');
+}
+
+function attachFeedbackEvents(){
+  // Initialize feedback tab
+  showFeedbackTab('feedback');
+  setFeedbackType('general');
+  setBugSeverity('medium');
 }
 
 // ==================== ACTIONS ====================

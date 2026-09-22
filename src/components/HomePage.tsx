@@ -21,6 +21,8 @@ interface HomePageProps {
   onOpenAchievements: () => void;
   onOpenProfile: () => void;
   onOpenDictionary: () => void;
+  onOpenFeedback: () => void;
+  onOpenAdminFeedback: () => void;
   onWordSubmission: () => void;
 }
 
@@ -39,6 +41,8 @@ export default function HomePage({
   onOpenAchievements,
   onOpenProfile,
   onOpenDictionary,
+  onOpenFeedback,
+  onOpenAdminFeedback,
   onWordSubmission,
 }: HomePageProps) {
   const categories = [
@@ -168,7 +172,57 @@ export default function HomePage({
                 >
                   🏆 Achievements
                 </button>
+                <button
+                  onClick={onOpenFeedback}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    padding: '8px 14px',
+                    fontSize: '13px',
+                    color: 'rgba(255,255,255,0.9)',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                >
+                  💬 Feedback
+                </button>
               </>
+            )}
+            {isAdmin && (
+              <button
+                onClick={onOpenAdminFeedback}
+                style={{
+                  background: 'rgba(227, 108, 36, 0.2)',
+                  backdropFilter: 'blur(10px)',
+                  WebkitBackdropFilter: 'blur(10px)',
+                  border: '1px solid rgba(227, 108, 36, 0.4)',
+                  borderRadius: '12px',
+                  padding: '8px 14px',
+                  fontSize: '13px',
+                  color: 'rgba(255,255,255,0.9)',
+                  cursor: 'pointer',
+                  fontWeight: 500,
+                  transition: 'all 0.2s',
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.background = 'rgba(227, 108, 36, 0.3)';
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.background = 'rgba(227, 108, 36, 0.2)';
+                }}
+              >
+                📊 Admin Feedback
+              </button>
             )}
             <button
               onClick={onOpenProfile}

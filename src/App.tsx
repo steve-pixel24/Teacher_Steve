@@ -13,6 +13,8 @@ import { GrammarRuleViewer } from './components/GrammarRuleViewer';
 import { AchievementsModal, AchievementToast } from './components/AchievementsModal';
 import { ProfileModal } from './components/ProfileModal';
 import { DictionaryWidget } from './components/DictionaryWidget';
+import { FeedbackModal } from './components/FeedbackModal';
+import { AdminFeedback } from './components/AdminFeedback';
 import { lessons, Lesson } from './data/lessons';
 import { stories, Story } from './data/stories';
 import { tests, Test } from './data/tests';
@@ -23,7 +25,7 @@ import { Achievement, checkAchievements, trackLoginStreak, loadAchievements } fr
 import { getCompletionStats } from './utils/progress';
 import { getLevelInfo } from './utils/xpSystem';
 
-type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'vocabPractice' | 'grammar' | 'grammarRule';
+type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'vocabPractice' | 'grammar' | 'grammarRule' | 'adminFeedback';
 type CategoryType = 'lessons' | 'vocabulary' | 'grammar' | 'stories' | 'tests' | 'games';
 
 export default function App() {
@@ -44,6 +46,7 @@ export default function App() {
   const [showAchievements, setShowAchievements] = useState(false);
   const [showProfile, setShowProfile] = useState(false);
   const [showDictionary, setShowDictionary] = useState(false);
+  const [showFeedback, setShowFeedback] = useState(false);
   const [toastAchievement, setToastAchievement] = useState<Achievement | null>(null);
   
   // Profile customization
@@ -242,6 +245,8 @@ export default function App() {
           onOpenAchievements={() => setShowAchievements(true)}
           onOpenProfile={() => setShowProfile(true)}
           onOpenDictionary={() => setShowDictionary(true)}
+          onOpenFeedback={() => setShowFeedback(true)}
+          onOpenAdminFeedback={() => setView('adminFeedback')}
           onWordSubmission={handleWordSubmission}
         />
       )}
@@ -308,6 +313,11 @@ export default function App() {
           onComplete={addScore}
         />
       )}
+      {view === 'adminFeedback' && isAdmin && (
+        <AdminFeedback
+          onBack={goBackToDashboard}
+        />
+      )}
       
       {/* Modals */}
       <AchievementsModal
@@ -328,6 +338,13 @@ export default function App() {
       <DictionaryWidget
         isOpen={showDictionary}
         onClose={() => setShowDictionary(false)}
+      />
+      
+      <FeedbackModal
+        isOpen={showFeedback}
+        onClose={() => setShowFeedback(false)}
+        studentName={studentName}
+        studentCode={studentCode}
       />
       
       {toastAchievement && (
