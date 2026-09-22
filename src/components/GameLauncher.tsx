@@ -3,6 +3,7 @@ import { Game } from '../data/games';
 import { completeItem, updateItemProgress } from '../utils/progress';
 import { GrammarDash } from './GrammarDash';
 import { IdiomMatch } from './IdiomMatch';
+import ConversationalRoulette from './ConversationalRoulette';
 
 interface GameLauncherProps {
   game: Game;
@@ -25,6 +26,10 @@ export const GameLauncher: React.FC<GameLauncherProps> = ({ game, onBack, onComp
 
   if (game.id === 'idiom-match') {
     return <IdiomMatch onBack={onBack} onComplete={onComplete} />;
+  }
+
+  if (game.id === 'conversational-roulette') {
+    return <ConversationalRoulette onBack={onBack} onComplete={onComplete} />;
   }
   const [currentWord, setCurrentWord] = useState('');
   const [scrambledWord, setScrambledWord] = useState('');

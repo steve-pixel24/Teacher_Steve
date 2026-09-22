@@ -500,4 +500,11 @@ export const games: Game[] = [
     highScore: 2100,
     category: 'Vocabulary'
   },
+  {
+    id: 'conversational-roulette',
+    title: 'Conversational Roulette',
+    icon: '🎰',
+    description: 'Spin the wheel for random topics with unexpected twists! Practice speaking skills.',
+    category: 'Speaking'
+  },
 ];
