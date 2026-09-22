@@ -49,10 +49,10 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
             <div
               onClick={() => setShowLeaderboard(true)}
               style={{
-                background: 'rgba(255, 255, 255, 0.75)',
+                background: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.5)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '12px',
                 padding: '8px 14px',
                 cursor: 'pointer',
@@ -62,24 +62,24 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 gap: '10px',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
                 e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.1)';
+                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.75)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
                 e.currentTarget.style.transform = 'translateY(0)';
                 e.currentTarget.style.boxShadow = 'none';
               }}
             >
               <span style={{ fontSize: '16px' }}>🏆</span>
               <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontSize: '10px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
+                <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
                   Top Students
                 </span>
                 <div style={{ display: 'flex', gap: '8px', fontSize: '11px' }}>
                   {topStudents.map((student, idx) => (
-                    <span key={student.code} style={{ color: '#1E293B', fontWeight: 500 }}>
+                    <span key={student.code} style={{ color: '#FFFFFF', fontWeight: 500 }}>
                       {getRankBadge(idx + 1)} {student.name}
                     </span>
                   ))}
@@ -95,12 +95,12 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 width: '40px',
                 height: '40px',
                 borderRadius: '12px',
-                background: 'rgba(255,255,255,0.95)',
+                background: 'rgba(255,255,255,0.15)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
                 fontSize: '20px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.1)',
+                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
               }}
             >
               🎓
@@ -110,10 +110,9 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
               style={{
                 fontSize: compact ? '20px' : '26px',
                 fontWeight: 700,
-                color: '#1E293B',
+                color: '#FFFFFF',
                 margin: 0,
                 lineHeight: 1.2,
-                textShadow: '0 1px 2px rgba(255,255,255,0.5)',
                 letterSpacing: '-0.02em',
               }}
             >
@@ -124,7 +123,7 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 style={{
                   fontSize: '12px',
                   fontWeight: 500,
-                  color: '#64748B',
+                  color: 'rgba(255,255,255,0.7)',
                   letterSpacing: '0.02em',
                   marginLeft: '8px',
                 }}

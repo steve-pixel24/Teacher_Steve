@@ -33,8 +33,8 @@ export default function HomePage({
       title: 'Lessons',
       description: 'Interactive grammar and vocabulary lessons',
       count: lessons.length,
-      color: 'rgba(59, 130, 246, 0.08)',
-      borderColor: 'rgba(59, 130, 246, 0.2)',
+      color: 'rgba(227, 108, 36, 0.1)',
+      borderColor: 'rgba(227, 108, 36, 0.2)',
       action: () => {
         if (lessons.length > 0) {
           onSelectLesson(lessons[0]);
@@ -47,8 +47,8 @@ export default function HomePage({
       title: 'Stories',
       description: 'Reading comprehension and analysis',
       count: 3,
-      color: 'rgba(139, 92, 246, 0.08)',
-      borderColor: 'rgba(139, 92, 246, 0.2)',
+      color: 'rgba(43, 45, 49, 0.08)',
+      borderColor: 'rgba(43, 45, 49, 0.15)',
       action: () => alert('Stories section coming soon!'),
     },
     {
@@ -57,8 +57,8 @@ export default function HomePage({
       title: 'Tests',
       description: 'Practice quizzes and assessments',
       count: 5,
-      color: 'rgba(255, 152, 0, 0.08)',
-      borderColor: 'rgba(255, 152, 0, 0.2)',
+      color: 'rgba(227, 108, 36, 0.08)',
+      borderColor: 'rgba(227, 108, 36, 0.15)',
       action: () => alert('Tests section coming soon!'),
     },
     {
@@ -67,8 +67,8 @@ export default function HomePage({
       title: 'Games',
       description: 'Fun learning games and challenges',
       count: 4,
-      color: 'rgba(16, 185, 129, 0.08)',
-      borderColor: 'rgba(16, 185, 129, 0.2)',
+      color: 'rgba(53, 57, 94, 0.08)',
+      borderColor: 'rgba(53, 57, 94, 0.15)',
       action: () => alert('Games section coming soon!'),
     },
   ];
@@ -91,15 +91,14 @@ export default function HomePage({
               display: 'flex',
               alignItems: 'center',
               gap: '8px',
-              background: 'rgba(255, 255, 255, 0.75)',
+              background: 'rgba(255, 255, 255, 0.1)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.5)',
+              border: '1px solid rgba(255, 255, 255, 0.2)',
               borderRadius: '12px',
               padding: '8px 14px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
             }}>
-              <span style={{ fontSize: '12px', color: '#64748B' }}>
+              <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)' }}>
                 {isAdmin ? '👑' : '👤'} {studentName}
               </span>
             </div>
@@ -107,41 +106,40 @@ export default function HomePage({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              background: 'rgba(255, 255, 255, 0.75)',
+              background: 'rgba(227, 108, 36, 0.15)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.5)',
+              border: '1px solid rgba(227, 108, 36, 0.3)',
               borderRadius: '12px',
               padding: '8px 14px',
-              boxShadow: '0 2px 8px rgba(0, 0, 0, 0.06)',
             }}>
               <span style={{ fontSize: '14px' }}>⭐</span>
-              <span className="font-space" style={{ fontSize: '14px', fontWeight: 600, color: '#E65100' }}>
+              <span className="font-space" style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}>
                 {studentScore}
               </span>
             </div>
             <button
               onClick={onLogout}
               style={{
-                background: 'rgba(255, 255, 255, 0.75)',
+                background: 'rgba(255, 255, 255, 0.1)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.5)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
                 borderRadius: '12px',
                 padding: '8px 16px',
                 fontSize: '13px',
-                color: '#64748B',
+                color: 'rgba(255,255,255,0.9)',
                 cursor: 'pointer',
                 fontWeight: 500,
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.9)';
-                e.currentTarget.style.color = '#1E293B';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.color = '#FFFFFF';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.75)';
-                e.currentTarget.style.color = '#64748B';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.color = 'rgba(255,255,255,0.9)';
               }}
             >
               🚪 Exit
@@ -156,12 +154,12 @@ export default function HomePage({
           <h2 className="font-space" style={{
             fontSize: '32px',
             fontWeight: 700,
-            color: '#1E293B',
+            color: '#2B2D31',
             marginBottom: '8px',
           }}>
             {isAdmin ? 'Welcome back, Teacher Steve 👑' : `Welcome back, ${studentName} 👋`}
           </h2>
-          <p style={{ color: '#64748B', fontSize: '16px', maxWidth: '600px', lineHeight: 1.6, marginBottom: '20px' }}>
+          <p style={{ color: '#35395E', fontSize: '16px', maxWidth: '600px', lineHeight: 1.6, marginBottom: '20px' }}>
             {isAdmin
               ? 'You have full administrative access. Manage lessons and monitor student progress.'
               : 'Choose a category below to start learning. Track your progress and earn points!'}
@@ -238,10 +236,8 @@ export default function HomePage({
                 className="card card-interactive animate-slide-up"
                 style={{
                   animationDelay: `${index * 0.1}s`,
-                  background: 'rgba(255, 255, 255, 0.75)',
-                  backdropFilter: 'blur(10px)',
-                  WebkitBackdropFilter: 'blur(10px)',
-                  border: `1px solid ${cat.borderColor}`,
+                  background: '#FFFFFF',
+                  border: '1px solid #E0E0E0',
                   cursor: 'pointer',
                 }}
               >
@@ -263,14 +259,14 @@ export default function HomePage({
                     <h3 className="font-space" style={{
                       fontSize: '20px',
                       fontWeight: 600,
-                      color: '#1E293B',
+                      color: '#2B2D31',
                       marginBottom: '6px',
                     }}>
                       {cat.title}
                     </h3>
                     <p style={{
                       fontSize: '14px',
-                      color: '#64748B',
+                      color: '#35395E',
                       lineHeight: 1.5,
                       marginBottom: '12px',
                     }}>
@@ -285,7 +281,7 @@ export default function HomePage({
                       borderRadius: '20px',
                       fontSize: '12px',
                       fontWeight: 600,
-                      color: '#1E293B',
+                      color: '#2B2D31',
                     }}>
                       <span>{cat.count}</span>
                       <span style={{ opacity: 0.7 }}>available</span>
