@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Story } from '../data/stories';
 import { updateItemProgress, completeItem } from '../utils/progress';
+import { StoryExercises } from './StoryExercises';
 
 interface StoryReaderProps {
   story: Story;
@@ -12,6 +13,7 @@ export const StoryReader: React.FC<StoryReaderProps> = ({ story, onBack, onCompl
   const [currentPage, setCurrentPage] = useState(0);
   const [fontSize, setFontSize] = useState(16);
   const [isCompleted, setIsCompleted] = useState(false);
+  const [showExercises, setShowExercises] = useState(false);
 
   // Split story content into pages (roughly 300 words per page)
   const pages = story.content.split('\n\n').filter(p => p.trim());
@@ -156,10 +158,21 @@ export const StoryReader: React.FC<StoryReaderProps> = ({ story, onBack, onCompl
               <button onClick={handleFinish} className="btn-primary">
                 ✓ Finish Story (+50 XP)
               </button>
-            ) : isCompleted ? (
-              <span style={{ color: 'var(--green)', fontWeight: 600 }}>
-                ✅ Completed
-              </span>
+            ) : isCompleted && !showExercises ? (
+              <div style={{ display: 'flex', gap: '12px', alignItems: 'center' }}>
+                <span style={{ color: 'var(--green)', fontWeight: 600 }}>
+                  ✅ Completed
+                </span>
+                {(story.comprehensionQuestions || story.vocabularyExercises) && (
+                  <button onClick={() => setShowExercises(true)} className="btn-secondary">
+                    📝 Do Exercises
+                  </button>
+                )}
+              </div>
+            ) : showExercises ? (
+              <button onClick={() => setShowExercises(false)} className="btn-secondary">
+                ← Back to Story
+              </button>
             ) : (
               <button onClick={nextPage} className="btn-primary">
                 Next Page →
@@ -167,6 +180,19 @@ export const StoryReader: React.FC<StoryReaderProps> = ({ story, onBack, onCompl
             )}
           </div>
         </div>
+
+        {/* Exercises Section */}
+        {showExercises && isCompleted && (
+          <div style={{
+            background: 'var(--white)',
+            borderRadius: '12px',
+            padding: '24px',
+            boxShadow: 'var(--card-shadow)',
+            marginTop: '24px',
+          }}>
+            <StoryExercises story={story} onComplete={onComplete} />
+          </div>
+        )}
       </div>
 
       <style>{`
