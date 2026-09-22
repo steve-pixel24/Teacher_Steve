@@ -26,10 +26,7 @@ export default function MatchingGame({ instruction, pairs, onComplete }: Matchin
     if (matchedPairs.has(index)) return;
     setSelectedLeft(index);
     setWrongPair(null);
-
-    if (selectedRight !== null) {
-      checkMatch(index, selectedRight);
-    }
+    if (selectedRight !== null) checkMatch(index, selectedRight);
   };
 
   const handleRightClick = (shuffledIndex: number) => {
@@ -37,27 +34,19 @@ export default function MatchingGame({ instruction, pairs, onComplete }: Matchin
     if (matchedPairs.has(pairIndex)) return;
     setSelectedRight(shuffledIndex);
     setWrongPair(null);
-
-    if (selectedLeft !== null) {
-      checkMatch(selectedLeft, shuffledIndex);
-    }
+    if (selectedLeft !== null) checkMatch(selectedLeft, shuffledIndex);
   };
 
   const checkMatch = (leftIndex: number, rightShuffledIndex: number) => {
     const rightPairIndex = shuffledRight[rightShuffledIndex];
     setAttempts(prev => prev + 1);
-
     if (leftIndex === rightPairIndex) {
       setMatchedPairs(prev => new Set([...prev, leftIndex]));
       setSelectedLeft(null);
       setSelectedRight(null);
     } else {
       setWrongPair({ left: leftIndex, right: rightShuffledIndex });
-      setTimeout(() => {
-        setWrongPair(null);
-        setSelectedLeft(null);
-        setSelectedRight(null);
-      }, 800);
+      setTimeout(() => { setWrongPair(null); setSelectedLeft(null); setSelectedRight(null); }, 800);
     }
   };
 
@@ -65,92 +54,66 @@ export default function MatchingGame({ instruction, pairs, onComplete }: Matchin
 
   return (
     <div className="animate-fade-in">
-      <p className="text-sm text-[var(--text-muted)] mb-6">{instruction}</p>
+      <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '24px' }}>{instruction}</p>
 
-      {/* Stats */}
-      <div className="flex items-center gap-4 mb-6">
-        <div className="text-xs text-[var(--text-muted)]">
-          Matched: <span className="text-[var(--green-light)] font-semibold">{matchedPairs.size}/{pairs.length}</span>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '16px', marginBottom: '24px' }}>
+        <div style={{ fontSize: '12px', color: '#64748B' }}>
+          Matched: <span style={{ color: '#10b981', fontWeight: 600 }}>{matchedPairs.size}/{pairs.length}</span>
         </div>
-        <div className="text-xs text-[var(--text-muted)]">
-          Attempts: <span className="text-[var(--blue-light)] font-semibold">{attempts}</span>
-        </div>
-      </div>
-
-      {/* Matching Grid */}
-      <div className="grid grid-cols-2 gap-4 sm:gap-8">
-        {/* Left Column */}
-        <div className="match-column">
-          <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider font-space font-semibold mb-2 text-center">
-            Term
-          </div>
-          {pairs.map((pair, i) => {
-            const isMatched = matchedPairs.has(i);
-            const isSelected = selectedLeft === i;
-            const isWrong = wrongPair?.left === i;
-
-            let className = 'match-item';
-            if (isMatched) className += ' matched';
-            else if (isWrong) className += ' wrong-match';
-            else if (isSelected) className += ' selected';
-
-            return (
-              <div
-                key={i}
-                className={className}
-                onClick={() => handleLeftClick(i)}
-              >
-                {pair.left}
-                {isMatched && <span className="ml-2">✓</span>}
-              </div>
-            );
-          })}
-        </div>
-
-        {/* Right Column */}
-        <div className="match-column">
-          <div className="text-xs text-[var(--text-muted)] uppercase tracking-wider font-space font-semibold mb-2 text-center">
-            Meaning
-          </div>
-          {shuffledRight.map((pairIndex, shuffledIndex) => {
-            const isMatched = matchedPairs.has(pairIndex);
-            const isSelected = selectedRight === shuffledIndex;
-            const isWrong = wrongPair?.right === shuffledIndex;
-
-            let className = 'match-item';
-            if (isMatched) className += ' matched';
-            else if (isWrong) className += ' wrong-match';
-            else if (isSelected) className += ' selected';
-
-            return (
-              <div
-                key={shuffledIndex}
-                className={className}
-                onClick={() => handleRightClick(shuffledIndex)}
-              >
-                {pairs[pairIndex].right}
-                {isMatched && <span className="ml-2">✓</span>}
-              </div>
-            );
-          })}
+        <div style={{ fontSize: '12px', color: '#64748B' }}>
+          Attempts: <span style={{ color: '#FF9800', fontWeight: 600 }}>{attempts}</span>
         </div>
       </div>
 
-      {/* Completion */}
+      <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '32px' }}>
+        <div>
+          <div className="font-space" style={{ fontSize: '11px', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: '10px', textAlign: 'center' }}>Term</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {pairs.map((pair, i) => {
+              const isMatched = matchedPairs.has(i);
+              const isSelected = selectedLeft === i;
+              const isWrong = wrongPair?.left === i;
+              let className = 'match-item';
+              if (isMatched) className += ' matched';
+              else if (isWrong) className += ' wrong-match';
+              else if (isSelected) className += ' selected';
+              return (
+                <div key={i} className={className} onClick={() => handleLeftClick(i)}>
+                  {pair.left} {isMatched && <span style={{ marginLeft: '8px' }}>✓</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+        <div>
+          <div className="font-space" style={{ fontSize: '11px', color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.08em', fontWeight: 600, marginBottom: '10px', textAlign: 'center' }}>Meaning</div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '10px' }}>
+            {shuffledRight.map((pairIndex, shuffledIndex) => {
+              const isMatched = matchedPairs.has(pairIndex);
+              const isSelected = selectedRight === shuffledIndex;
+              const isWrong = wrongPair?.right === shuffledIndex;
+              let className = 'match-item';
+              if (isMatched) className += ' matched';
+              else if (isWrong) className += ' wrong-match';
+              else if (isSelected) className += ' selected';
+              return (
+                <div key={shuffledIndex} className={className} onClick={() => handleRightClick(shuffledIndex)}>
+                  {pairs[pairIndex].right} {isMatched && <span style={{ marginLeft: '8px' }}>✓</span>}
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+
       {allMatched && (
-        <div className="card text-center py-6 mt-8 animate-fade-in bg-[rgba(16,185,129,0.05)] border-[rgba(16,185,129,0.2)]">
-          <div className="text-3xl mb-2">
-            {attempts === pairs.length ? '🎯' : attempts <= pairs.length * 1.5 ? '⭐' : '👍'}
-          </div>
-          <div className="font-space text-lg font-bold text-[var(--green-light)] mb-1">
+        <div className="card" style={{ textAlign: 'center', padding: '24px', marginTop: '32px', background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
+          <div style={{ fontSize: '48px', marginBottom: '8px' }}>{attempts === pairs.length ? '🎯' : '⭐'}</div>
+          <div className="font-space" style={{ fontSize: '18px', fontWeight: 700, color: '#10b981', marginBottom: '4px' }}>
             {attempts === pairs.length ? 'Perfect matching!' : 'All matched!'}
           </div>
-          <p className="text-sm text-[var(--text-muted)] mb-4">
-            Completed in {attempts} attempt{attempts > 1 ? 's' : ''}
-          </p>
-          <button onClick={onComplete} className="btn btn-primary">
-            Continue →
-          </button>
+          <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '16px' }}>Completed in {attempts} attempt{attempts > 1 ? 's' : ''}</p>
+          <button onClick={onComplete} className="btn btn-primary">Continue →</button>
         </div>
       )}
     </div>

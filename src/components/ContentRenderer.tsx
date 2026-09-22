@@ -7,7 +7,7 @@ interface ContentRendererProps {
 export default function ContentRenderer({ content }: ContentRendererProps) {
   return (
     <div>
-      <p className="text-[var(--text-muted)] text-sm leading-relaxed mb-6">
+      <p style={{ color: '#64748B', fontSize: '14px', lineHeight: 1.7, marginBottom: '24px' }}>
         {content.subtitle}
       </p>
       {content.blocks.map((block, i) => (
@@ -21,7 +21,7 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
   switch (block.type) {
     case 'table':
       return (
-        <div className="overflow-x-auto my-4">
+        <div style={{ overflowX: 'auto', margin: '16px 0' }}>
           <table className="lesson-table">
             <thead>
               <tr>
@@ -35,9 +35,9 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
                 <tr key={ri}>
                   {row.map((cell, ci) => (
                     <td key={ci}>
-                      {ci === 0 ? <strong>{cell}</strong> :
-                       ci === 1 ? <span className="font-mono text-xs text-[var(--blue-light)]">{cell}</span> :
-                       <span className="text-[var(--text-muted)] italic text-[13px]">{cell}</span>}
+                      {ci === 0 ? <strong style={{ color: '#1E293B' }}>{cell}</strong> :
+                       ci === 1 ? <span className="font-mono" style={{ fontSize: '12px', color: '#E65100', fontWeight: 500 }}>{cell}</span> :
+                       <span style={{ color: '#64748B', fontStyle: 'italic', fontSize: '13px' }}>{cell}</span>}
                     </td>
                   ))}
                 </tr>
@@ -57,19 +57,18 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
 
     case 'scale':
       return (
-        <div className="flex flex-col gap-3 my-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '16px 0' }}>
           {block.items.map((item, i) => (
-            <div key={i} className="flex items-center gap-3">
-              <span className="font-space text-sm font-semibold min-w-[120px]" style={{ color: item.color }}>
+            <div key={i} style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+              <span className="font-space" style={{ fontSize: '13px', fontWeight: 600, minWidth: '120px', color: item.color }}>
                 {item.label}
               </span>
-              <div className="flex-1 h-2 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
+              <div style={{ flex: 1, height: '8px', background: 'rgba(255,255,255,0.5)', borderRadius: '999px', overflow: 'hidden' }}>
                 <div
-                  className="h-full rounded-full transition-all duration-700"
-                  style={{ width: `${item.value}%`, background: item.color }}
+                  style={{ height: '100%', borderRadius: '999px', transition: 'width 0.7s ease', width: `${item.value}%`, background: item.color }}
                 />
               </div>
-              <span className="text-xs text-[var(--text-muted)] min-w-[40px] text-right">
+              <span style={{ fontSize: '12px', color: '#64748B', minWidth: '40px', textAlign: 'right' }}>
                 {item.value}%
               </span>
             </div>
@@ -78,21 +77,35 @@ function BlockRenderer({ block }: { block: ContentBlock }) {
       );
 
     case 'text':
-      return <p className="text-sm text-[var(--text-muted)] leading-relaxed my-3">{block.content}</p>;
+      return <p style={{ fontSize: '14px', color: '#64748B', lineHeight: 1.7, margin: '12px 0' }}>{block.content}</p>;
 
     case 'comparison':
       return (
-        <div className="flex flex-col gap-3 my-4">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', margin: '16px 0' }}>
           {block.items.map((item, i) => (
-            <div key={i} className="card p-4">
-              <div className="text-xs font-space font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-2">
+            <div key={i} className="card" style={{ padding: '16px' }}>
+              <div className="font-space" style={{ fontSize: '11px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.06em', marginBottom: '10px' }}>
                 {item.label}
               </div>
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
-                <div className="text-sm text-[#f87171] bg-[rgba(239,68,68,0.06)] rounded-lg px-3 py-2">
+              <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '12px' }}>
+                <div style={{
+                  fontSize: '14px',
+                  color: '#ef4444',
+                  background: 'rgba(239,68,68,0.06)',
+                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  border: '1px solid rgba(239,68,68,0.15)',
+                }}>
                   {item.left}
                 </div>
-                <div className="text-sm text-[var(--green-light)] bg-[rgba(16,185,129,0.06)] rounded-lg px-3 py-2">
+                <div style={{
+                  fontSize: '14px',
+                  color: '#10b981',
+                  background: 'rgba(16,185,129,0.06)',
+                  borderRadius: '10px',
+                  padding: '10px 14px',
+                  border: '1px solid rgba(16,185,129,0.15)',
+                }}>
                   {item.right}
                 </div>
               </div>

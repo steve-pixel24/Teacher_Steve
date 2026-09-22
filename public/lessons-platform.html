@@ -3,1393 +3,457 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Interactive Lessons Platform</title>
+<title>Teacher Steve's - Interactive Lessons</title>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --navy: #0d1117;
-  --navy2: #161b22;
-  --navy3: #1f2937;
-  --blue: #3b82f6;
-  --blue-light: #60a5fa;
-  --blue-glow: rgba(59,130,246,0.15);
-  --green: #10b981;
-  --green-light: #34d399;
-  --amber: #f59e0b;
-  --amber-light: #fbbf24;
-  --red: #ef4444;
-  --purple: #8b5cf6;
+  --sky-1: #e0f2fe; --sky-2: #bae6fd; --sky-3: #7dd3fc; --sky-4: #38bdf8;
+  --orange-deep: #E65100; --orange-primary: #FF9800; --amber: #FFC107; --white: #FFFFFF;
+  --text-primary: #1E293B; --text-secondary: #64748B; --text-tertiary: #94A3B8;
+  --card-bg: rgba(255,255,255,0.9); --card-bg-hover: rgba(255,255,255,0.95);
+  --card-border: rgba(255,255,255,0.6); --card-border-hover: rgba(255,255,255,0.8);
+  --card-shadow: 0 4px 20px rgba(0,0,0,0.06), 0 1px 4px rgba(0,0,0,0.04);
+  --card-shadow-hover: 0 12px 40px rgba(0,0,0,0.1), 0 4px 12px rgba(0,0,0,0.06);
+  --green: #10b981; --red: #ef4444; --blue-light: #3b82f6;
   --purple-light: #a78bfa;
-  --text: #e2e8f0;
-  --text-muted: #94a3b8;
-  --text-dim: #64748b;
-  --border: rgba(255,255,255,0.08);
-  --border-hover: rgba(255,255,255,0.15);
-  --card: rgba(255,255,255,0.04);
-  --card-hover: rgba(255,255,255,0.07);
-  
-  /* Login page light theme */
-  --login-bg: linear-gradient(135deg, #e0f2fe 0%, #bae6fd 50%, #7dd3fc 100%);
-  --login-card-bg: rgba(255, 255, 255, 0.85);
-  --login-text: #1e293b;
-  --login-text-muted: #64748b;
-  --login-border: rgba(148, 163, 184, 0.2);
-  --login-input-bg: rgba(255, 255, 255, 0.9);
-  --login-btn-bg: #1e293b;
-  --login-btn-text: #ffffff;
 }
-
 *, *::before, *::after { box-sizing: border-box; }
-
 body {
-  font-family: 'Inter', sans-serif;
-  background: var(--navy);
-  color: var(--text);
-  min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  font-family: 'Inter', sans-serif; color: var(--text-primary); min-height: 100vh; margin: 0; padding: 0;
   overflow-x: hidden;
+  background: linear-gradient(160deg, var(--sky-1) 0%, var(--sky-2) 40%, var(--sky-3) 70%, var(--sky-4) 100%);
+  background-attachment: fixed;
 }
-
+body::before {
+  content: ''; position: fixed; inset: 0; z-index: 0; pointer-events: none;
+  background:
+    radial-gradient(ellipse 600px 300px at 15% 20%, rgba(255,255,255,0.7) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 250px at 75% 15%, rgba(255,255,255,0.5) 0%, transparent 70%),
+    radial-gradient(ellipse 700px 350px at 50% 60%, rgba(255,255,255,0.4) 0%, transparent 70%),
+    radial-gradient(ellipse 400px 200px at 85% 75%, rgba(255,255,255,0.6) 0%, transparent 70%),
+    radial-gradient(ellipse 500px 250px at 20% 80%, rgba(255,255,255,0.5) 0%, transparent 70%);
+}
+#app { position: relative; z-index: 1; }
 .font-space { font-family: 'Space Grotesk', sans-serif; }
 .font-mono { font-family: 'JetBrains Mono', monospace; }
-
-@keyframes fadeIn {
-  from { opacity: 0; transform: translateY(10px); }
-  to { opacity: 1; transform: translateY(0); }
-}
-
+@keyframes fadeIn { from { opacity: 0; transform: translateY(10px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes float { 0%, 100% { transform: translate(0,0); } 50% { transform: translate(30px,-30px); } }
+@keyframes shake { 0%,100% { transform: translateX(0); } 25% { transform: translateX(-5px); } 75% { transform: translateX(5px); } }
 .animate-fade-in { animation: fadeIn 0.4s ease-out; }
 
-.card {
-  background: var(--card);
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  padding: 24px;
-  transition: all 0.2s ease;
-}
+/* Header Banner */
+.header-banner { position: relative; width: 100%; height: 64px; overflow: hidden; background: linear-gradient(90deg, #E65100 0%, #FF9800 35%, #FFC107 55%, #FFFFFF 100%); }
+.header-banner::before { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(230,81,0,0.7), rgba(230,81,0,0.4)); clip-path: polygon(0 0, 55% 0, 40% 100%, 0 100%); }
+.header-banner::after { content: ''; position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,152,0,0.85), rgba(255,152,0,0.5)); clip-path: polygon(15% 0, 65% 0, 50% 100%, 0% 100%); }
+.hg1 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.8), rgba(255,193,7,0.4)); clip-path: polygon(30% 0, 72% 0, 58% 100%, 15% 100%); z-index: 1; }
+.hg2 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,193,7,0.6), rgba(255,255,255,0.3)); clip-path: polygon(45% 0, 80% 0, 68% 100%, 32% 100%); z-index: 2; }
+.hg3 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.5), rgba(255,255,255,0.8)); clip-path: polygon(58% 0, 88% 0, 78% 100%, 48% 100%); z-index: 3; }
+.hg4 { position: absolute; inset: 0; background: linear-gradient(135deg, rgba(255,255,255,0.7), rgba(255,255,255,0.95)); clip-path: polygon(70% 0, 100% 0, 100% 100%, 60% 100%); z-index: 4; }
+.banner-line { position: absolute; bottom: 0; left: 0; right: 0; height: 2px; background: linear-gradient(90deg, #E65100, #FF9800, #FFC107, transparent 70%); z-index: 10; }
+.banner-content { position: relative; z-index: 20; height: 100%; max-width: 1200px; margin: 0 auto; padding: 0 24px; display: flex; align-items: center; justify-content: space-between; }
 
+/* Cards */
+.card { background: var(--card-bg); backdrop-filter: blur(12px); border: 1px solid var(--card-border); border-radius: 16px; padding: 24px; box-shadow: var(--card-shadow); transition: all 0.25s ease; }
+.card:hover { background: var(--card-bg-hover); border-color: var(--card-border-hover); box-shadow: var(--card-shadow-hover); }
 .card-interactive { cursor: pointer; }
-.card-interactive:hover {
-  border-color: var(--border-hover);
-  background: var(--card-hover);
-  transform: translateY(-2px);
-  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
-}
+.card-interactive:hover { transform: translateY(-3px); }
 
-.tag {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  font-size: 10px;
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  padding: 4px 10px;
-  border-radius: 20px;
-}
-
-.tag-blue { background: var(--blue-glow); color: var(--blue-light); border: 1px solid rgba(59,130,246,0.2); }
-.tag-green { background: rgba(16,185,129,0.1); color: var(--green-light); border: 1px solid rgba(16,185,129,0.2); }
-.tag-amber { background: rgba(245,158,11,0.1); color: var(--amber-light); border: 1px solid rgba(245,158,11,0.2); }
+/* Tags */
+.tag { display: inline-flex; align-items: center; gap: 4px; font-size: 10px; font-weight: 600; letter-spacing: 0.08em; text-transform: uppercase; padding: 4px 10px; border-radius: 20px; }
+.tag-blue { background: rgba(59,130,246,0.1); color: var(--blue-light); border: 1px solid rgba(59,130,246,0.2); }
+.tag-green { background: rgba(16,185,129,0.1); color: var(--green); border: 1px solid rgba(16,185,129,0.25); }
+.tag-amber { background: rgba(255,152,0,0.1); color: var(--orange-primary); border: 1px solid rgba(255,152,0,0.25); }
 .tag-purple { background: rgba(139,92,246,0.1); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.2); }
+.tag-pink { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
+.tag-cyan { background: rgba(6,182,212,0.1); color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
 
-.btn {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  gap: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  border: none;
-  border-radius: 10px;
-  cursor: pointer;
-  transition: all 0.2s ease;
-  font-size: 14px;
-  padding: 12px 24px;
-}
+/* Buttons */
+.btn { display: inline-flex; align-items: center; justify-content: center; gap: 8px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s ease; font-size: 14px; padding: 12px 24px; }
+.btn-primary { background: var(--orange-primary); color: white; box-shadow: 0 4px 15px rgba(255,152,0,0.3); }
+.btn-primary:hover { background: #F57C00; transform: translateY(-1px); box-shadow: 0 6px 20px rgba(255,152,0,0.4); }
+.btn-secondary { background: rgba(255,255,255,0.7); backdrop-filter: blur(8px); border: 1px solid rgba(30,41,59,0.15); color: var(--text-primary); }
+.btn-secondary:hover { background: rgba(255,255,255,0.85); border-color: rgba(30,41,59,0.25); }
+.btn-ghost { background: transparent; color: var(--text-secondary); padding: 8px 16px; border: none; cursor: pointer; font-size: 13px; border-radius: 8px; }
+.btn-ghost:hover { background: rgba(255,255,255,0.5); color: var(--text-primary); }
 
-.btn-primary {
-  background: linear-gradient(135deg, var(--blue), #2563eb);
-  color: white;
-  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
-}
-
-.btn-primary:hover {
-  transform: translateY(-1px);
-  box-shadow: 0 6px 20px rgba(59,130,246,0.4);
-}
-
-.btn-secondary {
-  background: transparent;
-  border: 1px solid var(--border);
-  color: var(--text);
-}
-
-.btn-secondary:hover {
-  background: var(--card-hover);
-  border-color: var(--border-hover);
-}
-
-.callout {
-  border-radius: 10px;
-  padding: 16px 20px;
-  margin: 16px 0;
-  font-size: 14px;
-  line-height: 1.7;
-}
-
-.callout-blue { background: var(--blue-glow); border: 1px solid rgba(59,130,246,0.25); }
+/* Callouts */
+.callout { border-radius: 12px; padding: 16px 20px; margin: 16px 0; font-size: 14px; line-height: 1.7; }
+.callout-blue { background: rgba(59,130,246,0.08); border: 1px solid rgba(59,130,246,0.2); }
 .callout-blue strong { color: var(--blue-light); }
-.callout-amber { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
-.callout-amber strong { color: var(--amber-light); }
+.callout-amber { background: rgba(255,152,0,0.08); border: 1px solid rgba(255,152,0,0.2); }
+.callout-amber strong { color: var(--orange-primary); }
 .callout-green { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
-.callout-green strong { color: var(--green-light); }
+.callout-green strong { color: var(--green); }
+.callout-purple { background: rgba(139,92,246,0.08); border: 1px solid rgba(139,92,246,0.2); }
+.callout-purple strong { color: var(--purple-light); }
 
-.lesson-table {
-  width: 100%;
-  border-collapse: separate;
-  border-spacing: 0;
-  margin: 16px 0;
-  font-size: 14px;
-  overflow: hidden;
-  border-radius: 10px;
-  border: 1px solid var(--border);
-}
-
-.lesson-table th {
-  text-align: left;
-  padding: 12px 16px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 11px;
-  font-weight: 600;
-  text-transform: uppercase;
-  letter-spacing: 0.06em;
-  color: var(--text-muted);
-  background: var(--navy2);
-  border-bottom: 1px solid var(--border);
-}
-
-.lesson-table td {
-  padding: 12px 16px;
-  border-bottom: 1px solid rgba(255,255,255,0.04);
-  line-height: 1.5;
-}
-
+/* Tables */
+.lesson-table { width: 100%; border-collapse: separate; border-spacing: 0; margin: 16px 0; font-size: 14px; overflow: hidden; border-radius: 12px; border: 1px solid var(--card-border); background: var(--card-bg); }
+.lesson-table th { text-align: left; padding: 12px 16px; font-family: 'Space Grotesk', sans-serif; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; color: var(--text-secondary); background: rgba(255,255,255,0.6); border-bottom: 1px solid var(--card-border); }
+.lesson-table td { padding: 12px 16px; border-bottom: 1px solid rgba(0,0,0,0.04); line-height: 1.5; color: var(--text-primary); }
 .lesson-table tr:last-child td { border-bottom: none; }
-.lesson-table tr:hover td { background: rgba(255,255,255,0.02); }
+.lesson-table tr:hover td { background: rgba(255,152,0,0.03); }
 
-.flashcard-container {
-  perspective: 1000px;
-  width: 100%;
-  max-width: 400px;
-  height: 240px;
-  margin: 0 auto;
-  cursor: pointer;
-}
-
-.flashcard-inner {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-style: preserve-3d;
-}
-
-.flashcard-inner.flipped { transform: rotateY(180deg); }
-
-.flashcard-front, .flashcard-back {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  backface-visibility: hidden;
-  border-radius: 16px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  padding: 24px;
-  text-align: center;
-}
-
-.flashcard-front {
-  background: linear-gradient(135deg, var(--navy2), var(--navy3));
-  border: 1px solid var(--border);
-}
-
-.flashcard-back {
-  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
-  border: 1px solid rgba(59,130,246,0.3);
-  transform: rotateY(180deg);
-}
-
-.match-item {
-  padding: 12px 18px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  font-size: 14px;
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-align: center;
-}
-
-.match-item:hover { border-color: var(--border-hover); background: var(--card-hover); }
-.match-item.selected { border-color: var(--blue); background: var(--blue-glow); color: var(--blue-light); }
-.match-item.matched { border-color: var(--green); background: rgba(16,185,129,0.1); color: var(--green-light); cursor: default; }
-
-.game-option {
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
-  border-radius: 10px;
-  padding: 14px 20px;
-  font-size: 15px;
-  color: var(--text);
-  cursor: pointer;
-  transition: all 0.15s ease;
-  text-align: left;
-  width: 100%;
-  font-family: 'Inter', sans-serif;
-}
-
-.game-option:hover:not(:disabled) {
-  background: var(--blue-glow);
-  border-color: rgba(59,130,246,0.4);
-  transform: translateX(4px);
-}
-
+/* Game options */
+.game-option { background: rgba(255,255,255,0.6); border: 1px solid var(--card-border); border-radius: 12px; padding: 14px 20px; font-size: 15px; color: var(--text-primary); cursor: pointer; transition: all 0.15s ease; text-align: left; width: 100%; font-family: 'Inter', sans-serif; }
+.game-option:hover:not(:disabled) { background: rgba(255,152,0,0.08); border-color: rgba(255,152,0,0.4); transform: translateX(4px); }
 .game-option:disabled { cursor: default; opacity: 0.7; }
-.game-option.correct { background: rgba(16,185,129,0.12); border-color: var(--green); color: var(--green-light); }
-.game-option.wrong { background: rgba(239,68,68,0.1); border-color: var(--red); color: #f87171; }
+.game-option.correct { background: rgba(16,185,129,0.1); border-color: var(--green); color: var(--green); }
+.game-option.wrong { background: rgba(239,68,68,0.08); border-color: var(--red); color: var(--red); }
 
-/* Login page light theme */
-.login-page {
-  background: var(--login-bg);
-  min-height: 100vh;
-  position: relative;
-  overflow: hidden;
-}
+/* Flashcards */
+.flashcard-container { perspective: 1000px; width: 100%; max-width: 400px; height: 240px; margin: 0 auto; cursor: pointer; }
+.flashcard-inner { position: relative; width: 100%; height: 100%; transition: transform 0.6s cubic-bezier(0.4,0,0.2,1); transform-style: preserve-3d; }
+.flashcard-inner.flipped { transform: rotateY(180deg); }
+.flashcard-front, .flashcard-back { position: absolute; width: 100%; height: 100%; backface-visibility: hidden; border-radius: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 24px; text-align: center; }
+.flashcard-front { background: var(--card-bg); border: 1px solid var(--card-border); box-shadow: var(--card-shadow); }
+.flashcard-back { background: linear-gradient(135deg, rgba(255,152,0,0.08), rgba(255,193,7,0.08)); border: 1px solid rgba(255,152,0,0.2); box-shadow: var(--card-shadow); transform: rotateY(180deg); }
 
-.login-page::before,
-.login-page::after {
-  content: '';
-  position: absolute;
-  background: rgba(255, 255, 255, 0.6);
-  border-radius: 50%;
-  filter: blur(40px);
-}
+/* Matching */
+.match-item { padding: 12px 18px; background: rgba(255,255,255,0.6); border: 1px solid var(--card-border); border-radius: 12px; font-size: 14px; cursor: pointer; transition: all 0.15s ease; text-align: center; color: var(--text-primary); }
+.match-item:hover { border-color: rgba(255,152,0,0.3); background: rgba(255,255,255,0.8); }
+.match-item.selected { border-color: var(--orange-primary); background: rgba(255,152,0,0.08); color: var(--orange-deep); }
+.match-item.matched { border-color: var(--green); background: rgba(16,185,129,0.1); color: var(--green); cursor: default; }
+.match-item.wrong-match { border-color: var(--red); background: rgba(239,68,68,0.08); animation: shake 0.4s ease-in-out; }
 
-.login-page::before {
-  width: 300px;
-  height: 300px;
-  top: 10%;
-  left: 15%;
-  animation: float 20s ease-in-out infinite;
-}
+/* Word chips */
+.word-chip { display: inline-flex; align-items: center; padding: 8px 16px; background: rgba(255,255,255,0.7); border: 1px solid var(--card-border); border-radius: 10px; font-size: 14px; font-weight: 500; cursor: grab; transition: all 0.15s ease; user-select: none; color: var(--text-primary); }
+.word-chip:hover { background: rgba(255,152,0,0.08); border-color: var(--orange-primary); color: var(--orange-deep); }
+.word-chip.placed { opacity: 0.4; cursor: default; }
+.word-chip.selected { background: rgba(255,152,0,0.1); border-color: var(--orange-primary); color: var(--orange-deep); box-shadow: 0 0 10px rgba(255,152,0,0.2); }
 
-.login-page::after {
-  width: 400px;
-  height: 400px;
-  bottom: 15%;
-  right: 10%;
-  animation: float 25s ease-in-out infinite reverse;
-}
+/* Story */
+.story-box { background: rgba(255,255,255,0.7); border-left: 3px solid var(--orange-primary); border-radius: 0 16px 16px 0; padding: 24px 28px; margin: 16px 0; font-size: 15px; line-height: 1.9; color: var(--text-primary); }
+.story-box em { font-style: normal; color: var(--orange-deep); font-weight: 500; background: rgba(255,152,0,0.08); padding: 2px 6px; border-radius: 4px; }
 
-@keyframes float {
-  0%, 100% { transform: translate(0, 0); }
-  50% { transform: translate(30px, -30px); }
-}
+/* Progress */
+.progress-track { height: 4px; background: rgba(255,255,255,0.4); }
+.progress-fill { height: 100%; background: linear-gradient(90deg, #E65100, #FF9800, #FFC107); transition: width 0.5s ease; }
 
-.login-card {
-  background: var(--login-card-bg);
-  backdrop-filter: blur(20px);
-  border: 1px solid rgba(255, 255, 255, 0.3);
-  border-radius: 24px;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1), 0 8px 20px rgba(0, 0, 0, 0.06);
-  padding: 48px 40px;
-}
+/* Streak */
+.streak-fire { display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: linear-gradient(135deg, rgba(255,152,0,0.15), rgba(255,193,7,0.15)); border: 1px solid rgba(255,152,0,0.25); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--orange-deep); }
 
-.login-brand {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 32px;
-  font-weight: 700;
-  color: var(--login-text);
-  margin-bottom: 8px;
-}
+/* Login */
+.login-card { background: rgba(255,255,255,0.9); backdrop-filter: blur(20px); border: 1px solid rgba(255,255,255,0.6); border-radius: 24px; box-shadow: 0 20px 60px rgba(0,0,0,0.08); padding: 48px 40px; }
+.login-input { width: 100%; background: rgba(255,255,255,0.9); border: 1px solid rgba(148,163,184,0.2); border-radius: 12px; padding: 14px 18px; color: var(--text-primary); font-family: 'JetBrains Mono', monospace; font-size: 16px; letter-spacing: 0.05em; outline: none; transition: all 0.2s; }
+.login-input:focus { border-color: var(--orange-primary); box-shadow: 0 0 0 3px rgba(255,152,0,0.1); }
+.login-btn { width: 100%; background: var(--text-primary); color: white; font-family: 'Space Grotesk', sans-serif; font-weight: 600; font-size: 16px; padding: 14px 24px; border: none; border-radius: 12px; cursor: pointer; transition: all 0.2s; margin-top: 24px; }
+.login-btn:hover { background: #0f172a; transform: translateY(-1px); box-shadow: 0 10px 25px rgba(0,0,0,0.2); }
 
-.login-heading {
-  font-family: 'Space Grotesk', sans-serif;
-  font-size: 28px;
-  font-weight: 600;
-  color: var(--login-text);
-  margin-bottom: 32px;
-}
-
-.login-label {
-  display: block;
-  font-size: 14px;
-  font-weight: 500;
-  color: var(--login-text);
-  margin-bottom: 8px;
-}
-
-.login-input {
-  width: 100%;
-  background: var(--login-input-bg);
-  border: 1px solid var(--login-border);
-  border-radius: 12px;
-  padding: 14px 18px;
-  color: var(--login-text);
-  font-family: 'JetBrains Mono', monospace;
-  font-size: 16px;
-  letter-spacing: 0.05em;
-  outline: none;
-  transition: all 0.2s;
-}
-
-.login-input:focus {
-  border-color: var(--blue);
-  box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
-}
-
-.login-input::placeholder {
-  color: var(--login-text-muted);
-}
-
-.login-btn {
-  width: 100%;
-  background: var(--login-btn-bg);
-  color: var(--login-btn-text);
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
-  font-size: 16px;
-  padding: 14px 24px;
-  border: none;
-  border-radius: 12px;
-  cursor: pointer;
-  transition: all 0.2s;
-  margin-top: 24px;
-}
-
-.login-btn:hover {
-  background: #0f172a;
-  transform: translateY(-1px);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
-}
-
-.login-error {
-  margin-top: 12px;
-  font-size: 14px;
-  color: var(--red);
-  display: none;
-}
-
-@media (max-width: 640px) {
-  .card { padding: 18px; }
-  .flashcard-container { height: 200px; }
-  .login-card { padding: 32px 24px; }
-}
+@media (max-width: 640px) { .card { padding: 18px; } .flashcard-container { height: 200px; } .header-banner { height: 56px; } }
 </style>
 </head>
 <body>
-
 <div id="app"></div>
-
 <script>
-// ===== DATA =====
-const STUDENTS = {
-  'NICOLAS': 'Nicolas',
-  'MARIA': 'Maria',
-  'JOHN': 'John',
-  'ANNA': 'Anna',
-  'PEDRO': 'Pedro',
-  'SOPHIE': 'Sophie',
-  'DEMO': 'Demo Student',
-};
+const STUDENTS = { 'NICOLAS':'Nicolas', 'MARIA':'Maria', 'JOHN':'John', 'ANNA':'Anna', 'PEDRO':'Pedro', 'SOPHIE':'Sophie', 'DEMO':'Demo Student' };
 
 const lessons = [
   {
-    id: 'conditionals-b2',
-    title: 'Conditionals, Probability & Modal Verbs',
+    id: 'conditionals-b2', title: 'Conditionals, Probability & Modal Verbs',
     description: 'Master the subtle differences between conditional types and learn to express probability with precision.',
-    level: 'B2',
-    type: 'grammar',
-    duration: 50,
-    icon: '🔀',
-    color: 'blue',
+    level: 'B2', type: 'grammar', duration: 50, icon: '🔀', color: 'blue',
     sections: [
-      {
-        id: 'cond-intro',
-        title: 'Conditionals — Degrees of Reality',
-        type: 'content',
-        duration: 15,
-        content: {
-          tag: 'Part 1 · Grammar',
-          tagColor: 'blue',
-          subtitle: 'At B2, you already know the conditionals. Today we look at the fine differences — how they signal how likely or real something is.',
+      { id:'c1', title:'Conditionals — Degrees of Reality', type:'content', duration:15,
+        content: { subtitle:'At B2, you already know the conditionals. Today we look at the fine differences — how they signal how likely or real something is.',
           blocks: [
-            {
-              type: 'table',
-              headers: ['Type', 'Formula', 'Reality Level', 'Example'],
-              rows: [
-                ['Zero', 'If + present → present', 'Always true / facts', 'If you heat ice, it melts.'],
-                ['First', 'If + present → will', 'Real & possible', "If I get the job, I'll move to Madrid."],
-                ['Second', 'If + past → would', 'Unlikely / imaginary', "If I won the lottery, I'd retire."],
-                ['Third', 'If + past perfect → would have', 'Impossible — past regret', 'If I had studied, I would have passed.'],
-                ['Mixed', 'If + past perfect → would', 'Past cause → present result', "If I had taken the job, I'd be rich now."],
-              ]
-            },
-            {
-              type: 'callout',
-              variant: 'blue',
-              content: '<strong>The key insight:</strong> The conditional type tells the listener exactly how seriously you believe the situation could happen. It\'s not just grammar — it\'s meaning.'
-            },
-            {
-              type: 'callout',
-              variant: 'amber',
-              content: '<strong>Compare these:</strong><br/><br/><strong>First:</strong> "If it rains, I\'ll take an umbrella." → I think it might rain.<br/><br/><strong>Second:</strong> "If it rained, I\'d take an umbrella." → Probably won\'t rain, just imagining.<br/><br/><strong>Third:</strong> "If it had rained, I would have taken an umbrella." → It didn\'t rain.'
-            }
+            { type:'table', headers:['Type','Formula','Reality Level','Example'],
+              rows: [['Zero','If + present → present','Always true / facts','If you heat ice, it melts.'],
+                     ['First','If + present → will','Real & possible',"If I get the job, I'll move to Madrid."],
+                     ['Second','If + past → would','Unlikely / imaginary',"If I won the lottery, I'd retire."],
+                     ['Third','If + past perfect → would have','Impossible — past regret','If I had studied, I would have passed.'],
+                     ['Mixed','If + past perfect → would','Past cause → present result',"If I had taken the job, I'd be rich now."]] },
+            { type:'callout', variant:'blue', content:'<strong>The key insight:</strong> The conditional type tells the listener exactly how seriously you believe the situation could happen. It\'s not just grammar — it\'s meaning.' },
+            { type:'callout', variant:'amber', content:'<strong>Compare these:</strong><br/><br/><strong>First:</strong> "If it rains, I\'ll take an umbrella." → I think it might rain.<br/><br/><strong>Second:</strong> "If it rained, I\'d take an umbrella." → Probably won\'t rain, just imagining.<br/><br/><strong>Third:</strong> "If it had rained, I would have taken an umbrella." → It didn\'t rain.' }
           ]
         }
       },
-      {
-        id: 'cond-quiz',
-        title: 'Test Your Knowledge',
-        type: 'quiz',
-        duration: 10,
-        quiz: {
-          questions: [
-            { question: "_____ I had more time, I would learn Japanese.", options: ["If", "When", "Unless", "Although"], answer: 0, explanation: "'If' introduces the second conditional — an imaginary present situation." },
-            { question: "You _____ have told me about the meeting! I missed it.", options: ["could", "should", "might", "would"], answer: 1, explanation: "'Should have' expresses criticism — you expected it but it didn't happen." },
-            { question: "There's a significant chance the flight _____ be delayed.", options: ["will", "should", "might", "must"], answer: 2, explanation: "'Might' expresses uncertainty — around 50% probability." },
-            { question: "If she had applied earlier, she _____ got the job.", options: ["would", "will have", "would have", "should"], answer: 2, explanation: "Third conditional: If + past perfect → would have + past participle." },
-            { question: "If water reaches 100°C, it _____.", options: ["would boil", "will boil", "boils", "boiled"], answer: 2, explanation: "Zero conditional uses present simple — for scientific facts." },
-          ]
-        }
+      { id:'c2', title:'Test Your Knowledge', type:'quiz', duration:10,
+        quiz: { questions: [
+          { question:"_____ I had more time, I would learn Japanese.", options:["If","When","Unless","Although"], answer:0, explanation:"'If' introduces the second conditional — an imaginary present situation." },
+          { question:"You _____ have told me about the meeting! I missed it.", options:["could","should","might","would"], answer:1, explanation:"'Should have' expresses criticism — you expected it but it didn't happen." },
+          { question:"There's a significant chance the flight _____ be delayed.", options:["will","should","might","must"], answer:2, explanation:"'Might' expresses uncertainty — around 50% probability." },
+          { question:"If she had applied earlier, she _____ got the job.", options:["would","will have","would have","should"], answer:2, explanation:"Third conditional: If + past perfect → would have + past participle." },
+          { question:"If water reaches 100°C, it _____.", options:["would boil","will boil","boils","boiled"], answer:2, explanation:"Zero conditional uses present simple — for scientific facts." }
+        ]}
       },
-      {
-        id: 'cond-discuss',
-        title: 'Discussion Practice',
-        type: 'discussion',
-        duration: 10,
-        discussion: {
-          questions: [
-            "Make a First Conditional sentence about something you're planning this week.",
-            "Make a Second Conditional — something unlikely but fun to imagine.",
-            "Make a Third Conditional — something you regret or wish had gone differently.",
-            "Think of a decision you made. How would your life be different if you had chosen differently? (Use mixed conditional)",
-          ],
-          tips: [
-            "Focus on the meaning, not just the form",
-            "Try to use different conditional types in your answers",
-            "Notice how the conditional changes the feeling of your sentence"
-          ]
-        }
+      { id:'c3', title:'Discussion Practice', type:'discussion', duration:10,
+        discussion: { questions: [
+          "Make a First Conditional sentence about something you're planning this week.",
+          "Make a Second Conditional — something unlikely but fun to imagine.",
+          "Make a Third Conditional — something you regret or wish had gone differently.",
+          "Think of a decision you made. How would your life be different if you had chosen differently?"
+        ], tips: ["Focus on the meaning, not just the form","Try to use different conditional types","Notice how the conditional changes the feeling"] }
       }
     ]
   },
   {
-    id: 'phrasal-verbs-b2',
-    title: 'Essential Phrasal Verbs for Daily Life',
+    id: 'phrasal-verbs-b2', title: 'Essential Phrasal Verbs for Daily Life',
     description: 'Learn the most common phrasal verbs native speakers use every day — with context and practice.',
-    level: 'B2',
-    type: 'vocabulary',
-    duration: 45,
-    icon: '📚',
-    color: 'purple',
+    level: 'B2', type: 'vocabulary', duration: 45, icon: '📚', color: 'purple',
     sections: [
-      {
-        id: 'pv-flashcards',
-        title: 'Learn the Phrasal Verbs',
-        type: 'flashcards',
-        duration: 15,
-        flashcards: {
-          cards: [
-            { front: 'come up with', back: 'to think of / create an idea or plan', example: "She came up with a brilliant solution." },
-            { front: 'look forward to', back: 'to feel excited about something in the future', example: "I'm looking forward to the weekend." },
-            { front: 'put off', back: 'to postpone / delay something', example: "Stop putting off your homework!" },
-            { front: 'figure out', back: 'to understand or solve something', example: "I can't figure out how to use this app." },
-            { front: 'get along with', back: 'to have a good relationship with someone', example: "I get along with all my colleagues." },
-            { front: 'run out of', back: 'to have no more of something left', example: "We've run out of milk." },
-          ]
-        }
+      { id:'pv1', title:'Learn the Phrasal Verbs', type:'flashcards', duration:15,
+        flashcards: { cards: [
+          { front:'come up with', back:'to think of / create an idea or plan', example:"She came up with a brilliant solution." },
+          { front:'look forward to', back:'to feel excited about something in the future', example:"I'm looking forward to the weekend." },
+          { front:'put off', back:'to postpone / delay something', example:"Stop putting off your homework!" },
+          { front:'figure out', back:'to understand or solve something', example:"I can't figure out how to use this app." },
+          { front:'get along with', back:'to have a good relationship with someone', example:"I get along with all my colleagues." },
+          { front:'run out of', back:'to have no more of something left', example:"We've run out of milk." }
+        ]}
       },
-      {
-        id: 'pv-matching',
-        title: 'Match the Meaning',
-        type: 'matching',
-        duration: 10,
-        matching: {
-          instruction: 'Match each phrasal verb with its correct meaning',
-          pairs: [
-            { left: 'come up with', right: 'create an idea' },
-            { left: 'put off', right: 'postpone' },
-            { left: 'figure out', right: 'solve / understand' },
-            { left: 'run out of', right: 'have none left' },
-          ]
-        }
+      { id:'pv2', title:'Match the Meaning', type:'matching', duration:10,
+        matching: { instruction:'Match each phrasal verb with its correct meaning',
+          pairs: [ {left:'come up with',right:'create an idea'},{left:'put off',right:'postpone'},{left:'figure out',right:'solve / understand'},{left:'run out of',right:'have none left'} ] }
       },
-      {
-        id: 'pv-discuss',
-        title: 'Use Them in Context',
-        type: 'discussion',
-        duration: 10,
-        discussion: {
-          questions: [
-            "Tell me about a time you came up with a creative solution to a problem.",
-            "What are you looking forward to this month?",
-            "Do you often put things off? What do you procrastinate about?",
-            "Have you ever run out of something important at a bad moment?",
-          ]
-        }
+      { id:'pv3', title:'Use Them in Context', type:'discussion', duration:10,
+        discussion: { questions: [
+          "Tell me about a time you came up with a creative solution to a problem.",
+          "What are you looking forward to this month?",
+          "Do you often put things off? What do you procrastinate about?",
+          "Have you ever run out of something important at a bad moment?"
+        ]}
       }
     ]
   }
 ];
 
-// ===== STATE =====
-let state = {
-  view: 'login',
-  studentName: '',
-  studentCode: '',
-  activeLesson: null,
-  currentSection: 0,
-  completedSections: new Set(),
-  totalSeconds: 0,
-  timerInterval: null,
-};
+let state = { view:'login', studentName:'', studentCode:'', activeLesson:null, currentSection:0, completedSections:new Set(), totalSeconds:0, timerInterval:null };
 
-// ===== RENDER FUNCTIONS =====
 function render() {
   const app = document.getElementById('app');
-  
-  if (state.view === 'login') {
-    app.innerHTML = renderLogin();
-    attachLoginEvents();
-  } else if (state.view === 'dashboard') {
-    app.innerHTML = renderDashboard();
-    attachDashboardEvents();
-  } else if (state.view === 'lesson') {
-    app.innerHTML = renderLesson();
-    attachLessonEvents();
-  }
+  if (state.view==='login') { app.innerHTML=renderLogin(); attachLoginEvents(); }
+  else if (state.view==='dashboard') { app.innerHTML=renderDashboard(); attachDashboardEvents(); }
+  else if (state.view==='lesson') { app.innerHTML=renderLesson(); attachLessonEvents(); }
+}
+
+function bannerHTML(rightContent='', compact=false) {
+  return `<div class="header-banner" style="${compact?'height:56px':''}">
+    <div class="hg1"></div><div class="hg2"></div><div class="hg3"></div><div class="hg4"></div>
+    <div class="banner-line"></div>
+    <div class="banner-content">
+      <div style="display:flex;align-items:center;gap:12px">
+        <div style="width:36px;height:36px;border-radius:10px;background:rgba(255,255,255,0.9);display:flex;align-items:center;justify-content:center;font-size:18px;box-shadow:0 2px 8px rgba(0,0,0,0.1)">🎓</div>
+        <div>
+          <h1 class="font-space" style="font-size:${compact?'16':'18'}px;font-weight:700;color:#1E293B;margin:0;line-height:1.2;text-shadow:0 1px 2px rgba(255,255,255,0.5)">Teacher Steve's</h1>
+        </div>
+      </div>
+      <div style="display:flex;align-items:center;gap:12px">${rightContent}</div>
+    </div>
+  </div>`;
 }
 
 function renderLogin() {
-  return `
-    <div class="login-page" style="display: flex; align-items: center; justify-content: center; padding: 16px;">
-      <div style="width: 100%; max-width: 448px; position: relative; z-index: 10;" class="animate-fade-in">
-        <div style="text-align: center; margin-bottom: 40px;">
-          <h1 class="login-brand">
-            Teacher Steve's
-          </h1>
-        </div>
-        <form id="loginForm" class="login-card">
-          <h2 class="login-heading">
-            Sign in
-          </h2>
-          <label class="login-label">
-            Enter Code
-          </label>
-          <input
-            type="text"
-            id="codeInput"
-            class="login-input"
-            autofocus
-          />
-          <div id="loginError" class="login-error"></div>
-          <button
-            type="submit"
-            class="login-btn"
-          >
-            Start Learning
-          </button>
-        </form>
-      </div>
+  return `<div style="min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:16px;position:relative;overflow:hidden">
+    <div style="position:absolute;width:300px;height:300px;top:10%;left:15%;background:rgba(255,255,255,0.6);border-radius:50%;filter:blur(40px);animation:float 20s ease-in-out infinite"></div>
+    <div style="position:absolute;width:400px;height:400px;bottom:15%;right:10%;background:rgba(255,255,255,0.5);border-radius:50%;filter:blur(50px);animation:float 25s ease-in-out infinite reverse"></div>
+    ${bannerHTML('', false)}
+    <div style="width:100%;max-width:420px;position:relative;z-index:10;margin-top:40px" class="animate-fade-in">
+      <form id="loginForm" class="login-card">
+        <h2 class="font-space" style="font-size:28px;font-weight:600;color:#1E293B;margin:0 0 32px">Sign in</h2>
+        <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Enter Code</label>
+        <input type="text" id="codeInput" class="login-input" autofocus />
+        <div id="loginError" style="margin-top:12px;font-size:14px;color:#ef4444;display:none"></div>
+        <button type="submit" class="login-btn">Start Learning</button>
+      </form>
     </div>
-  `;
+  </div>`;
 }
 
 function attachLoginEvents() {
-  const form = document.getElementById('loginForm');
-  const input = document.getElementById('codeInput');
-  const error = document.getElementById('loginError');
-
-  form.addEventListener('submit', (e) => {
+  document.getElementById('loginForm').addEventListener('submit', e => {
     e.preventDefault();
-    const code = input.value.trim().toUpperCase();
+    const code = document.getElementById('codeInput').value.trim().toUpperCase();
     const name = STUDENTS[code];
-
-    if (name) {
-      state.studentName = name;
-      state.studentCode = code;
-      state.view = 'dashboard';
-      render();
-    } else {
-      error.textContent = 'Invalid code. Please check with your teacher.';
-      error.style.display = 'block';
-    }
+    if (name) { state.studentName=name; state.studentCode=code; state.view='dashboard'; render(); }
+    else { const err=document.getElementById('loginError'); err.textContent='Invalid code. Please check with your teacher.'; err.style.display='block'; }
   });
 }
 
 function renderDashboard() {
-  return `
-    <div style="min-height: 100vh;">
-      <header style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 20px 32px;">
-        <div style="max-width: 1024px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 18px;">
-              🎓
-            </div>
-            <div>
-              <h1 class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">Interactive Lessons</h1>
-              <p style="font-size: 12px; color: var(--text-muted);">Preply Teacher Platform</p>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <div style="display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;">
-              <span style="font-size: 12px; color: var(--text-muted);">Welcome,</span>
-              <span style="font-size: 14px; font-weight: 600; color: var(--blue-light);">${state.studentName}</span>
-            </div>
-            <button id="logoutBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 8px 12px;">
-              🚪 Exit
-            </button>
-          </div>
-        </div>
-      </header>
-
-      <div style="padding: 32px;">
-        <div style="max-width: 1024px; margin: 0 auto;" class="animate-fade-in">
-          <h2 class="font-space" style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">
-            Welcome back, <span style="color: var(--blue-light);">${state.studentName}</span> 👋
-          </h2>
-          <p style="color: var(--text-muted); font-size: 16px; max-width: 600px;">
-            Choose a lesson below to start learning. Each lesson includes explanations, interactive exercises, and practice activities.
-          </p>
-        </div>
+  return `<div style="min-height:100vh">
+    ${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.5);border-radius:10px;padding:6px 12px;box-shadow:0 2px 8px rgba(0,0,0,0.06)"><span style="font-size:12px;color:#64748B">Welcome,</span><span class="font-space" style="font-size:14px;font-weight:600;color:#E65100">${state.studentName}</span></div><button id="logoutBtn" class="btn-ghost" style="background:rgba(255,255,255,0.7);border:1px solid rgba(255,255,255,0.5);border-radius:10px;padding:6px 14px;font-size:12px;color:#64748B;cursor:pointer">🚪 Exit</button>`)}
+    <div style="padding:32px 24px 16px"><div style="max-width:1024px;margin:0 auto" class="animate-fade-in">
+      <h2 class="font-space" style="font-size:28px;font-weight:700;color:#1E293B;margin:0 0 8px">Welcome back, <span style="color:#FF9800">${state.studentName}</span> 👋</h2>
+      <p style="color:#64748B;font-size:16px;max-width:600px">Choose a lesson below to start learning. Each lesson includes explanations, interactive exercises, and practice activities.</p>
+    </div></div>
+    <div style="padding:0 24px 16px"><div style="max-width:1024px;margin:0 auto;display:flex;flex-wrap:wrap;gap:12px">
+      <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 18px"><span style="font-size:22px">📖</span><div><div class="font-space" style="font-size:20px;font-weight:700;color:#1E293B">${lessons.length}</div><div style="font-size:12px;color:#64748B">Lessons</div></div></div>
+      <div class="card" style="display:flex;align-items:center;gap:12px;padding:14px 18px"><span style="font-size:22px">⏱️</span><div><div class="font-space" style="font-size:20px;font-weight:700;color:#1E293B">${lessons.reduce((a,l)=>a+l.duration,0)}</div><div style="font-size:12px;color:#64748B">Minutes total</div></div></div>
+    </div></div>
+    <div style="padding:16px 24px 48px"><div style="max-width:1024px;margin:0 auto">
+      <h3 class="font-space" style="font-size:18px;font-weight:600;margin:0 0 16px;color:#1E293B">Available Lessons</h3>
+      <div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:16px">
+        ${lessons.map((l,i)=>`<div class="card card-interactive animate-fade-in" data-lesson-id="${l.id}" style="animation-delay:${i*0.1}s"><div style="display:flex;align-items:flex-start;gap:16px">
+          <div style="width:48px;height:48px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;background:${l.color==='blue'?'rgba(59,130,246,0.08)':'rgba(139,92,246,0.08)'}">${l.icon}</div>
+          <div style="flex:1;min-width:0">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:6px;flex-wrap:wrap"><span class="tag tag-${l.level==='B1'?'amber':'blue'}">${l.level}</span><span style="font-size:12px;color:#64748B">${l.type}</span></div>
+            <h4 class="font-space" style="font-size:16px;font-weight:600;color:#1E293B;margin:0 0 4px;line-height:1.3">${l.title}</h4>
+            <p style="font-size:14px;color:#64748B;line-height:1.5;margin:0">${l.description}</p>
+            <div style="display:flex;align-items:center;gap:12px;margin-top:12px"><span style="font-size:12px;color:#94A3B8">⏱️ ${l.duration} min</span><span style="font-size:12px;color:#94A3B8">📋 ${l.sections.length} sections</span></div>
+          </div></div></div>`).join('')}
       </div>
-
-      <div style="padding: 0 32px 16px;">
-        <div style="max-width: 1024px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px;">
-          <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px;">
-            <span style="font-size: 20px;">📖</span>
-            <div>
-              <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">${lessons.length}</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Lessons</div>
-            </div>
-          </div>
-          <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px;">
-            <span style="font-size: 20px;">⏱️</span>
-            <div>
-              <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">${lessons.reduce((a, l) => a + l.duration, 0)}</div>
-              <div style="font-size: 12px; color: var(--text-muted);">Minutes total</div>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <div style="padding: 16px 32px 48px;">
-        <div style="max-width: 1024px; margin: 0 auto;">
-          <h3 class="font-space" style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--text);">Available Lessons</h3>
-          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
-            ${lessons.map((lesson, i) => `
-              <div class="card card-interactive animate-fade-in" data-lesson-id="${lesson.id}" style="animation-delay: ${i * 0.1}s;">
-                <div style="display: flex; align-items: flex-start; gap: 16px;">
-                  <div style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; background: ${lesson.color === 'blue' ? 'var(--blue-glow)' : 'rgba(139,92,246,0.15)'};">
-                    ${lesson.icon}
-                  </div>
-                  <div style="flex: 1; min-width: 0;">
-                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
-                      <span class="tag tag-${lesson.level === 'B1' ? 'amber' : 'blue'}">${lesson.level}</span>
-                      <span style="font-size: 12px; color: var(--text-muted);">${lesson.type}</span>
-                    </div>
-                    <h4 class="font-space" style="font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3;">
-                      ${lesson.title}
-                    </h4>
-                    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">
-                      ${lesson.description}
-                    </p>
-                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
-                      <span style="font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 4px;">
-                        ⏱️ ${lesson.duration} min
-                      </span>
-                      <span style="font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 4px;">
-                        📋 ${lesson.sections.length} sections
-                      </span>
-                    </div>
-                  </div>
-                </div>
-              </div>
-            `).join('')}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+    </div></div>
+  </div>`;
 }
 
 function attachDashboardEvents() {
-  document.getElementById('logoutBtn').addEventListener('click', () => {
-    state.view = 'login';
-    state.studentName = '';
-    state.studentCode = '';
-    render();
-  });
-
-  document.querySelectorAll('[data-lesson-id]').forEach(el => {
-    el.addEventListener('click', () => {
-      const lessonId = el.dataset.lessonId;
-      const lesson = lessons.find(l => l.id === lessonId);
-      state.activeLesson = lesson;
-      state.currentSection = 0;
-      state.completedSections = new Set();
-      state.totalSeconds = lesson.duration * 60;
-      state.view = 'lesson';
-      startTimer();
-      render();
-    });
-  });
+  document.getElementById('logoutBtn').addEventListener('click',()=>{ state.view='login'; state.studentName=''; state.studentCode=''; render(); });
+  document.querySelectorAll('[data-lesson-id]').forEach(el=>el.addEventListener('click',()=>{
+    const lesson=lessons.find(l=>l.id===el.dataset.lessonId);
+    state.activeLesson=lesson; state.currentSection=0; state.completedSections=new Set(); state.totalSeconds=lesson.duration*60; state.view='lesson'; startTimer(); render();
+  }));
 }
 
-function startTimer() {
-  if (state.timerInterval) clearInterval(state.timerInterval);
-  state.timerInterval = setInterval(() => {
-    if (state.totalSeconds > 0) {
-      state.totalSeconds--;
-      const timerEl = document.getElementById('timer');
-      if (timerEl) {
-        const m = Math.floor(state.totalSeconds / 60);
-        const s = state.totalSeconds % 60;
-        timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
-      }
-    } else {
-      clearInterval(state.timerInterval);
-    }
-  }, 1000);
-}
+function startTimer() { if(state.timerInterval)clearInterval(state.timerInterval); state.timerInterval=setInterval(()=>{ if(state.totalSeconds>0){state.totalSeconds--;const t=document.getElementById('timer');if(t){const m=Math.floor(state.totalSeconds/60);const s=state.totalSeconds%60;t.textContent=`${m}:${s.toString().padStart(2,'0')}`}}else clearInterval(state.timerInterval); },1000); }
 
 function renderLesson() {
-  const lesson = state.activeLesson;
-  const section = lesson.sections[state.currentSection];
-  const progress = ((state.currentSection + 1) / lesson.sections.length) * 100;
-
-  return `
-    <div style="min-height: 100vh;">
-      <header style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 12px 24px; position: sticky; top: 0; z-index: 50;">
-        <div style="max-width: 1024px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <button id="backBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 6px 12px; border-radius: 8px;">
-              ← Back
-            </button>
-            <div>
-              <span class="font-space" style="font-size: 10px; font-weight: 500; color: var(--blue-light); letter-spacing: 0.08em; text-transform: uppercase;">
-                ${lesson.level} · ${lesson.duration} min
-              </span>
-              <h1 class="font-space" style="font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.2;">
-                ${lesson.title}
-              </h1>
-            </div>
-          </div>
-          <div style="display: flex; align-items: center; gap: 12px;">
-            <span style="background: var(--blue-glow); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--blue-light);">
-              ${state.studentName}
-            </span>
-            <span id="timer" class="font-space" style="font-size: 14px; font-weight: 600; color: var(--text-muted);">
-              ${Math.floor(state.totalSeconds / 60)}:${(state.totalSeconds % 60).toString().padStart(2, '0')}
-            </span>
-          </div>
-        </div>
-      </header>
-
-      <div style="height: 4px; background: var(--border);">
-        <div style="height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-light)); transition: width 0.5s; width: ${progress}%;"></div>
+  const l=state.activeLesson, s=l.sections[state.currentSection], p=((state.currentSection+1)/l.sections.length)*100;
+  return `<div style="min-height:100vh">
+    ${bannerHTML(`<div style="display:flex;align-items:center;gap:8px;background:rgba(255,255,255,0.85);backdrop-filter:blur(8px);border:1px solid rgba(255,255,255,0.5);border-radius:10px;padding:6px 12px"><span style="font-size:12px;color:#64748B">${state.studentName}</span></div><div class="font-space" style="font-size:14px;font-weight:600;color:#1E293B;background:rgba(255,255,255,0.7);padding:6px 12px;border-radius:10px;border:1px solid rgba(255,255,255,0.5)" id="timer">${Math.floor(state.totalSeconds/60)}:${(state.totalSeconds%60).toString().padStart(2,'0')}</div>`, true)}
+    <div style="background:rgba(255,255,255,0.7);backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.5);padding:12px 24px"><div style="max-width:1024px;margin:0 auto;display:flex;align-items:center;gap:12px">
+      <button id="backBtn" class="btn-ghost" style="background:rgba(255,255,255,0.7);border:1px solid rgba(30,41,59,0.1);border-radius:8px;padding:6px 12px;font-size:13px;color:#64748B;cursor:pointer">← Back</button>
+      <h1 class="font-space" style="font-size:15px;font-weight:600;color:#1E293B;margin:0">${l.title}</h1>
+    </div></div>
+    <div class="progress-track"><div class="progress-fill" style="width:${p}%"></div></div>
+    <div style="background:rgba(255,255,255,0.5);backdrop-filter:blur(8px);border-bottom:1px solid rgba(255,255,255,0.4);padding:8px 24px;overflow-x:auto"><div style="max-width:1024px;margin:0 auto;display:flex;gap:4px">
+      ${l.sections.map((sec,i)=>`<button class="section-nav-btn" data-section="${i}" style="display:flex;align-items:center;gap:6px;padding:6px 12px;border-radius:8px;font-size:12px;font-weight:500;white-space:nowrap;cursor:pointer;border:none;background:${i===state.currentSection?'rgba(255,152,0,0.12)':'transparent'};color:${i===state.currentSection?'#E65100':state.completedSections.has(i)?'#10b981':'#64748B'}">${state.completedSections.has(i)?'✓':i+1+'.'} ${sec.title}</button>`).join('')}
+    </div></div>
+    <div style="max-width:1024px;margin:0 auto;padding:32px 24px"><div class="animate-fade-in">
+      <div style="margin-bottom:24px"><div style="display:flex;align-items:center;gap:8px;margin-bottom:8px">
+        <span class="tag tag-${s.type==='quiz'?'green':s.type==='flashcards'?'purple':s.type==='matching'?'amber':s.type==='discussion'?'pink':'blue'}">${s.type==='quiz'?'✏️ Quiz':s.type==='flashcards'?'🃏 Flashcards':s.type==='matching'?'🔗 Match':s.type==='discussion'?'💬 Discuss':'📖 Learn'}</span>
+        <span style="font-size:12px;color:#94A3B8">· ${s.duration} min</span></div>
+        <h2 class="font-space" style="font-size:24px;font-weight:700;color:#1E293B">${s.title}</h2></div>
+      <div id="sectionContent">${renderSectionContent(s)}</div>
+      <div style="display:flex;align-items:center;justify-content:space-between;margin-top:32px;padding-top:24px;border-top:1px solid rgba(255,255,255,0.4)">
+        <button id="prevBtn" ${state.currentSection===0?'disabled style="opacity:0.3;cursor:not-allowed"':''} class="btn btn-secondary">← Previous</button>
+        <span style="font-size:12px;color:#64748B">${state.currentSection+1} of ${l.sections.length}</span>
+        ${state.currentSection<l.sections.length-1?`<button id="nextBtn" class="btn btn-primary">Next →</button>`:`<button id="finishBtn" class="btn" style="background:linear-gradient(135deg,#10b981,#059669);color:white">✓ Finish Lesson</button>`}
       </div>
-
-      <div style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 8px 24px; overflow-x: auto;">
-        <div style="max-width: 1024px; margin: 0 auto; display: flex; gap: 4px;">
-          ${lesson.sections.map((s, i) => `
-            <button class="section-nav-btn" data-section="${i}" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; transition: all 0.2s; background: ${i === state.currentSection ? 'var(--blue-glow)' : 'transparent'}; color: ${i === state.currentSection ? 'var(--blue-light)' : state.completedSections.has(i) ? 'var(--green-light)' : 'var(--text-muted)'}; border: ${i === state.currentSection ? '1px solid rgba(59,130,246,0.3)' : 'none'}; cursor: pointer;">
-              ${state.completedSections.has(i) ? '✓' : `${i + 1}.`} ${s.title}
-            </button>
-          `).join('')}
-        </div>
-      </div>
-
-      <div style="max-width: 1024px; margin: 0 auto; padding: 32px 24px;">
-        <div class="animate-fade-in">
-          <div style="margin-bottom: 24px;">
-            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
-              <span class="tag tag-${section.type === 'quiz' ? 'green' : section.type === 'flashcards' ? 'purple' : section.type === 'matching' ? 'amber' : section.type === 'discussion' ? 'purple' : 'blue'}">
-                ${section.type === 'quiz' ? '✏️ Quiz' : section.type === 'flashcards' ? '🃏 Flashcards' : section.type === 'matching' ? '🔗 Match' : section.type === 'discussion' ? '💬 Discuss' : '📖 Learn'}
-              </span>
-              <span style="font-size: 12px; color: var(--text-dim);">· ${section.duration} min</span>
-            </div>
-            <h2 class="font-space" style="font-size: 24px; font-weight: 700; color: var(--text);">
-              ${section.title}
-            </h2>
-          </div>
-
-          <div id="sectionContent">
-            ${renderSectionContent(section)}
-          </div>
-
-          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
-            <button id="prevBtn" ${state.currentSection === 0 ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : ''} class="btn btn-secondary">
-              ← Previous
-            </button>
-            <span style="font-size: 12px; color: var(--text-muted);">
-              ${state.currentSection + 1} of ${lesson.sections.length}
-            </span>
-            ${state.currentSection < lesson.sections.length - 1 ? `
-              <button id="nextBtn" class="btn btn-primary">
-                Next →
-              </button>
-            ` : `
-              <button id="finishBtn" class="btn" style="background: linear-gradient(135deg, var(--green), #059669); color: white;">
-                ✓ Finish Lesson
-              </button>
-            `}
-          </div>
-        </div>
-      </div>
-    </div>
-  `;
+    </div></div>
+  </div>`;
 }
 
-function renderSectionContent(section) {
-  if (section.type === 'content') {
-    return renderContentSection(section.content);
-  } else if (section.type === 'quiz') {
-    return renderQuizSection(section.quiz);
-  } else if (section.type === 'flashcards') {
-    return renderFlashcardsSection(section.flashcards);
-  } else if (section.type === 'matching') {
-    return renderMatchingSection(section.matching);
-  } else if (section.type === 'discussion') {
-    return renderDiscussionSection(section.discussion);
-  }
+function renderSectionContent(s) {
+  if(s.type==='content') return renderContent(s.content);
+  if(s.type==='quiz') { window.quizState={currentQ:0,answers:new Array(s.quiz.questions.length).fill(null),showResult:false}; return `<div id="quizContainer">${renderQuizQ(s.quiz,0)}</div>`; }
+  if(s.type==='flashcards') { window.fs={ci:0,flipped:false,known:new Set()}; return `<div id="fcContainer">${renderFC(s.flashcards)}</div>`; }
+  if(s.type==='matching') { const sh=[...s.matching.pairs].sort(()=>Math.random()-0.5); window.ms={sl:null,sr:null,matched:new Set(),att:0,shuffled:sh}; return `<div id="matchContainer">${renderMatch(s.matching)}</div>`; }
+  if(s.type==='discussion') return renderDiscussion(s.discussion);
   return '';
 }
 
-function renderContentSection(content) {
-  let html = `<p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">${content.subtitle}</p>`;
-  
-  content.blocks.forEach(block => {
-    if (block.type === 'table') {
-      html += `
-        <div style="overflow-x: auto; margin: 16px 0;">
-          <table class="lesson-table">
-            <thead>
-              <tr>${block.headers.map(h => `<th>${h}</th>`).join('')}</tr>
-            </thead>
-            <tbody>
-              ${block.rows.map(row => `
-                <tr>
-                  ${row.map((cell, i) => `
-                    <td>${i === 0 ? `<strong>${cell}</strong>` : i === 1 ? `<span class="font-mono" style="font-size: 12px; color: var(--blue-light);">${cell}</span>` : `<span style="color: var(--text-muted); font-style: italic; font-size: 13px;">${cell}</span>`}</td>
-                  `).join('')}
-                </tr>
-              `).join('')}
-            </tbody>
-          </table>
-        </div>
-      `;
-    } else if (block.type === 'callout') {
-      html += `<div class="callout callout-${block.variant}">${block.content}</div>`;
-    }
+function renderContent(c) {
+  let h=`<p style="color:#64748B;font-size:14px;line-height:1.7;margin:0 0 24px">${c.subtitle}</p>`;
+  c.blocks.forEach(b=>{
+    if(b.type==='table') h+=`<div style="overflow-x:auto;margin:16px 0"><table class="lesson-table"><thead><tr>${b.headers.map(hd=>`<th>${hd}</th>`).join('')}</tr></thead><tbody>${b.rows.map(r=>`<tr>${r.map((c,i)=>`<td>${i===0?`<strong>${c}</strong>`:i===1?`<span class="font-mono" style="font-size:12px;color:#E65100;font-weight:500">${c}</span>`:`<span style="color:#64748B;font-style:italic;font-size:13px">${c}</span>`}</td>`).join('')}</tr>`).join('')}</tbody></table></div>`;
+    else if(b.type==='callout') h+=`<div class="callout callout-${b.variant}">${b.content}</div>`;
   });
-
-  html += `<div style="display: flex; justify-content: flex-end; margin-top: 24px;"><button id="completeContentBtn" class="btn btn-primary">Continue →</button></div>`;
-  return html;
+  h+=`<div style="display:flex;justify-content:flex-end;margin-top:24px"><button id="completeContentBtn" class="btn btn-primary">Continue →</button></div>`;
+  return h;
 }
 
-function renderQuizSection(quiz) {
-  window.quizState = { currentQ: 0, answers: new Array(quiz.questions.length).fill(null), showResult: false };
-  return `<div id="quizContainer">${renderQuizQuestion(quiz, 0)}</div>`;
+function renderQuizQ(qz,idx) {
+  const qs=window.quizState;
+  if(qs.showResult) { const c=qs.answers.filter((a,i)=>a===qz.questions[i].answer).length; const p=Math.round(c/qz.questions.length*100); return `<div class="card" style="text-align:center;padding:40px"><div style="font-size:48px;margin-bottom:16px">${p===100?'🏆':p>=80?'🌟':p>=60?'👍':'💪'}</div><div class="font-space" style="font-size:36px;font-weight:700;color:#E65100;margin-bottom:8px">${c}/${qz.questions.length}</div><div style="color:#64748B;margin-bottom:16px">${p===100?'Perfect!':p>=80?'Excellent!':p>=60?'Good job!':'Keep practicing!'}</div><button id="completeQuizBtn" class="btn btn-primary">Continue →</button></div>`; }
+  const q=qz.questions[idx];
+  return `<div style="display:flex;align-items:center;gap:12px;margin-bottom:24px"><div style="flex:1;height:6px;background:rgba(255,255,255,0.5);border-radius:999px;overflow:hidden"><div style="height:100%;background:linear-gradient(90deg,#FF9800,#FFC107);border-radius:999px;width:${(idx+1)/qz.questions.length*100}%"></div></div><span class="font-space" style="font-size:12px;color:#64748B">${idx+1}/${qz.questions.length}</span></div>
+  <div class="card" style="margin-bottom:24px"><div style="font-size:18px;font-weight:500;line-height:1.6;margin-bottom:24px;color:#1E293B">${q.question}</div><div style="display:flex;flex-direction:column;gap:12px">${q.options.map((o,i)=>`<button class="game-option quiz-option" data-index="${i}"><span style="display:inline-flex;align-items:center;gap:12px"><span style="width:24px;height:24px;border-radius:50%;border:1px solid rgba(30,41,59,0.15);display:inline-flex;align-items:center;justify-content:center;font-size:12px;font-weight:700;background:rgba(255,255,255,0.5)">${String.fromCharCode(65+i)}</span>${o}</span></button>`).join('')}</div><div id="quizFeedback" style="margin-top:16px;display:none"></div></div>
+  <div id="quizNextBtn" style="display:none;text-align:right"><button class="btn btn-primary">${idx<qz.questions.length-1?'Next Question →':'See Results →'}</button></div>`;
 }
 
-function renderQuizQuestion(quiz, index) {
-  const q = quiz.questions[index];
-  const qs = window.quizState;
-  
-  if (qs.showResult) {
-    const correct = qs.answers.filter((a, i) => a === quiz.questions[i].answer).length;
-    const pct = Math.round((correct / quiz.questions.length) * 100);
-    return `
-      <div class="card" style="text-align: center; padding: 40px;" class="animate-fade-in">
-        <div style="font-size: 48px; margin-bottom: 16px;">${pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '👍' : '💪'}</div>
-        <div class="font-space" style="font-size: 36px; font-weight: 700; color: var(--blue-light); margin-bottom: 8px;">${correct}/${quiz.questions.length}</div>
-        <div style="color: var(--text-muted); margin-bottom: 16px;">${pct === 100 ? 'Perfect score!' : pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good job!' : 'Keep practicing!'}</div>
-        <button id="completeQuizBtn" class="btn btn-primary">Continue to Next Section →</button>
-      </div>
-    `;
-  }
-
-  return `
-    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
-      <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
-        <div style="height: 100%; background: var(--blue); border-radius: 999px; transition: width 0.3s; width: ${((index + 1) / quiz.questions.length) * 100}%;"></div>
-      </div>
-      <span style="font-size: 12px; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; font-weight: 500;">${index + 1}/${quiz.questions.length}</span>
-    </div>
-    <div class="card" style="margin-bottom: 24px;">
-      <div style="font-size: 18px; font-weight: 500; line-height: 1.6; margin-bottom: 24px;">${q.question}</div>
-      <div style="display: flex; flex-direction: column; gap: 12px;">
-        ${q.options.map((opt, i) => `
-          <button class="game-option quiz-option" data-index="${i}">
-            <span style="display: inline-flex; align-items: center; gap: 12px;">
-              <span style="width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;">${String.fromCharCode(65 + i)}</span>
-              ${opt}
-            </span>
-          </button>
-        `).join('')}
-      </div>
-      <div id="quizFeedback" style="margin-top: 16px; display: none;"></div>
-    </div>
-    <div id="quizNextBtn" style="display: none; text-align: right;">
-      <button class="btn btn-primary">${index < quiz.questions.length - 1 ? 'Next Question →' : 'See Results →'}</button>
-    </div>
-  `;
+function renderFC(fcs) {
+  const fs=window.fs, c=fcs.cards[fs.ci], done=fs.known.size===fcs.cards.length;
+  if(done) return `<div class="card" style="text-align:center;padding:24px;background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.2)"><div style="font-size:48px;margin-bottom:8px">🎉</div><div class="font-space" style="font-size:18px;font-weight:700;color:#10b981;margin-bottom:4px">All cards learned!</div><p style="font-size:14px;color:#64748B;margin-bottom:16px">Great job!</p><button id="completeFCBtn" class="btn btn-primary">Continue →</button></div>`;
+  return `<div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px"><div style="display:flex;align-items:center;gap:8px"><span style="font-size:12px;color:#64748B">Card ${fs.ci+1} of ${fcs.cards.length}</span><span class="streak-fire">🔥 ${fs.known.size} learned</span></div><div style="flex:1;max-width:200px;height:6px;background:rgba(255,255,255,0.5);border-radius:999px;overflow:hidden;margin-left:16px"><div style="height:100%;background:#10b981;border-radius:999px;width:${fs.known.size/fcs.cards.length*100}%"></div></div></div>
+  <div class="flashcard-container" id="flashcard"><div class="flashcard-inner ${fs.flipped?'flipped':''}"><div class="flashcard-front"><div style="font-size:12px;color:#94A3B8;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em">Tap to flip</div><div class="font-space" style="font-size:24px;font-weight:700;color:#1E293B;margin-bottom:8px">${c.front}</div>${c.example?`<div style="font-size:14px;color:#64748B;font-style:italic;margin-top:16px">"${c.example}"</div>`:''}</div><div class="flashcard-back"><div style="font-size:12px;color:#E65100;margin-bottom:12px;text-transform:uppercase;letter-spacing:0.08em">Definition</div><div style="font-size:18px;font-weight:500;color:#1E293B;margin-bottom:12px">${c.back}</div>${c.example?`<div style="font-size:14px;color:#64748B;font-style:italic;margin-top:8px;padding-top:12px;border-top:1px solid rgba(0,0,0,0.06)">Example: "${c.example}"</div>`:''}</div></div></div>
+  <div style="display:flex;align-items:center;justify-content:center;gap:12px;margin-top:32px">
+    <button id="prevCardBtn" ${fs.ci===0?'disabled style="opacity:0.3"':''} class="btn btn-secondary">← Prev</button>
+    ${fs.flipped?`<button id="markUnknownBtn" class="btn btn-secondary" style="border-color:rgba(239,68,68,0.2);color:#ef4444">Still Learning</button><button id="markKnownBtn" class="btn" style="background:linear-gradient(135deg,#10b981,#059669);color:white">✓ Got It!</button>`:''}
+    <button id="nextCardBtn" ${fs.ci===fcs.cards.length-1?'disabled style="opacity:0.3"':''} class="btn btn-secondary">Next →</button>
+  </div>
+  <div style="display:flex;justify-content:center;gap:6px;margin-top:24px">${fcs.cards.map((_,i)=>`<div style="width:${i===fs.ci?'24':'8'}px;height:8px;border-radius:${i===fs.ci?'4':'50'}px;background:${i===fs.ci?'#FF9800':fs.known.has(i)?'#10b981':'rgba(30,41,59,0.15)'}"></div>`).join('')}</div>`;
 }
 
-function renderFlashcardsSection(flashcards) {
-  window.flashcardState = { currentIndex: 0, isFlipped: false, knownCards: new Set() };
-  return `<div id="flashcardContainer">${renderFlashcard(flashcards, 0)}</div>`;
+function renderMatch(m) {
+  const ms=window.ms, done=ms.matched.size===m.pairs.length;
+  if(done) return `<div class="card" style="text-align:center;padding:24px;margin-top:32px;background:rgba(16,185,129,0.05);border-color:rgba(16,185,129,0.2)"><div style="font-size:48px;margin-bottom:8px">${ms.att===m.pairs.length?'🎯':'⭐'}</div><div class="font-space" style="font-size:18px;font-weight:700;color:#10b981;margin-bottom:4px">All matched!</div><p style="font-size:14px;color:#64748B;margin-bottom:16px">Completed in ${ms.att} attempt${ms.att>1?'s':''}</p><button id="completeMatchBtn" class="btn btn-primary">Continue →</button></div>`;
+  return `<p style="font-size:14px;color:#64748B;margin-bottom:24px">${m.instruction}</p>
+  <div style="display:flex;align-items:center;gap:16px;margin-bottom:24px"><div style="font-size:12px;color:#64748B">Matched: <span style="color:#10b981;font-weight:600">${ms.matched.size}/${m.pairs.length}</span></div><div style="font-size:12px;color:#64748B">Attempts: <span style="color:#FF9800;font-weight:600">${ms.att}</span></div></div>
+  <div style="display:grid;grid-template-columns:1fr 1fr;gap:32px">
+    <div><div class="font-space" style="font-size:11px;color:#64748B;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:10px;text-align:center">Term</div><div style="display:flex;flex-direction:column;gap:10px">${m.pairs.map((p,i)=>{const done=ms.matched.has(i),sel=ms.sl===i;return `<div class="match-item ${done?'matched':sel?'selected':''}" data-left="${i}">${p.left} ${done?'✓':''}</div>`}).join('')}</div></div>
+    <div><div class="font-space" style="font-size:11px;color:#64748B;text-transform:uppercase;letter-spacing:0.08em;font-weight:600;margin-bottom:10px;text-align:center">Meaning</div><div style="display:flex;flex-direction:column;gap:10px">${ms.shuffled.map((p,i)=>{const oi=m.pairs.indexOf(p),done=ms.matched.has(oi),sel=ms.sr===i;return `<div class="match-item ${done?'matched':sel?'selected':''}" data-right="${i}">${p.right} ${done?'✓':''}</div>`}).join('')}</div></div>
+  </div>`;
 }
 
-function renderFlashcard(flashcards, index) {
-  const card = flashcards.cards[index];
-  const fs = window.flashcardState;
-  const allDone = fs.knownCards.size === flashcards.cards.length;
-
-  if (allDone) {
-    return `
-      <div class="card" style="text-align: center; padding: 24px; margin-top: 24px; background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2);" class="animate-fade-in">
-        <div style="font-size: 48px; margin-bottom: 8px;">🎉</div>
-        <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--green-light); margin-bottom: 4px;">All cards learned!</div>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Great job! You've reviewed all the vocabulary.</p>
-        <button id="completeFlashcardsBtn" class="btn btn-primary">Continue →</button>
-      </div>
-    `;
-  }
-
-  return `
-    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
-      <div style="display: flex; align-items: center; gap: 8px;">
-        <span style="font-size: 12px; color: var(--text-muted);">Card ${index + 1} of ${flashcards.cards.length}</span>
-        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2)); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--amber-light);">
-          🔥 ${fs.knownCards.size} learned
-        </span>
-      </div>
-      <div style="flex: 1; max-width: 200px; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; margin-left: 16px;">
-        <div style="height: 100%; background: var(--green); border-radius: 999px; transition: width 0.3s; width: ${(fs.knownCards.size / flashcards.cards.length) * 100}%;"></div>
-      </div>
-    </div>
-    <div class="flashcard-container" id="flashcard">
-      <div class="flashcard-inner ${fs.isFlipped ? 'flipped' : ''}">
-        <div class="flashcard-front">
-          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Tap to flip</div>
-          <div class="font-space" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px;">${card.front}</div>
-          ${card.example ? `<div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-top: 16px; padding: 0 16px;">"${card.example}"</div>` : ''}
-        </div>
-        <div class="flashcard-back">
-          <div style="font-size: 12px; color: var(--blue-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Definition</div>
-          <div style="font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 12px;">${card.back}</div>
-          ${card.example ? `<div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-top: 8px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1);">Example: "${card.example}"</div>` : ''}
-        </div>
-      </div>
-    </div>
-    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 32px;">
-      <button id="prevCardBtn" ${index === 0 ? 'disabled style="opacity: 0.3;"' : ''} class="btn btn-secondary">← Prev</button>
-      ${fs.isFlipped ? `
-        <button id="markUnknownBtn" class="btn btn-secondary" style="border-color: rgba(239,68,68,0.3); color: #f87171;">Still Learning</button>
-        <button id="markKnownBtn" class="btn" style="background: linear-gradient(135deg, var(--green), #059669); color: white;">✓ Got It!</button>
-      ` : ''}
-      <button id="nextCardBtn" ${index === flashcards.cards.length - 1 ? 'disabled style="opacity: 0.3;"' : ''} class="btn btn-secondary">Next →</button>
-    </div>
-    <div style="display: flex; justify-content: center; gap: 6px; margin-top: 24px;">
-      ${flashcards.cards.map((_, i) => `
-        <div style="width: 8px; height: 8px; border-radius: 50%; transition: all 0.2s; background: ${i === index ? 'var(--blue)' : fs.knownCards.has(i) ? 'var(--green)' : 'rgba(255,255,255,0.15)'}; ${i === index ? 'width: 24px;' : ''}"></div>
-      `).join('')}
-    </div>
-  `;
-}
-
-function renderMatchingSection(matching) {
-  const shuffled = [...matching.pairs].sort(() => Math.random() - 0.5);
-  window.matchingState = { selectedLeft: null, selectedRight: null, matched: new Set(), attempts: 0, shuffled };
-  return `<div id="matchingContainer">${renderMatching(matching)}</div>`;
-}
-
-function renderMatching(matching) {
-  const ms = window.matchingState;
-  const allMatched = ms.matched.size === matching.pairs.length;
-
-  if (allMatched) {
-    return `
-      <div class="card" style="text-align: center; padding: 24px; margin-top: 32px; background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2);" class="animate-fade-in">
-        <div style="font-size: 48px; margin-bottom: 8px;">${ms.attempts === matching.pairs.length ? '🎯' : '⭐'}</div>
-        <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--green-light); margin-bottom: 4px;">${ms.attempts === matching.pairs.length ? 'Perfect matching!' : 'All matched!'}</div>
-        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Completed in ${ms.attempts} attempt${ms.attempts > 1 ? 's' : ''}</p>
-        <button id="completeMatchingBtn" class="btn btn-primary">Continue →</button>
-      </div>
-    `;
-  }
-
-  return `
-    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">${matching.instruction}</p>
-    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
-      <div style="font-size: 12px; color: var(--text-muted);">Matched: <span style="color: var(--green-light); font-weight: 600;">${ms.matched.size}/${matching.pairs.length}</span></div>
-      <div style="font-size: 12px; color: var(--text-muted);">Attempts: <span style="color: var(--blue-light); font-weight: 600;">${ms.attempts}</span></div>
-    </div>
-    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
-      <div>
-        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; text-align: center;">Term</div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          ${matching.pairs.map((pair, i) => {
-            const isMatched = ms.matched.has(i);
-            const isSelected = ms.selectedLeft === i;
-            return `
-              <div class="match-item ${isMatched ? 'matched' : isSelected ? 'selected' : ''}" data-left="${i}">
-                ${pair.left} ${isMatched ? '✓' : ''}
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-      <div>
-        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; text-align: center;">Meaning</div>
-        <div style="display: flex; flex-direction: column; gap: 10px;">
-          ${ms.shuffled.map((pair, i) => {
-            const origIndex = matching.pairs.indexOf(pair);
-            const isMatched = ms.matched.has(origIndex);
-            const isSelected = ms.selectedRight === i;
-            return `
-              <div class="match-item ${isMatched ? 'matched' : isSelected ? 'selected' : ''}" data-right="${i}">
-                ${pair.right} ${isMatched ? '✓' : ''}
-              </div>
-            `;
-          }).join('')}
-        </div>
-      </div>
-    </div>
-  `;
-}
-
-function renderDiscussionSection(discussion) {
-  return `
-    <div class="callout callout-purple" style="margin-bottom: 24px;">
-      <strong>💬 Speaking Practice:</strong> These questions are designed for conversation with your teacher. Take your time, use the vocabulary and grammar from this lesson, and don't worry about making mistakes — that's how we learn!
-    </div>
-    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
-      ${discussion.questions.map((q, i) => `
-        <div class="card">
-          <div style="display: flex; align-items: flex-start; gap: 12px;">
-            <span class="font-space" style="font-size: 18px; font-weight: 700; color: var(--blue-light); flex-shrink: 0;">${i + 1}.</span>
-            <p style="font-size: 15px; line-height: 1.6;">${q}</p>
-          </div>
-        </div>
-      `).join('')}
-    </div>
-    ${discussion.tips ? `
-      <div class="callout callout-green" style="margin-bottom: 24px;">
-        <strong>💡 Tips for this activity:</strong>
-        <ul style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
-          ${discussion.tips.map(tip => `<li style="font-size: 14px; color: var(--text); display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--green-light);">•</span>${tip}</li>`).join('')}
-        </ul>
-      </div>
-    ` : ''}
-    <div style="display: flex; justify-content: flex-end;">
-      <button id="completeDiscussionBtn" class="btn btn-primary">Continue →</button>
-    </div>
-  `;
+function renderDiscussion(d) {
+  return `<div class="callout callout-purple" style="margin-bottom:24px"><strong>💬 Speaking Practice:</strong> These questions are designed for conversation with your teacher. Take your time!</div>
+  <div style="display:flex;flex-direction:column;gap:12px;margin-bottom:24px">${d.questions.map((q,i)=>`<div class="card"><div style="display:flex;align-items:flex-start;gap:12px"><span class="font-space" style="font-size:18px;font-weight:700;color:#FF9800;flex-shrink:0">${i+1}.</span><p style="font-size:15px;line-height:1.6;color:#1E293B;margin:0">${q}</p></div></div>`).join('')}</div>
+  ${d.tips?`<div class="callout callout-green" style="margin-bottom:24px"><strong>💡 Tips:</strong><ul style="margin-top:8px;display:flex;flex-direction:column;gap:6px;padding-left:0;list-style:none">${d.tips.map(t=>`<li style="font-size:14px;color:#1E293B;display:flex;align-items:flex-start;gap:8px"><span style="color:#10b981">•</span>${t}</li>`).join('')}</ul></div>`:''}
+  <div style="display:flex;justify-content:flex-end"><button id="completeDiscussBtn" class="btn btn-primary">Continue →</button></div>`;
 }
 
 function attachLessonEvents() {
-  document.getElementById('backBtn').addEventListener('click', () => {
-    if (state.timerInterval) clearInterval(state.timerInterval);
-    state.view = 'dashboard';
-    state.activeLesson = null;
-    render();
-  });
-
-  document.querySelectorAll('.section-nav-btn').forEach(btn => {
-    btn.addEventListener('click', () => {
-      state.currentSection = parseInt(btn.dataset.section);
-      render();
-    });
-  });
-
-  const prevBtn = document.getElementById('prevBtn');
-  if (prevBtn && state.currentSection > 0) {
-    prevBtn.addEventListener('click', () => {
-      state.currentSection--;
-      render();
-    });
-  }
-
-  const nextBtn = document.getElementById('nextBtn');
-  if (nextBtn) {
-    nextBtn.addEventListener('click', () => {
-      state.completedSections.add(state.currentSection);
-      state.currentSection++;
-      render();
-    });
-  }
-
-  const finishBtn = document.getElementById('finishBtn');
-  if (finishBtn) {
-    finishBtn.addEventListener('click', () => {
-      if (state.timerInterval) clearInterval(state.timerInterval);
-      state.view = 'dashboard';
-      state.activeLesson = null;
-      render();
-    });
-  }
-
+  document.getElementById('backBtn').addEventListener('click',()=>{ if(state.timerInterval)clearInterval(state.timerInterval); state.view='dashboard'; state.activeLesson=null; render(); });
+  document.querySelectorAll('.section-nav-btn').forEach(b=>b.addEventListener('click',()=>{ state.currentSection=parseInt(b.dataset.section); render(); }));
+  const pb=document.getElementById('prevBtn'); if(pb&&state.currentSection>0) pb.addEventListener('click',()=>{state.currentSection--;render();});
+  const nb=document.getElementById('nextBtn'); if(nb) nb.addEventListener('click',()=>{state.completedSections.add(state.currentSection);state.currentSection++;render();});
+  const fb=document.getElementById('finishBtn'); if(fb) fb.addEventListener('click',()=>{if(state.timerInterval)clearInterval(state.timerInterval);state.view='dashboard';state.activeLesson=null;render();});
   attachSectionEvents();
 }
 
+function advanceSection() { state.completedSections.add(state.currentSection); if(state.currentSection<state.activeLesson.sections.length-1){state.currentSection++;render();} }
+
 function attachSectionEvents() {
-  const section = state.activeLesson.sections[state.currentSection];
-
-  if (section.type === 'content') {
-    const btn = document.getElementById('completeContentBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        state.completedSections.add(state.currentSection);
-        if (state.currentSection < state.activeLesson.sections.length - 1) {
-          state.currentSection++;
-          render();
-        }
-      });
-    }
-  } else if (section.type === 'quiz') {
-    attachQuizEvents(section.quiz);
-  } else if (section.type === 'flashcards') {
-    attachFlashcardEvents(section.flashcards);
-  } else if (section.type === 'matching') {
-    attachMatchingEvents(section.matching);
-  } else if (section.type === 'discussion') {
-    const btn = document.getElementById('completeDiscussionBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        state.completedSections.add(state.currentSection);
-        if (state.currentSection < state.activeLesson.sections.length - 1) {
-          state.currentSection++;
-          render();
-        }
-      });
-    }
-  }
+  const s=state.activeLesson.sections[state.currentSection];
+  if(s.type==='content') { const b=document.getElementById('completeContentBtn'); if(b) b.addEventListener('click',advanceSection); }
+  else if(s.type==='quiz') attachQuizEvents(s.quiz);
+  else if(s.type==='flashcards') attachFCEvents(s.flashcards);
+  else if(s.type==='matching') attachMatchEvents(s.matching);
+  else if(s.type==='discussion') { const b=document.getElementById('completeDiscussBtn'); if(b) b.addEventListener('click',advanceSection); }
 }
 
-function attachQuizEvents(quiz) {
-  const qs = window.quizState;
-
-  if (qs.showResult) {
-    const btn = document.getElementById('completeQuizBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        state.completedSections.add(state.currentSection);
-        if (state.currentSection < state.activeLesson.sections.length - 1) {
-          state.currentSection++;
-          render();
-        }
-      });
-    }
-    return;
-  }
-
-  document.querySelectorAll('.quiz-option').forEach(btn => {
-    btn.addEventListener('click', () => {
-      const index = parseInt(btn.dataset.index);
-      if (qs.answers[qs.currentQ] !== null) return;
-
-      qs.answers[qs.currentQ] = index;
-      const q = quiz.questions[qs.currentQ];
-      const isCorrect = index === q.answer;
-
-      document.querySelectorAll('.quiz-option').forEach((b, i) => {
-        b.disabled = true;
-        if (i === q.answer) b.classList.add('correct');
-        else if (i === index && !isCorrect) b.classList.add('wrong');
-      });
-
-      const feedback = document.getElementById('quizFeedback');
-      feedback.innerHTML = `
-        <div style="padding: 16px; border-radius: 8px; ${isCorrect ? 'background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);' : 'background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);'}">
-          <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px; ${isCorrect ? 'color: var(--green-light);' : 'color: #f87171;'}">${isCorrect ? '✓ Correct!' : '✗ Not quite'}</div>
-          <div style="font-size: 14px; color: var(--text-muted);">${q.explanation}</div>
-        </div>
-      `;
-      feedback.style.display = 'block';
-
-      document.getElementById('quizNextBtn').style.display = 'block';
-      document.getElementById('quizNextBtn').querySelector('button').addEventListener('click', () => {
-        if (qs.currentQ < quiz.questions.length - 1) {
-          qs.currentQ++;
-          document.getElementById('quizContainer').innerHTML = renderQuizQuestion(quiz, qs.currentQ);
-          attachQuizEvents(quiz);
-        } else {
-          qs.showResult = true;
-          document.getElementById('quizContainer').innerHTML = renderQuizQuestion(quiz, qs.currentQ);
-          attachQuizEvents(quiz);
-        }
-      });
+function attachQuizEvents(qz) {
+  const qs=window.quizState;
+  if(qs.showResult) { const b=document.getElementById('completeQuizBtn'); if(b) b.addEventListener('click',advanceSection); return; }
+  document.querySelectorAll('.quiz-option').forEach(btn=>btn.addEventListener('click',()=>{
+    const i=parseInt(btn.dataset.index); if(qs.answers[qs.currentQ]!==null) return;
+    qs.answers[qs.currentQ]=i; const q=qz.questions[qs.currentQ], ok=i===q.answer;
+    document.querySelectorAll('.quiz-option').forEach((b,j)=>{ b.disabled=true; if(j===q.answer)b.classList.add('correct'); else if(j===i&&!ok)b.classList.add('wrong'); });
+    const fb=document.getElementById('quizFeedback'); fb.innerHTML=`<div style="padding:16px;border-radius:12px;${ok?'background:rgba(16,185,129,0.08);border:1px solid rgba(16,185,129,0.2)':'background:rgba(239,68,68,0.06);border:1px solid rgba(239,68,68,0.15)'}"><div style="font-size:14px;font-weight:500;margin-bottom:4px;${ok?'color:#10b981':'color:#ef4444'}">${ok?'✓ Correct!':'✗ Not quite'}</div><div style="font-size:14px;color:#64748B">${q.explanation}</div></div>`; fb.style.display='block';
+    document.getElementById('quizNextBtn').style.display='block';
+    document.getElementById('quizNextBtn').querySelector('button').addEventListener('click',()=>{
+      if(qs.currentQ<qz.questions.length-1){qs.currentQ++;document.getElementById('quizContainer').innerHTML=renderQuizQ(qz,qs.currentQ);attachQuizEvents(qz);}
+      else{qs.showResult=true;document.getElementById('quizContainer').innerHTML=renderQuizQ(qz,qs.currentQ);attachQuizEvents(qz);}
     });
-  });
+  }));
 }
 
-function attachFlashcardEvents(flashcards) {
-  const fs = window.flashcardState;
-
-  if (fs.knownCards.size === flashcards.cards.length) {
-    const btn = document.getElementById('completeFlashcardsBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        state.completedSections.add(state.currentSection);
-        if (state.currentSection < state.activeLesson.sections.length - 1) {
-          state.currentSection++;
-          render();
-        }
-      });
-    }
-    return;
-  }
-
-  const flashcard = document.getElementById('flashcard');
-  if (flashcard) {
-    flashcard.addEventListener('click', () => {
-      fs.isFlipped = !fs.isFlipped;
-      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
-      attachFlashcardEvents(flashcards);
-    });
-  }
-
-  const prevBtn = document.getElementById('prevCardBtn');
-  if (prevBtn && fs.currentIndex > 0) {
-    prevBtn.addEventListener('click', () => {
-      fs.isFlipped = false;
-      fs.currentIndex--;
-      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
-      attachFlashcardEvents(flashcards);
-    });
-  }
-
-  const nextBtn = document.getElementById('nextCardBtn');
-  if (nextBtn && fs.currentIndex < flashcards.cards.length - 1) {
-    nextBtn.addEventListener('click', () => {
-      fs.isFlipped = false;
-      fs.currentIndex++;
-      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
-      attachFlashcardEvents(flashcards);
-    });
-  }
-
-  const markKnownBtn = document.getElementById('markKnownBtn');
-  if (markKnownBtn) {
-    markKnownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      fs.knownCards.add(fs.currentIndex);
-      fs.isFlipped = false;
-      if (fs.currentIndex < flashcards.cards.length - 1) {
-        fs.currentIndex++;
-      }
-      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
-      attachFlashcardEvents(flashcards);
-    });
-  }
-
-  const markUnknownBtn = document.getElementById('markUnknownBtn');
-  if (markUnknownBtn) {
-    markUnknownBtn.addEventListener('click', (e) => {
-      e.stopPropagation();
-      fs.isFlipped = false;
-      if (fs.currentIndex < flashcards.cards.length - 1) {
-        fs.currentIndex++;
-      }
-      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
-      attachFlashcardEvents(flashcards);
-    });
-  }
+function attachFCEvents(fcs) {
+  const fs=window.fs;
+  if(fs.known.size===fcs.cards.length){const b=document.getElementById('completeFCBtn');if(b)b.addEventListener('click',advanceSection);return;}
+  const fc=document.getElementById('flashcard'); if(fc) fc.addEventListener('click',()=>{fs.flipped=!fs.flipped;document.getElementById('fcContainer').innerHTML=renderFC(fcs);attachFCEvents(fcs);});
+  const pv=document.getElementById('prevCardBtn'); if(pv&&fs.ci>0) pv.addEventListener('click',()=>{fs.flipped=false;fs.ci--;document.getElementById('fcContainer').innerHTML=renderFC(fcs);attachFCEvents(fcs);});
+  const nx=document.getElementById('nextCardBtn'); if(nx&&fs.ci<fcs.cards.length-1) nx.addEventListener('click',()=>{fs.flipped=false;fs.ci++;document.getElementById('fcContainer').innerHTML=renderFC(fcs);attachFCEvents(fcs);});
+  const mk=document.getElementById('markKnownBtn'); if(mk) mk.addEventListener('click',e=>{e.stopPropagation();fs.known.add(fs.ci);fs.flipped=false;if(fs.ci<fcs.cards.length-1)fs.ci++;document.getElementById('fcContainer').innerHTML=renderFC(fcs);attachFCEvents(fcs);});
+  const mu=document.getElementById('markUnknownBtn'); if(mu) mu.addEventListener('click',e=>{e.stopPropagation();fs.flipped=false;if(fs.ci<fcs.cards.length-1)fs.ci++;document.getElementById('fcContainer').innerHTML=renderFC(fcs);attachFCEvents(fcs);});
 }
 
-function attachMatchingEvents(matching) {
-  const ms = window.matchingState;
-
-  if (ms.matched.size === matching.pairs.length) {
-    const btn = document.getElementById('completeMatchingBtn');
-    if (btn) {
-      btn.addEventListener('click', () => {
-        state.completedSections.add(state.currentSection);
-        if (state.currentSection < state.activeLesson.sections.length - 1) {
-          state.currentSection++;
-          render();
-        }
-      });
-    }
-    return;
-  }
-
-  document.querySelectorAll('[data-left]').forEach(el => {
-    el.addEventListener('click', () => {
-      const index = parseInt(el.dataset.left);
-      if (ms.matched.has(index)) return;
-      ms.selectedLeft = index;
-      ms.attempts++;
-
-      if (ms.selectedRight !== null) {
-        const rightPairIndex = matching.pairs.indexOf(ms.shuffled[ms.selectedRight]);
-        if (index === rightPairIndex) {
-          ms.matched.add(index);
-          ms.selectedLeft = null;
-          ms.selectedRight = null;
-        } else {
-          setTimeout(() => {
-            ms.selectedLeft = null;
-            ms.selectedRight = null;
-            document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
-            attachMatchingEvents(matching);
-          }, 800);
-        }
-      }
-
-      document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
-      attachMatchingEvents(matching);
-    });
-  });
-
-  document.querySelectorAll('[data-right]').forEach(el => {
-    el.addEventListener('click', () => {
-      const index = parseInt(el.dataset.right);
-      const pairIndex = matching.pairs.indexOf(ms.shuffled[index]);
-      if (ms.matched.has(pairIndex)) return;
-      ms.selectedRight = index;
-      ms.attempts++;
-
-      if (ms.selectedLeft !== null) {
-        if (ms.selectedLeft === pairIndex) {
-          ms.matched.add(pairIndex);
-          ms.selectedLeft = null;
-          ms.selectedRight = null;
-        } else {
-          setTimeout(() => {
-            ms.selectedLeft = null;
-            ms.selectedRight = null;
-            document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
-            attachMatchingEvents(matching);
-          }, 800);
-        }
-      }
-
-      document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
-      attachMatchingEvents(matching);
-    });
-  });
+function attachMatchEvents(m) {
+  const ms=window.ms;
+  if(ms.matched.size===m.pairs.length){const b=document.getElementById('completeMatchBtn');if(b)b.addEventListener('click',advanceSection);return;}
+  document.querySelectorAll('[data-left]').forEach(el=>el.addEventListener('click',()=>{
+    const i=parseInt(el.dataset.left); if(ms.matched.has(i))return; ms.sl=i; ms.att++;
+    if(ms.sr!==null){const ri=m.pairs.indexOf(ms.shuffled[ms.sr]);if(i===ri){ms.matched.add(i);ms.sl=null;ms.sr=null;}else{setTimeout(()=>{ms.sl=null;ms.sr=null;document.getElementById('matchContainer').innerHTML=renderMatch(m);attachMatchEvents(m);},800);}}
+    document.getElementById('matchContainer').innerHTML=renderMatch(m);attachMatchEvents(m);
+  }));
+  document.querySelectorAll('[data-right]').forEach(el=>el.addEventListener('click',()=>{
+    const i=parseInt(el.dataset.right),pi=m.pairs.indexOf(ms.shuffled[i]); if(ms.matched.has(pi))return; ms.sr=i; ms.att++;
+    if(ms.sl!==null){if(ms.sl===pi){ms.matched.add(pi);ms.sl=null;ms.sr=null;}else{setTimeout(()=>{ms.sl=null;ms.sr=null;document.getElementById('matchContainer').innerHTML=renderMatch(m);attachMatchEvents(m);},800);}}
+    document.getElementById('matchContainer').innerHTML=renderMatch(m);attachMatchEvents(m);
+  }));
 }
 
-// ===== INIT =====
 render();
 </script>
 </body>

@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Lesson, LessonSection } from '../data/lessons';
+import HeaderBanner from './HeaderBanner';
 import Quiz from './Quiz';
 import Flashcards from './Flashcards';
 import MatchingGame from './MatchingGame';
@@ -36,70 +37,121 @@ export default function LessonPlayer({ lesson, studentName, onBack }: LessonPlay
   };
 
   const progress = ((currentSection + 1) / lesson.sections.length) * 100;
-
-  const completeSection = () => {
-    setCompletedSections(prev => new Set([...prev, currentSection]));
-    if (currentSection < lesson.sections.length - 1) {
-      setCurrentSection(prev => prev + 1);
-    }
-  };
-
   const section = lesson.sections[currentSection];
 
   return (
-    <div className="min-h-screen">
-      {/* Header */}
-      <header className="bg-[var(--navy2)] border-b border-[var(--border)] px-4 sm:px-6 py-3 sticky top-0 z-50">
-        <div className="max-w-4xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-3">
-            <button
-              onClick={onBack}
-              className="btn-ghost rounded-lg px-3 py-1.5 text-sm flex items-center gap-1.5"
-            >
-              ← Back
-            </button>
-            <div className="hidden sm:block">
-              <span className="text-[10px] font-space font-medium text-[var(--blue-light)] tracking-wider uppercase">
-                {lesson.level} · {lesson.duration} min
-              </span>
-              <h1 className="font-space text-sm font-bold text-[var(--text)] leading-tight">
-                {lesson.title}
-              </h1>
+    <div style={{ minHeight: '100vh' }}>
+      {/* Header Banner */}
+      <HeaderBanner
+        subtitle={`${lesson.level} · ${lesson.duration} min`}
+        compact
+        rightContent={
+          <>
+            <div style={{
+              display: 'flex',
+              alignItems: 'center',
+              gap: '8px',
+              background: 'rgba(255,255,255,0.85)',
+              backdropFilter: 'blur(8px)',
+              border: '1px solid rgba(255,255,255,0.5)',
+              borderRadius: '10px',
+              padding: '6px 12px',
+              boxShadow: '0 2px 8px rgba(0,0,0,0.06)',
+            }}>
+              <span style={{ fontSize: '12px', color: '#64748B' }}>{studentName}</span>
             </div>
-          </div>
-          <div className="flex items-center gap-3">
-            <span className="hidden sm:inline-block bg-[var(--blue-glow)] border border-[rgba(59,130,246,0.3)] rounded-full px-3 py-1 text-xs font-medium text-[var(--blue-light)]">
-              {studentName}
-            </span>
-            <span className="font-space text-sm font-semibold text-[var(--text-muted)]">
+            <div className="font-space" style={{
+              fontSize: '14px',
+              fontWeight: 600,
+              color: '#1E293B',
+              background: 'rgba(255,255,255,0.7)',
+              padding: '6px 12px',
+              borderRadius: '10px',
+              border: '1px solid rgba(255,255,255,0.5)',
+            }}>
               {formatTime(totalSeconds)}
-            </span>
-          </div>
+            </div>
+          </>
+        }
+      />
+
+      {/* Lesson Title Bar */}
+      <div style={{
+        background: 'rgba(255,255,255,0.7)',
+        backdropFilter: 'blur(12px)',
+        borderBottom: '1px solid rgba(255,255,255,0.5)',
+        padding: '12px 24px',
+      }}>
+        <div style={{ maxWidth: '1024px', margin: '0 auto', display: 'flex', alignItems: 'center', gap: '12px' }}>
+          <button
+            onClick={onBack}
+            style={{
+              background: 'rgba(255,255,255,0.7)',
+              border: '1px solid rgba(30,41,59,0.1)',
+              borderRadius: '8px',
+              padding: '6px 12px',
+              fontSize: '13px',
+              color: '#64748B',
+              cursor: 'pointer',
+              fontWeight: 500,
+              transition: 'all 0.2s',
+            }}
+            onMouseEnter={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.9)';
+              e.currentTarget.style.color = '#1E293B';
+            }}
+            onMouseLeave={(e) => {
+              e.currentTarget.style.background = 'rgba(255,255,255,0.7)';
+              e.currentTarget.style.color = '#64748B';
+            }}
+          >
+            ← Back
+          </button>
+          <h1 className="font-space" style={{ fontSize: '15px', fontWeight: 600, color: '#1E293B', margin: 0 }}>
+            {lesson.title}
+          </h1>
         </div>
-      </header>
+      </div>
 
       {/* Progress Bar */}
-      <div className="h-1 bg-[var(--border)]">
-        <div
-          className="h-full bg-gradient-to-r from-[var(--blue)] to-[var(--blue-light)] transition-all duration-500"
-          style={{ width: `${progress}%` }}
-        />
+      <div className="progress-bar-track">
+        <div className="progress-bar-fill" style={{ width: `${progress}%` }} />
       </div>
 
       {/* Section Navigation */}
-      <div className="bg-[var(--navy2)] border-b border-[var(--border)] px-4 sm:px-6 overflow-x-auto">
-        <div className="max-w-4xl mx-auto flex gap-1 py-2">
+      <div style={{
+        background: 'rgba(255,255,255,0.5)',
+        backdropFilter: 'blur(8px)',
+        borderBottom: '1px solid rgba(255,255,255,0.4)',
+        padding: '8px 24px',
+        overflowX: 'auto',
+      }}>
+        <div style={{ maxWidth: '1024px', margin: '0 auto', display: 'flex', gap: '4px' }}>
           {lesson.sections.map((s, i) => (
             <button
               key={s.id}
               onClick={() => setCurrentSection(i)}
-              className={`flex items-center gap-1.5 px-3 py-1.5 rounded-lg text-xs font-medium whitespace-nowrap transition-all ${
-                i === currentSection
-                  ? 'bg-[var(--blue-glow)] text-[var(--blue-light)] border border-[rgba(59,130,246,0.3)]'
+              style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '6px',
+                padding: '6px 12px',
+                borderRadius: '8px',
+                fontSize: '12px',
+                fontWeight: 500,
+                whiteSpace: 'nowrap',
+                transition: 'all 0.2s',
+                cursor: 'pointer',
+                border: 'none',
+                background: i === currentSection
+                  ? 'rgba(255,152,0,0.12)'
+                  : 'transparent',
+                color: i === currentSection
+                  ? '#E65100'
                   : completedSections.has(i)
-                    ? 'text-[var(--green-light)] hover:bg-[rgba(16,185,129,0.1)]'
-                    : 'text-[var(--text-muted)] hover:bg-[var(--card)] hover:text-[var(--text)]'
-              }`}
+                    ? '#10b981'
+                    : '#64748B',
+              }}
             >
               {completedSections.has(i) ? '✓' : `${i + 1}.`} {s.title}
             </button>
@@ -108,46 +160,29 @@ export default function LessonPlayer({ lesson, studentName, onBack }: LessonPlay
       </div>
 
       {/* Section Content */}
-      <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
+      <div style={{ maxWidth: '1024px', margin: '0 auto', padding: '32px 24px' }}>
         <div className="animate-fade-in" key={section.id}>
           <SectionHeader section={section} />
-          
-          {section.type === 'content' && section.content && (
-            <ContentRenderer content={section.content} />
-          )}
-          {section.type === 'quiz' && section.quiz && (
-            <Quiz questions={section.quiz.questions} onComplete={completeSection} />
-          )}
-          {section.type === 'flashcards' && section.flashcards && (
-            <Flashcards cards={section.flashcards.cards} onComplete={completeSection} />
-          )}
-          {section.type === 'matching' && section.matching && (
-            <MatchingGame
-              instruction={section.matching.instruction}
-              pairs={section.matching.pairs}
-              onComplete={completeSection}
-            />
-          )}
-          {section.type === 'wordOrder' && section.wordOrder && (
-            <WordOrder sentences={section.wordOrder.sentences} onComplete={completeSection} />
-          )}
-          {section.type === 'story' && section.story && (
-            <StoryPanel story={section.story} onComplete={completeSection} />
-          )}
-          {section.type === 'discussion' && section.discussion && (
-            <DiscussionPanel discussion={section.discussion} onComplete={completeSection} />
-          )}
+
+          {section.type === 'content' && section.content && <ContentRenderer content={section.content} />}
+          {section.type === 'quiz' && section.quiz && <Quiz questions={section.quiz.questions} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
+          {section.type === 'flashcards' && section.flashcards && <Flashcards cards={section.flashcards.cards} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
+          {section.type === 'matching' && section.matching && <MatchingGame instruction={section.matching.instruction} pairs={section.matching.pairs} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
+          {section.type === 'wordOrder' && section.wordOrder && <WordOrder sentences={section.wordOrder.sentences} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
+          {section.type === 'story' && section.story && <StoryPanel story={section.story} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
+          {section.type === 'discussion' && section.discussion && <DiscussionPanel discussion={section.discussion} onComplete={() => { setCompletedSections(prev => new Set([...prev, currentSection])); if (currentSection < lesson.sections.length - 1) setCurrentSection(prev => prev + 1); }} />}
 
           {/* Navigation */}
-          <div className="flex items-center justify-between mt-8 pt-6 border-t border-[var(--border)]">
+          <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginTop: '32px', paddingTop: '24px', borderTop: '1px solid rgba(255,255,255,0.4)' }}>
             <button
               onClick={() => setCurrentSection(prev => Math.max(0, prev - 1))}
               disabled={currentSection === 0}
-              className="btn btn-secondary disabled:opacity-30 disabled:cursor-not-allowed"
+              className="btn btn-secondary"
+              style={{ opacity: currentSection === 0 ? 0.3 : 1, cursor: currentSection === 0 ? 'not-allowed' : 'pointer' }}
             >
               ← Previous
             </button>
-            <span className="text-xs text-[var(--text-muted)]">
+            <span style={{ fontSize: '12px', color: '#64748B' }}>
               {currentSection + 1} of {lesson.sections.length}
             </span>
             {currentSection < lesson.sections.length - 1 ? (
@@ -186,12 +221,12 @@ function SectionHeader({ section }: { section: LessonSection }) {
   const info = typeLabels[section.type] || typeLabels.content;
 
   return (
-    <div className="mb-6">
-      <div className="flex items-center gap-2 mb-2">
+    <div style={{ marginBottom: '24px' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '8px', marginBottom: '8px' }}>
         <span className={`tag ${info.color}`}>{info.icon} {info.label}</span>
-        <span className="text-xs text-[var(--text-dim)]">· {section.duration} min</span>
+        <span style={{ fontSize: '12px', color: '#94A3B8' }}>· {section.duration} min</span>
       </div>
-      <h2 className="font-space text-xl sm:text-2xl font-bold text-[var(--text)]">
+      <h2 className="font-space" style={{ fontSize: '24px', fontWeight: 700, color: '#1E293B' }}>
         {section.title}
       </h2>
     </div>

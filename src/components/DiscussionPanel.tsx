@@ -8,32 +8,30 @@ interface DiscussionPanelProps {
 export default function DiscussionPanel({ discussion, onComplete }: DiscussionPanelProps) {
   return (
     <div className="animate-fade-in">
-      <div className="callout callout-purple mb-6">
+      <div className="callout callout-purple" style={{ marginBottom: '24px' }}>
         <strong>💬 Speaking Practice:</strong> These questions are designed for conversation with your teacher. Take your time, use the vocabulary and grammar from this lesson, and don't worry about making mistakes — that's how we learn!
       </div>
 
-      {/* Questions */}
-      <div className="flex flex-col gap-4 mb-6">
+      <div style={{ display: 'flex', flexDirection: 'column', gap: '12px', marginBottom: '24px' }}>
         {discussion.questions.map((q, i) => (
           <div key={i} className="card">
-            <div className="flex items-start gap-3">
-              <span className="font-space text-lg font-bold text-[var(--blue-light)] shrink-0">
+            <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+              <span className="font-space" style={{ fontSize: '18px', fontWeight: 700, color: '#FF9800', flexShrink: 0 }}>
                 {i + 1}.
               </span>
-              <p className="text-[15px] leading-relaxed">{q}</p>
+              <p style={{ fontSize: '15px', lineHeight: 1.6, color: '#1E293B' }}>{q}</p>
             </div>
           </div>
         ))}
       </div>
 
-      {/* Tips */}
       {discussion.tips && discussion.tips.length > 0 && (
-        <div className="callout callout-green mb-6">
+        <div className="callout callout-green" style={{ marginBottom: '24px' }}>
           <strong>💡 Tips for this activity:</strong>
-          <ul className="mt-2 flex flex-col gap-1.5">
+          <ul style={{ marginTop: '8px', display: 'flex', flexDirection: 'column', gap: '6px', paddingLeft: 0, listStyle: 'none' }}>
             {discussion.tips.map((tip, i) => (
-              <li key={i} className="text-sm text-[var(--text)] flex items-start gap-2">
-                <span className="text-[var(--green-light)]">•</span>
+              <li key={i} style={{ fontSize: '14px', color: '#1E293B', display: 'flex', alignItems: 'flex-start', gap: '8px' }}>
+                <span style={{ color: '#10b981' }}>•</span>
                 {tip}
               </li>
             ))}
@@ -41,8 +39,7 @@ export default function DiscussionPanel({ discussion, onComplete }: DiscussionPa
         </div>
       )}
 
-      {/* Continue */}
-      <div className="flex justify-end">
+      <div style={{ display: 'flex', justifyContent: 'flex-end' }}>
         <button onClick={onComplete} className="btn btn-primary">
           Continue →
         </button>

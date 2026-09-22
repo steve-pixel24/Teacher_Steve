@@ -40,25 +40,27 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
   if (showResult) {
     const percentage = Math.round((correctCount / questions.length) * 100);
     return (
-      <div className="card text-center py-10 animate-fade-in">
-        <div className="text-5xl mb-4">
+      <div className="card" style={{ textAlign: 'center', padding: '40px' }}>
+        <div style={{ fontSize: '48px', marginBottom: '16px' }}>
           {percentage === 100 ? '🏆' : percentage >= 80 ? '🌟' : percentage >= 60 ? '👍' : '💪'}
         </div>
-        <div className="font-space text-4xl font-bold text-[var(--blue-light)] mb-2">
+        <div className="font-space" style={{ fontSize: '36px', fontWeight: 700, color: '#E65100', marginBottom: '8px' }}>
           {correctCount}/{questions.length}
         </div>
-        <div className="text-[var(--text-muted)] mb-4">
+        <div style={{ color: '#64748B', marginBottom: '16px' }}>
           {percentage === 100 ? 'Perfect score! Outstanding!' :
            percentage >= 80 ? 'Excellent work!' :
            percentage >= 60 ? 'Good job! Keep practicing.' :
            'Keep going — practice makes perfect!'}
         </div>
-        <div className="w-48 h-2 bg-[rgba(255,255,255,0.1)] rounded-full mx-auto overflow-hidden mb-6">
+        <div style={{ width: '200px', height: '8px', background: 'rgba(255,255,255,0.5)', borderRadius: '999px', margin: '0 auto 24px', overflow: 'hidden' }}>
           <div
-            className="h-full rounded-full transition-all duration-1000"
             style={{
+              height: '100%',
+              borderRadius: '999px',
+              transition: 'width 1s ease',
               width: `${percentage}%`,
-              background: percentage >= 80 ? 'var(--green)' : percentage >= 60 ? 'var(--amber)' : 'var(--red)'
+              background: percentage >= 80 ? '#10b981' : percentage >= 60 ? '#FF9800' : '#ef4444',
             }}
           />
         </div>
@@ -72,25 +74,24 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
   return (
     <div className="animate-fade-in">
       {/* Progress */}
-      <div className="flex items-center gap-3 mb-6">
-        <div className="flex-1 h-1.5 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden">
+      <div style={{ display: 'flex', alignItems: 'center', gap: '12px', marginBottom: '24px' }}>
+        <div style={{ flex: 1, height: '6px', background: 'rgba(255,255,255,0.5)', borderRadius: '999px', overflow: 'hidden' }}>
           <div
-            className="h-full bg-[var(--blue)] rounded-full transition-all duration-300"
-            style={{ width: `${((currentQ + 1) / questions.length) * 100}%` }}
+            style={{ height: '100%', background: 'linear-gradient(90deg, #FF9800, #FFC107)', borderRadius: '999px', transition: 'width 0.3s', width: `${((currentQ + 1) / questions.length) * 100}%` }}
           />
         </div>
-        <span className="text-xs text-[var(--text-muted)] font-space font-medium">
+        <span className="font-space" style={{ fontSize: '12px', color: '#64748B', fontWeight: 500 }}>
           {currentQ + 1}/{questions.length}
         </span>
       </div>
 
       {/* Question */}
-      <div className="card mb-6">
-        <div className="text-lg font-medium leading-relaxed mb-6">
+      <div className="card" style={{ marginBottom: '24px' }}>
+        <div style={{ fontSize: '18px', fontWeight: 500, lineHeight: 1.6, marginBottom: '24px', color: '#1E293B' }}>
           {question.question}
         </div>
 
-        <div className="flex flex-col gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {question.options.map((option, i) => {
             let className = 'game-option';
             if (isAnswered) {
@@ -105,8 +106,21 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
                 onClick={() => selectAnswer(i)}
                 disabled={isAnswered}
               >
-                <span className="inline-flex items-center gap-3">
-                  <span className="w-6 h-6 rounded-full border border-[var(--border)] flex items-center justify-center text-xs font-space font-bold shrink-0">
+                <span style={{ display: 'inline-flex', alignItems: 'center', gap: '12px' }}>
+                  <span style={{
+                    width: '24px',
+                    height: '24px',
+                    borderRadius: '50%',
+                    border: '1px solid rgba(30,41,59,0.15)',
+                    display: 'inline-flex',
+                    alignItems: 'center',
+                    justifyContent: 'center',
+                    fontSize: '12px',
+                    fontFamily: "'Space Grotesk', sans-serif",
+                    fontWeight: 700,
+                    flexShrink: 0,
+                    background: 'rgba(255,255,255,0.5)',
+                  }}>
                     {String.fromCharCode(65 + i)}
                   </span>
                   {option}
@@ -118,17 +132,18 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
 
         {/* Feedback */}
         {feedback && (
-          <div className={`mt-4 p-4 rounded-lg animate-fade-in ${
-            feedback.correct
-              ? 'bg-[rgba(16,185,129,0.1)] border border-[rgba(16,185,129,0.2)]'
-              : 'bg-[rgba(239,68,68,0.08)] border border-[rgba(239,68,68,0.2)]'
-          }`}>
-            <div className={`text-sm font-medium mb-1 ${
-              feedback.correct ? 'text-[var(--green-light)]' : 'text-[#f87171]'
-            }`}>
+          <div style={{
+            marginTop: '16px',
+            padding: '16px',
+            borderRadius: '12px',
+            animation: 'fadeIn 0.3s ease-out',
+            background: feedback.correct ? 'rgba(16,185,129,0.08)' : 'rgba(239,68,68,0.06)',
+            border: `1px solid ${feedback.correct ? 'rgba(16,185,129,0.2)' : 'rgba(239,68,68,0.15)'}`,
+          }}>
+            <div style={{ fontSize: '14px', fontWeight: 500, marginBottom: '4px', color: feedback.correct ? '#10b981' : '#ef4444' }}>
               {feedback.correct ? '✓ Correct!' : '✗ Not quite'}
             </div>
-            <div className="text-sm text-[var(--text-muted)]">
+            <div style={{ fontSize: '14px', color: '#64748B' }}>
               {feedback.explanation}
             </div>
           </div>
@@ -137,7 +152,7 @@ export default function Quiz({ questions, onComplete }: QuizProps) {
 
       {/* Next button */}
       {isAnswered && (
-        <div className="flex justify-end animate-fade-in">
+        <div style={{ display: 'flex', justifyContent: 'flex-end' }} className="animate-fade-in">
           <button onClick={nextQuestion} className="btn btn-primary">
             {currentQ < questions.length - 1 ? 'Next Question →' : 'See Results →'}
           </button>

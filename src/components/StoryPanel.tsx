@@ -8,22 +8,20 @@ interface StoryPanelProps {
 export default function StoryPanel({ story, onComplete }: StoryPanelProps) {
   return (
     <div className="animate-fade-in">
-      {/* Story */}
-      <div className="story-box mb-8" dangerouslySetInnerHTML={{ __html: story.text }} />
+      <div className="story-box" dangerouslySetInnerHTML={{ __html: story.text }} />
 
-      {/* Questions */}
-      <div className="mb-6">
-        <h3 className="font-space text-sm font-semibold text-[var(--text-muted)] uppercase tracking-wider mb-4">
+      <div style={{ marginBottom: '24px' }}>
+        <h3 className="font-space" style={{ fontSize: '12px', fontWeight: 600, color: '#64748B', textTransform: 'uppercase', letterSpacing: '0.08em', marginBottom: '16px' }}>
           Comprehension Questions
         </h3>
-        <div className="flex flex-col gap-3">
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '12px' }}>
           {story.questions.map((q, i) => (
             <div key={i} className="card">
-              <div className="flex items-start gap-3">
-                <span className="font-space text-base font-bold text-[var(--blue-light)] shrink-0">
+              <div style={{ display: 'flex', alignItems: 'flex-start', gap: '12px' }}>
+                <span className="font-space" style={{ fontSize: '16px', fontWeight: 700, color: '#FF9800', flexShrink: 0 }}>
                   {i + 1}.
                 </span>
-                <p className="text-sm leading-relaxed">{q}</p>
+                <p style={{ fontSize: '14px', lineHeight: 1.6, color: '#1E293B' }}>{q}</p>
               </div>
             </div>
           ))}
@@ -34,8 +32,7 @@ export default function StoryPanel({ story, onComplete }: StoryPanelProps) {
         <strong>📝 Task:</strong> Discuss these questions with your teacher. Try to find evidence in the story to support your answers.
       </div>
 
-      {/* Continue */}
-      <div className="flex justify-end mt-6">
+      <div style={{ display: 'flex', justifyContent: 'flex-end', marginTop: '24px' }}>
         <button onClick={onComplete} className="btn btn-primary">
           Continue →
         </button>

@@ -25,25 +25,19 @@ export default function Flashcards({ cards, onComplete }: FlashcardsProps) {
     goNext();
   };
 
-  const markUnknown = () => {
-    goNext();
-  };
+  const markUnknown = () => { goNext(); };
 
   const goNext = () => {
     setIsFlipped(false);
     setTimeout(() => {
-      if (currentIndex < cards.length - 1) {
-        setCurrentIndex(prev => prev + 1);
-      }
+      if (currentIndex < cards.length - 1) setCurrentIndex(prev => prev + 1);
     }, 200);
   };
 
   const goPrev = () => {
     setIsFlipped(false);
     setTimeout(() => {
-      if (currentIndex > 0) {
-        setCurrentIndex(prev => prev - 1);
-      }
+      if (currentIndex > 0) setCurrentIndex(prev => prev - 1);
     }, 200);
   };
 
@@ -52,20 +46,13 @@ export default function Flashcards({ cards, onComplete }: FlashcardsProps) {
   return (
     <div className="animate-fade-in">
       {/* Progress */}
-      <div className="flex items-center justify-between mb-6">
-        <div className="flex items-center gap-2">
-          <span className="text-xs text-[var(--text-muted)]">
-            Card {currentIndex + 1} of {cards.length}
-          </span>
-          <span className="streak-fire">
-            🔥 {knownCards.size} learned
-          </span>
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '24px' }}>
+        <div style={{ display: 'flex', alignItems: 'center', gap: '8px' }}>
+          <span style={{ fontSize: '12px', color: '#64748B' }}>Card {currentIndex + 1} of {cards.length}</span>
+          <span className="streak-fire">🔥 {knownCards.size} learned</span>
         </div>
-        <div className="flex-1 max-w-[200px] h-1.5 bg-[rgba(255,255,255,0.06)] rounded-full overflow-hidden ml-4">
-          <div
-            className="h-full bg-[var(--green)] rounded-full transition-all duration-300"
-            style={{ width: `${(knownCards.size / cards.length) * 100}%` }}
-          />
+        <div style={{ flex: 1, maxWidth: '200px', height: '6px', background: 'rgba(255,255,255,0.5)', borderRadius: '999px', overflow: 'hidden', marginLeft: '16px' }}>
+          <div style={{ height: '100%', background: '#10b981', borderRadius: '999px', transition: 'width 0.3s', width: `${(knownCards.size / cards.length) * 100}%` }} />
         </div>
       </div>
 
@@ -73,23 +60,23 @@ export default function Flashcards({ cards, onComplete }: FlashcardsProps) {
       <div className="flashcard-container" onClick={flip}>
         <div className={`flashcard-inner ${isFlipped ? 'flipped' : ''}`}>
           <div className="flashcard-front">
-            <div className="text-xs text-[var(--text-muted)] mb-3 uppercase tracking-wider">Tap to flip</div>
-            <div className="font-space text-2xl font-bold text-[var(--text)] mb-2">
+            <div style={{ fontSize: '12px', color: '#94A3B8', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Tap to flip</div>
+            <div className="font-space" style={{ fontSize: '24px', fontWeight: 700, color: '#1E293B', marginBottom: '8px' }}>
               {card.front}
             </div>
             {card.example && (
-              <div className="text-sm text-[var(--text-muted)] italic mt-4 px-4">
+              <div style={{ fontSize: '14px', color: '#64748B', fontStyle: 'italic', marginTop: '16px', padding: '0 16px' }}>
                 "{card.example}"
               </div>
             )}
           </div>
           <div className="flashcard-back">
-            <div className="text-xs text-[var(--blue-light)] mb-3 uppercase tracking-wider">Definition</div>
-            <div className="text-lg font-medium text-[var(--text)] mb-3">
+            <div style={{ fontSize: '12px', color: '#E65100', marginBottom: '12px', textTransform: 'uppercase', letterSpacing: '0.08em' }}>Definition</div>
+            <div style={{ fontSize: '18px', fontWeight: 500, color: '#1E293B', marginBottom: '12px' }}>
               {card.back}
             </div>
             {card.example && (
-              <div className="text-sm text-[var(--text-muted)] italic mt-2 px-4 border-t border-[rgba(255,255,255,0.1)] pt-3">
+              <div style={{ fontSize: '14px', color: '#64748B', fontStyle: 'italic', marginTop: '8px', padding: '12px 16px', borderTop: '1px solid rgba(0,0,0,0.06)' }}>
                 Example: "{card.example}"
               </div>
             )}
@@ -98,69 +85,46 @@ export default function Flashcards({ cards, onComplete }: FlashcardsProps) {
       </div>
 
       {/* Controls */}
-      <div className="flex items-center justify-center gap-3 mt-8">
-        <button
-          onClick={goPrev}
-          disabled={currentIndex === 0}
-          className="btn btn-secondary disabled:opacity-30"
-        >
+      <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', gap: '12px', marginTop: '32px' }}>
+        <button onClick={goPrev} disabled={currentIndex === 0} className="btn btn-secondary" style={{ opacity: currentIndex === 0 ? 0.3 : 1 }}>
           ← Prev
         </button>
-
         {isFlipped && (
           <>
-            <button
-              onClick={(e) => { e.stopPropagation(); markUnknown(); }}
-              className="btn btn-secondary"
-              style={{ borderColor: 'rgba(239,68,68,0.3)', color: '#f87171' }}
-            >
+            <button onClick={(e) => { e.stopPropagation(); markUnknown(); }} className="btn btn-secondary" style={{ borderColor: 'rgba(239,68,68,0.2)', color: '#ef4444' }}>
               Still Learning
             </button>
-            <button
-              onClick={(e) => { e.stopPropagation(); markKnown(); }}
-              className="btn btn-success"
-            >
+            <button onClick={(e) => { e.stopPropagation(); markKnown(); }} className="btn" style={{ background: 'linear-gradient(135deg, #10b981, #059669)', color: 'white' }}>
               ✓ Got It!
             </button>
           </>
         )}
-
-        <button
-          onClick={goNext}
-          disabled={currentIndex === cards.length - 1}
-          className="btn btn-secondary disabled:opacity-30"
-        >
+        <button onClick={goNext} disabled={currentIndex === cards.length - 1} className="btn btn-secondary" style={{ opacity: currentIndex === cards.length - 1 ? 0.3 : 1 }}>
           Next →
         </button>
       </div>
 
       {/* Card indicators */}
-      <div className="flex justify-center gap-1.5 mt-6">
+      <div style={{ display: 'flex', justifyContent: 'center', gap: '6px', marginTop: '24px' }}>
         {cards.map((_, i) => (
-          <div
-            key={i}
-            className={`w-2 h-2 rounded-full transition-all ${
-              i === currentIndex ? 'bg-[var(--blue)] w-6' :
-              knownCards.has(i) ? 'bg-[var(--green)]' :
-              'bg-[rgba(255,255,255,0.15)]'
-            }`}
-          />
+          <div key={i} style={{
+            width: '8px',
+            height: '8px',
+            borderRadius: '50%',
+            transition: 'all 0.2s',
+            background: i === currentIndex ? '#FF9800' : knownCards.has(i) ? '#10b981' : 'rgba(30,41,59,0.15)',
+            ...(i === currentIndex ? { width: '24px', borderRadius: '4px' } : {}),
+          }} />
         ))}
       </div>
 
       {/* Completion */}
       {allDone && (
-        <div className="card text-center py-6 mt-6 animate-fade-in bg-[rgba(16,185,129,0.05)] border-[rgba(16,185,129,0.2)]">
-          <div className="text-3xl mb-2">🎉</div>
-          <div className="font-space text-lg font-bold text-[var(--green-light)] mb-1">
-            All cards learned!
-          </div>
-          <p className="text-sm text-[var(--text-muted)] mb-4">
-            Great job! You've reviewed all the vocabulary.
-          </p>
-          <button onClick={onComplete} className="btn btn-primary">
-            Continue →
-          </button>
+        <div className="card" style={{ textAlign: 'center', padding: '24px', marginTop: '24px', background: 'rgba(16,185,129,0.05)', borderColor: 'rgba(16,185,129,0.2)' }}>
+          <div style={{ fontSize: '48px', marginBottom: '8px' }}>🎉</div>
+          <div className="font-space" style={{ fontSize: '18px', fontWeight: 700, color: '#10b981', marginBottom: '4px' }}>All cards learned!</div>
+          <p style={{ fontSize: '14px', color: '#64748B', marginBottom: '16px' }}>Great job! You've reviewed all the vocabulary.</p>
+          <button onClick={onComplete} className="btn btn-primary">Continue →</button>
         </div>
       )}
     </div>
