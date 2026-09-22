@@ -1,0 +1,1288 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Interactive Lessons Platform</title>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --navy: #0d1117;
+  --navy2: #161b22;
+  --navy3: #1f2937;
+  --blue: #3b82f6;
+  --blue-light: #60a5fa;
+  --blue-glow: rgba(59,130,246,0.15);
+  --green: #10b981;
+  --green-light: #34d399;
+  --amber: #f59e0b;
+  --amber-light: #fbbf24;
+  --red: #ef4444;
+  --purple: #8b5cf6;
+  --purple-light: #a78bfa;
+  --text: #e2e8f0;
+  --text-muted: #94a3b8;
+  --text-dim: #64748b;
+  --border: rgba(255,255,255,0.08);
+  --border-hover: rgba(255,255,255,0.15);
+  --card: rgba(255,255,255,0.04);
+  --card-hover: rgba(255,255,255,0.07);
+}
+
+*, *::before, *::after { box-sizing: border-box; }
+
+body {
+  font-family: 'Inter', sans-serif;
+  background: var(--navy);
+  color: var(--text);
+  min-height: 100vh;
+  margin: 0;
+  padding: 0;
+  overflow-x: hidden;
+}
+
+.font-space { font-family: 'Space Grotesk', sans-serif; }
+.font-mono { font-family: 'JetBrains Mono', monospace; }
+
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.animate-fade-in { animation: fadeIn 0.4s ease-out; }
+
+.card {
+  background: var(--card);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  padding: 24px;
+  transition: all 0.2s ease;
+}
+
+.card-interactive { cursor: pointer; }
+.card-interactive:hover {
+  border-color: var(--border-hover);
+  background: var(--card-hover);
+  transform: translateY(-2px);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+}
+
+.tag {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  padding: 4px 10px;
+  border-radius: 20px;
+}
+
+.tag-blue { background: var(--blue-glow); color: var(--blue-light); border: 1px solid rgba(59,130,246,0.2); }
+.tag-green { background: rgba(16,185,129,0.1); color: var(--green-light); border: 1px solid rgba(16,185,129,0.2); }
+.tag-amber { background: rgba(245,158,11,0.1); color: var(--amber-light); border: 1px solid rgba(245,158,11,0.2); }
+.tag-purple { background: rgba(139,92,246,0.1); color: var(--purple-light); border: 1px solid rgba(139,92,246,0.2); }
+
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-weight: 600;
+  border: none;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  font-size: 14px;
+  padding: 12px 24px;
+}
+
+.btn-primary {
+  background: linear-gradient(135deg, var(--blue), #2563eb);
+  color: white;
+  box-shadow: 0 4px 15px rgba(59,130,246,0.3);
+}
+
+.btn-primary:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 6px 20px rgba(59,130,246,0.4);
+}
+
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--border);
+  color: var(--text);
+}
+
+.btn-secondary:hover {
+  background: var(--card-hover);
+  border-color: var(--border-hover);
+}
+
+.callout {
+  border-radius: 10px;
+  padding: 16px 20px;
+  margin: 16px 0;
+  font-size: 14px;
+  line-height: 1.7;
+}
+
+.callout-blue { background: var(--blue-glow); border: 1px solid rgba(59,130,246,0.25); }
+.callout-blue strong { color: var(--blue-light); }
+.callout-amber { background: rgba(245,158,11,0.08); border: 1px solid rgba(245,158,11,0.2); }
+.callout-amber strong { color: var(--amber-light); }
+.callout-green { background: rgba(16,185,129,0.08); border: 1px solid rgba(16,185,129,0.2); }
+.callout-green strong { color: var(--green-light); }
+
+.lesson-table {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  margin: 16px 0;
+  font-size: 14px;
+  overflow: hidden;
+  border-radius: 10px;
+  border: 1px solid var(--border);
+}
+
+.lesson-table th {
+  text-align: left;
+  padding: 12px 16px;
+  font-family: 'Space Grotesk', sans-serif;
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  background: var(--navy2);
+  border-bottom: 1px solid var(--border);
+}
+
+.lesson-table td {
+  padding: 12px 16px;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+  line-height: 1.5;
+}
+
+.lesson-table tr:last-child td { border-bottom: none; }
+.lesson-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+.flashcard-container {
+  perspective: 1000px;
+  width: 100%;
+  max-width: 400px;
+  height: 240px;
+  margin: 0 auto;
+  cursor: pointer;
+}
+
+.flashcard-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-style: preserve-3d;
+}
+
+.flashcard-inner.flipped { transform: rotateY(180deg); }
+
+.flashcard-front, .flashcard-back {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  backface-visibility: hidden;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+  text-align: center;
+}
+
+.flashcard-front {
+  background: linear-gradient(135deg, var(--navy2), var(--navy3));
+  border: 1px solid var(--border);
+}
+
+.flashcard-back {
+  background: linear-gradient(135deg, rgba(59,130,246,0.1), rgba(139,92,246,0.1));
+  border: 1px solid rgba(59,130,246,0.3);
+  transform: rotateY(180deg);
+}
+
+.match-item {
+  padding: 12px 18px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: center;
+}
+
+.match-item:hover { border-color: var(--border-hover); background: var(--card-hover); }
+.match-item.selected { border-color: var(--blue); background: var(--blue-glow); color: var(--blue-light); }
+.match-item.matched { border-color: var(--green); background: rgba(16,185,129,0.1); color: var(--green-light); cursor: default; }
+
+.game-option {
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  padding: 14px 20px;
+  font-size: 15px;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.15s ease;
+  text-align: left;
+  width: 100%;
+  font-family: 'Inter', sans-serif;
+}
+
+.game-option:hover:not(:disabled) {
+  background: var(--blue-glow);
+  border-color: rgba(59,130,246,0.4);
+  transform: translateX(4px);
+}
+
+.game-option:disabled { cursor: default; opacity: 0.7; }
+.game-option.correct { background: rgba(16,185,129,0.12); border-color: var(--green); color: var(--green-light); }
+.game-option.wrong { background: rgba(239,68,68,0.1); border-color: var(--red); color: #f87171; }
+
+@media (max-width: 640px) {
+  .card { padding: 18px; }
+  .flashcard-container { height: 200px; }
+}
+</style>
+</head>
+<body>
+
+<div id="app"></div>
+
+<script>
+// ===== DATA =====
+const STUDENTS = {
+  'NICOLAS': 'Nicolas',
+  'MARIA': 'Maria',
+  'JOHN': 'John',
+  'ANNA': 'Anna',
+  'PEDRO': 'Pedro',
+  'SOPHIE': 'Sophie',
+  'DEMO': 'Demo Student',
+};
+
+const lessons = [
+  {
+    id: 'conditionals-b2',
+    title: 'Conditionals, Probability & Modal Verbs',
+    description: 'Master the subtle differences between conditional types and learn to express probability with precision.',
+    level: 'B2',
+    type: 'grammar',
+    duration: 50,
+    icon: '🔀',
+    color: 'blue',
+    sections: [
+      {
+        id: 'cond-intro',
+        title: 'Conditionals — Degrees of Reality',
+        type: 'content',
+        duration: 15,
+        content: {
+          tag: 'Part 1 · Grammar',
+          tagColor: 'blue',
+          subtitle: 'At B2, you already know the conditionals. Today we look at the fine differences — how they signal how likely or real something is.',
+          blocks: [
+            {
+              type: 'table',
+              headers: ['Type', 'Formula', 'Reality Level', 'Example'],
+              rows: [
+                ['Zero', 'If + present → present', 'Always true / facts', 'If you heat ice, it melts.'],
+                ['First', 'If + present → will', 'Real & possible', "If I get the job, I'll move to Madrid."],
+                ['Second', 'If + past → would', 'Unlikely / imaginary', "If I won the lottery, I'd retire."],
+                ['Third', 'If + past perfect → would have', 'Impossible — past regret', 'If I had studied, I would have passed.'],
+                ['Mixed', 'If + past perfect → would', 'Past cause → present result', "If I had taken the job, I'd be rich now."],
+              ]
+            },
+            {
+              type: 'callout',
+              variant: 'blue',
+              content: '<strong>The key insight:</strong> The conditional type tells the listener exactly how seriously you believe the situation could happen. It\'s not just grammar — it\'s meaning.'
+            },
+            {
+              type: 'callout',
+              variant: 'amber',
+              content: '<strong>Compare these:</strong><br/><br/><strong>First:</strong> "If it rains, I\'ll take an umbrella." → I think it might rain.<br/><br/><strong>Second:</strong> "If it rained, I\'d take an umbrella." → Probably won\'t rain, just imagining.<br/><br/><strong>Third:</strong> "If it had rained, I would have taken an umbrella." → It didn\'t rain.'
+            }
+          ]
+        }
+      },
+      {
+        id: 'cond-quiz',
+        title: 'Test Your Knowledge',
+        type: 'quiz',
+        duration: 10,
+        quiz: {
+          questions: [
+            { question: "_____ I had more time, I would learn Japanese.", options: ["If", "When", "Unless", "Although"], answer: 0, explanation: "'If' introduces the second conditional — an imaginary present situation." },
+            { question: "You _____ have told me about the meeting! I missed it.", options: ["could", "should", "might", "would"], answer: 1, explanation: "'Should have' expresses criticism — you expected it but it didn't happen." },
+            { question: "There's a significant chance the flight _____ be delayed.", options: ["will", "should", "might", "must"], answer: 2, explanation: "'Might' expresses uncertainty — around 50% probability." },
+            { question: "If she had applied earlier, she _____ got the job.", options: ["would", "will have", "would have", "should"], answer: 2, explanation: "Third conditional: If + past perfect → would have + past participle." },
+            { question: "If water reaches 100°C, it _____.", options: ["would boil", "will boil", "boils", "boiled"], answer: 2, explanation: "Zero conditional uses present simple — for scientific facts." },
+          ]
+        }
+      },
+      {
+        id: 'cond-discuss',
+        title: 'Discussion Practice',
+        type: 'discussion',
+        duration: 10,
+        discussion: {
+          questions: [
+            "Make a First Conditional sentence about something you're planning this week.",
+            "Make a Second Conditional — something unlikely but fun to imagine.",
+            "Make a Third Conditional — something you regret or wish had gone differently.",
+            "Think of a decision you made. How would your life be different if you had chosen differently? (Use mixed conditional)",
+          ],
+          tips: [
+            "Focus on the meaning, not just the form",
+            "Try to use different conditional types in your answers",
+            "Notice how the conditional changes the feeling of your sentence"
+          ]
+        }
+      }
+    ]
+  },
+  {
+    id: 'phrasal-verbs-b2',
+    title: 'Essential Phrasal Verbs for Daily Life',
+    description: 'Learn the most common phrasal verbs native speakers use every day — with context and practice.',
+    level: 'B2',
+    type: 'vocabulary',
+    duration: 45,
+    icon: '📚',
+    color: 'purple',
+    sections: [
+      {
+        id: 'pv-flashcards',
+        title: 'Learn the Phrasal Verbs',
+        type: 'flashcards',
+        duration: 15,
+        flashcards: {
+          cards: [
+            { front: 'come up with', back: 'to think of / create an idea or plan', example: "She came up with a brilliant solution." },
+            { front: 'look forward to', back: 'to feel excited about something in the future', example: "I'm looking forward to the weekend." },
+            { front: 'put off', back: 'to postpone / delay something', example: "Stop putting off your homework!" },
+            { front: 'figure out', back: 'to understand or solve something', example: "I can't figure out how to use this app." },
+            { front: 'get along with', back: 'to have a good relationship with someone', example: "I get along with all my colleagues." },
+            { front: 'run out of', back: 'to have no more of something left', example: "We've run out of milk." },
+          ]
+        }
+      },
+      {
+        id: 'pv-matching',
+        title: 'Match the Meaning',
+        type: 'matching',
+        duration: 10,
+        matching: {
+          instruction: 'Match each phrasal verb with its correct meaning',
+          pairs: [
+            { left: 'come up with', right: 'create an idea' },
+            { left: 'put off', right: 'postpone' },
+            { left: 'figure out', right: 'solve / understand' },
+            { left: 'run out of', right: 'have none left' },
+          ]
+        }
+      },
+      {
+        id: 'pv-discuss',
+        title: 'Use Them in Context',
+        type: 'discussion',
+        duration: 10,
+        discussion: {
+          questions: [
+            "Tell me about a time you came up with a creative solution to a problem.",
+            "What are you looking forward to this month?",
+            "Do you often put things off? What do you procrastinate about?",
+            "Have you ever run out of something important at a bad moment?",
+          ]
+        }
+      }
+    ]
+  }
+];
+
+// ===== STATE =====
+let state = {
+  view: 'login',
+  studentName: '',
+  studentCode: '',
+  activeLesson: null,
+  currentSection: 0,
+  completedSections: new Set(),
+  totalSeconds: 0,
+  timerInterval: null,
+};
+
+// ===== RENDER FUNCTIONS =====
+function render() {
+  const app = document.getElementById('app');
+  
+  if (state.view === 'login') {
+    app.innerHTML = renderLogin();
+    attachLoginEvents();
+  } else if (state.view === 'dashboard') {
+    app.innerHTML = renderDashboard();
+    attachDashboardEvents();
+  } else if (state.view === 'lesson') {
+    app.innerHTML = renderLesson();
+    attachLessonEvents();
+  }
+}
+
+function renderLogin() {
+  return `
+    <div style="min-height: 100vh; display: flex; align-items: center; justify-content: center; padding: 16px;">
+      <div style="position: fixed; inset: 0; overflow: hidden; pointer-events: none;">
+        <div style="position: absolute; top: 25%; left: 25%; width: 384px; height: 384px; background: var(--blue); opacity: 0.05; border-radius: 50%; filter: blur(100px);"></div>
+        <div style="position: absolute; bottom: 25%; right: 25%; width: 384px; height: 384px; background: var(--purple); opacity: 0.05; border-radius: 50%; filter: blur(100px);"></div>
+      </div>
+      <div style="width: 100%; max-width: 448px; position: relative;" class="animate-fade-in">
+        <div style="text-align: center; margin-bottom: 32px;">
+          <div style="display: inline-flex; align-items: center; justify-content: center; width: 64px; height: 64px; border-radius: 16px; background: linear-gradient(135deg, var(--blue), var(--purple)); font-size: 30px; margin-bottom: 16px; box-shadow: 0 10px 30px rgba(59,130,246,0.3);">
+            🎓
+          </div>
+          <h1 class="font-space" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 4px;">
+            Interactive Lessons
+          </h1>
+          <p style="font-size: 14px; color: var(--text-muted);">
+            Enter your student code to continue
+          </p>
+        </div>
+        <form id="loginForm" class="card" style="padding: 24px;">
+          <label style="display: block; font-size: 11px; font-family: 'Space Grotesk', sans-serif; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 8px;">
+            Student Code
+          </label>
+          <input
+            type="text"
+            id="codeInput"
+            placeholder="e.g. NICOLAS"
+            autofocus
+            style="width: 100%; background: var(--navy); border: 1px solid var(--border); border-radius: 8px; padding: 12px 16px; color: var(--text); font-family: 'JetBrains Mono', monospace; font-size: 18px; letter-spacing: 0.1em; outline: none; transition: border-color 0.2s;"
+          />
+          <div id="loginError" style="margin-top: 12px; font-size: 14px; color: #f87171; display: none;"></div>
+          <button
+            type="submit"
+            class="btn btn-primary"
+            style="width: 100%; margin-top: 20px;"
+          >
+            Enter Lessons →
+          </button>
+        </form>
+        <div style="text-align: center; margin-top: 24px;">
+          <p style="font-size: 12px; color: var(--text-dim);">
+            Don't have a code? Ask your teacher for one! 💬
+          </p>
+          <p style="font-size: 12px; color: var(--text-dim); margin-top: 8px;">
+            Try <span style="font-family: 'JetBrains Mono', monospace; color: var(--blue-light);">DEMO</span> to preview
+          </p>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function attachLoginEvents() {
+  const form = document.getElementById('loginForm');
+  const input = document.getElementById('codeInput');
+  const error = document.getElementById('loginError');
+
+  input.addEventListener('focus', () => {
+    input.style.borderColor = 'var(--blue)';
+  });
+
+  input.addEventListener('blur', () => {
+    input.style.borderColor = 'var(--border)';
+  });
+
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const code = input.value.trim().toUpperCase();
+    const name = STUDENTS[code];
+
+    if (name) {
+      state.studentName = name;
+      state.studentCode = code;
+      state.view = 'dashboard';
+      render();
+    } else {
+      error.textContent = '⚠️ Invalid code. Ask your teacher for your personal code!';
+      error.style.display = 'block';
+    }
+  });
+}
+
+function renderDashboard() {
+  return `
+    <div style="min-height: 100vh;">
+      <header style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 20px 32px;">
+        <div style="max-width: 1024px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="width: 40px; height: 40px; border-radius: 12px; background: linear-gradient(135deg, var(--blue), var(--purple)); display: flex; align-items: center; justify-content: center; font-size: 18px;">
+              🎓
+            </div>
+            <div>
+              <h1 class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">Interactive Lessons</h1>
+              <p style="font-size: 12px; color: var(--text-muted);">Preply Teacher Platform</p>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <div style="display: flex; align-items: center; gap: 8px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px;">
+              <span style="font-size: 12px; color: var(--text-muted);">Welcome,</span>
+              <span style="font-size: 14px; font-weight: 600; color: var(--blue-light);">${state.studentName}</span>
+            </div>
+            <button id="logoutBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 12px; cursor: pointer; padding: 8px 12px;">
+              🚪 Exit
+            </button>
+          </div>
+        </div>
+      </header>
+
+      <div style="padding: 32px;">
+        <div style="max-width: 1024px; margin: 0 auto;" class="animate-fade-in">
+          <h2 class="font-space" style="font-size: 28px; font-weight: 700; margin-bottom: 8px;">
+            Welcome back, <span style="color: var(--blue-light);">${state.studentName}</span> 👋
+          </h2>
+          <p style="color: var(--text-muted); font-size: 16px; max-width: 600px;">
+            Choose a lesson below to start learning. Each lesson includes explanations, interactive exercises, and practice activities.
+          </p>
+        </div>
+      </div>
+
+      <div style="padding: 0 32px 16px;">
+        <div style="max-width: 1024px; margin: 0 auto; display: flex; flex-wrap: wrap; gap: 12px;">
+          <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px;">
+            <span style="font-size: 20px;">📖</span>
+            <div>
+              <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">${lessons.length}</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Lessons</div>
+            </div>
+          </div>
+          <div class="card" style="display: flex; align-items: center; gap: 12px; padding: 12px 16px;">
+            <span style="font-size: 20px;">⏱️</span>
+            <div>
+              <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--text);">${lessons.reduce((a, l) => a + l.duration, 0)}</div>
+              <div style="font-size: 12px; color: var(--text-muted);">Minutes total</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div style="padding: 16px 32px 48px;">
+        <div style="max-width: 1024px; margin: 0 auto;">
+          <h3 class="font-space" style="font-size: 18px; font-weight: 600; margin-bottom: 16px; color: var(--text);">Available Lessons</h3>
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px;">
+            ${lessons.map((lesson, i) => `
+              <div class="card card-interactive animate-fade-in" data-lesson-id="${lesson.id}" style="animation-delay: ${i * 0.1}s;">
+                <div style="display: flex; align-items: flex-start; gap: 16px;">
+                  <div style="width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 24px; flex-shrink: 0; background: ${lesson.color === 'blue' ? 'var(--blue-glow)' : 'rgba(139,92,246,0.15)'};">
+                    ${lesson.icon}
+                  </div>
+                  <div style="flex: 1; min-width: 0;">
+                    <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 6px; flex-wrap: wrap;">
+                      <span class="tag tag-${lesson.level === 'B1' ? 'amber' : 'blue'}">${lesson.level}</span>
+                      <span style="font-size: 12px; color: var(--text-muted);">${lesson.type}</span>
+                    </div>
+                    <h4 class="font-space" style="font-size: 16px; font-weight: 600; color: var(--text); margin-bottom: 4px; line-height: 1.3;">
+                      ${lesson.title}
+                    </h4>
+                    <p style="font-size: 14px; color: var(--text-muted); line-height: 1.5;">
+                      ${lesson.description}
+                    </p>
+                    <div style="display: flex; align-items: center; gap: 12px; margin-top: 12px;">
+                      <span style="font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 4px;">
+                        ⏱️ ${lesson.duration} min
+                      </span>
+                      <span style="font-size: 12px; color: var(--text-dim); display: flex; align-items: center; gap: 4px;">
+                        📋 ${lesson.sections.length} sections
+                      </span>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            `).join('')}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function attachDashboardEvents() {
+  document.getElementById('logoutBtn').addEventListener('click', () => {
+    state.view = 'login';
+    state.studentName = '';
+    state.studentCode = '';
+    render();
+  });
+
+  document.querySelectorAll('[data-lesson-id]').forEach(el => {
+    el.addEventListener('click', () => {
+      const lessonId = el.dataset.lessonId;
+      const lesson = lessons.find(l => l.id === lessonId);
+      state.activeLesson = lesson;
+      state.currentSection = 0;
+      state.completedSections = new Set();
+      state.totalSeconds = lesson.duration * 60;
+      state.view = 'lesson';
+      startTimer();
+      render();
+    });
+  });
+}
+
+function startTimer() {
+  if (state.timerInterval) clearInterval(state.timerInterval);
+  state.timerInterval = setInterval(() => {
+    if (state.totalSeconds > 0) {
+      state.totalSeconds--;
+      const timerEl = document.getElementById('timer');
+      if (timerEl) {
+        const m = Math.floor(state.totalSeconds / 60);
+        const s = state.totalSeconds % 60;
+        timerEl.textContent = `${m}:${s.toString().padStart(2, '0')}`;
+      }
+    } else {
+      clearInterval(state.timerInterval);
+    }
+  }, 1000);
+}
+
+function renderLesson() {
+  const lesson = state.activeLesson;
+  const section = lesson.sections[state.currentSection];
+  const progress = ((state.currentSection + 1) / lesson.sections.length) * 100;
+
+  return `
+    <div style="min-height: 100vh;">
+      <header style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 12px 24px; position: sticky; top: 0; z-index: 50;">
+        <div style="max-width: 1024px; margin: 0 auto; display: flex; align-items: center; justify-content: space-between;">
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <button id="backBtn" style="background: transparent; border: none; color: var(--text-muted); font-size: 14px; cursor: pointer; padding: 6px 12px; border-radius: 8px;">
+              ← Back
+            </button>
+            <div>
+              <span class="font-space" style="font-size: 10px; font-weight: 500; color: var(--blue-light); letter-spacing: 0.08em; text-transform: uppercase;">
+                ${lesson.level} · ${lesson.duration} min
+              </span>
+              <h1 class="font-space" style="font-size: 14px; font-weight: 700; color: var(--text); line-height: 1.2;">
+                ${lesson.title}
+              </h1>
+            </div>
+          </div>
+          <div style="display: flex; align-items: center; gap: 12px;">
+            <span style="background: var(--blue-glow); border: 1px solid rgba(59,130,246,0.3); border-radius: 20px; padding: 4px 12px; font-size: 12px; font-weight: 500; color: var(--blue-light);">
+              ${state.studentName}
+            </span>
+            <span id="timer" class="font-space" style="font-size: 14px; font-weight: 600; color: var(--text-muted);">
+              ${Math.floor(state.totalSeconds / 60)}:${(state.totalSeconds % 60).toString().padStart(2, '0')}
+            </span>
+          </div>
+        </div>
+      </header>
+
+      <div style="height: 4px; background: var(--border);">
+        <div style="height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-light)); transition: width 0.5s; width: ${progress}%;"></div>
+      </div>
+
+      <div style="background: var(--navy2); border-bottom: 1px solid var(--border); padding: 8px 24px; overflow-x: auto;">
+        <div style="max-width: 1024px; margin: 0 auto; display: flex; gap: 4px;">
+          ${lesson.sections.map((s, i) => `
+            <button class="section-nav-btn" data-section="${i}" style="display: flex; align-items: center; gap: 6px; padding: 6px 12px; border-radius: 8px; font-size: 12px; font-weight: 500; white-space: nowrap; transition: all 0.2s; background: ${i === state.currentSection ? 'var(--blue-glow)' : 'transparent'}; color: ${i === state.currentSection ? 'var(--blue-light)' : state.completedSections.has(i) ? 'var(--green-light)' : 'var(--text-muted)'}; border: ${i === state.currentSection ? '1px solid rgba(59,130,246,0.3)' : 'none'}; cursor: pointer;">
+              ${state.completedSections.has(i) ? '✓' : `${i + 1}.`} ${s.title}
+            </button>
+          `).join('')}
+        </div>
+      </div>
+
+      <div style="max-width: 1024px; margin: 0 auto; padding: 32px 24px;">
+        <div class="animate-fade-in">
+          <div style="margin-bottom: 24px;">
+            <div style="display: flex; align-items: center; gap: 8px; margin-bottom: 8px;">
+              <span class="tag tag-${section.type === 'quiz' ? 'green' : section.type === 'flashcards' ? 'purple' : section.type === 'matching' ? 'amber' : section.type === 'discussion' ? 'purple' : 'blue'}">
+                ${section.type === 'quiz' ? '✏️ Quiz' : section.type === 'flashcards' ? '🃏 Flashcards' : section.type === 'matching' ? '🔗 Match' : section.type === 'discussion' ? '💬 Discuss' : '📖 Learn'}
+              </span>
+              <span style="font-size: 12px; color: var(--text-dim);">· ${section.duration} min</span>
+            </div>
+            <h2 class="font-space" style="font-size: 24px; font-weight: 700; color: var(--text);">
+              ${section.title}
+            </h2>
+          </div>
+
+          <div id="sectionContent">
+            ${renderSectionContent(section)}
+          </div>
+
+          <div style="display: flex; align-items: center; justify-content: space-between; margin-top: 32px; padding-top: 24px; border-top: 1px solid var(--border);">
+            <button id="prevBtn" ${state.currentSection === 0 ? 'disabled style="opacity: 0.3; cursor: not-allowed;"' : ''} class="btn btn-secondary">
+              ← Previous
+            </button>
+            <span style="font-size: 12px; color: var(--text-muted);">
+              ${state.currentSection + 1} of ${lesson.sections.length}
+            </span>
+            ${state.currentSection < lesson.sections.length - 1 ? `
+              <button id="nextBtn" class="btn btn-primary">
+                Next →
+              </button>
+            ` : `
+              <button id="finishBtn" class="btn" style="background: linear-gradient(135deg, var(--green), #059669); color: white;">
+                ✓ Finish Lesson
+              </button>
+            `}
+          </div>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderSectionContent(section) {
+  if (section.type === 'content') {
+    return renderContentSection(section.content);
+  } else if (section.type === 'quiz') {
+    return renderQuizSection(section.quiz);
+  } else if (section.type === 'flashcards') {
+    return renderFlashcardsSection(section.flashcards);
+  } else if (section.type === 'matching') {
+    return renderMatchingSection(section.matching);
+  } else if (section.type === 'discussion') {
+    return renderDiscussionSection(section.discussion);
+  }
+  return '';
+}
+
+function renderContentSection(content) {
+  let html = `<p style="color: var(--text-muted); font-size: 14px; line-height: 1.6; margin-bottom: 24px;">${content.subtitle}</p>`;
+  
+  content.blocks.forEach(block => {
+    if (block.type === 'table') {
+      html += `
+        <div style="overflow-x: auto; margin: 16px 0;">
+          <table class="lesson-table">
+            <thead>
+              <tr>${block.headers.map(h => `<th>${h}</th>`).join('')}</tr>
+            </thead>
+            <tbody>
+              ${block.rows.map(row => `
+                <tr>
+                  ${row.map((cell, i) => `
+                    <td>${i === 0 ? `<strong>${cell}</strong>` : i === 1 ? `<span class="font-mono" style="font-size: 12px; color: var(--blue-light);">${cell}</span>` : `<span style="color: var(--text-muted); font-style: italic; font-size: 13px;">${cell}</span>`}</td>
+                  `).join('')}
+                </tr>
+              `).join('')}
+            </tbody>
+          </table>
+        </div>
+      `;
+    } else if (block.type === 'callout') {
+      html += `<div class="callout callout-${block.variant}">${block.content}</div>`;
+    }
+  });
+
+  html += `<div style="display: flex; justify-content: flex-end; margin-top: 24px;"><button id="completeContentBtn" class="btn btn-primary">Continue →</button></div>`;
+  return html;
+}
+
+function renderQuizSection(quiz) {
+  window.quizState = { currentQ: 0, answers: new Array(quiz.questions.length).fill(null), showResult: false };
+  return `<div id="quizContainer">${renderQuizQuestion(quiz, 0)}</div>`;
+}
+
+function renderQuizQuestion(quiz, index) {
+  const q = quiz.questions[index];
+  const qs = window.quizState;
+  
+  if (qs.showResult) {
+    const correct = qs.answers.filter((a, i) => a === quiz.questions[i].answer).length;
+    const pct = Math.round((correct / quiz.questions.length) * 100);
+    return `
+      <div class="card" style="text-align: center; padding: 40px;" class="animate-fade-in">
+        <div style="font-size: 48px; margin-bottom: 16px;">${pct === 100 ? '🏆' : pct >= 80 ? '🌟' : pct >= 60 ? '👍' : '💪'}</div>
+        <div class="font-space" style="font-size: 36px; font-weight: 700; color: var(--blue-light); margin-bottom: 8px;">${correct}/${quiz.questions.length}</div>
+        <div style="color: var(--text-muted); margin-bottom: 16px;">${pct === 100 ? 'Perfect score!' : pct >= 80 ? 'Excellent work!' : pct >= 60 ? 'Good job!' : 'Keep practicing!'}</div>
+        <button id="completeQuizBtn" class="btn btn-primary">Continue to Next Section →</button>
+      </div>
+    `;
+  }
+
+  return `
+    <div style="display: flex; align-items: center; gap: 12px; margin-bottom: 24px;">
+      <div style="flex: 1; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden;">
+        <div style="height: 100%; background: var(--blue); border-radius: 999px; transition: width 0.3s; width: ${((index + 1) / quiz.questions.length) * 100}%;"></div>
+      </div>
+      <span style="font-size: 12px; color: var(--text-muted); font-family: 'Space Grotesk', sans-serif; font-weight: 500;">${index + 1}/${quiz.questions.length}</span>
+    </div>
+    <div class="card" style="margin-bottom: 24px;">
+      <div style="font-size: 18px; font-weight: 500; line-height: 1.6; margin-bottom: 24px;">${q.question}</div>
+      <div style="display: flex; flex-direction: column; gap: 12px;">
+        ${q.options.map((opt, i) => `
+          <button class="game-option quiz-option" data-index="${i}">
+            <span style="display: inline-flex; align-items: center; gap: 12px;">
+              <span style="width: 24px; height: 24px; border-radius: 50%; border: 1px solid var(--border); display: inline-flex; align-items: center; justify-content: center; font-size: 12px; font-family: 'Space Grotesk', sans-serif; font-weight: 700;">${String.fromCharCode(65 + i)}</span>
+              ${opt}
+            </span>
+          </button>
+        `).join('')}
+      </div>
+      <div id="quizFeedback" style="margin-top: 16px; display: none;"></div>
+    </div>
+    <div id="quizNextBtn" style="display: none; text-align: right;">
+      <button class="btn btn-primary">${index < quiz.questions.length - 1 ? 'Next Question →' : 'See Results →'}</button>
+    </div>
+  `;
+}
+
+function renderFlashcardsSection(flashcards) {
+  window.flashcardState = { currentIndex: 0, isFlipped: false, knownCards: new Set() };
+  return `<div id="flashcardContainer">${renderFlashcard(flashcards, 0)}</div>`;
+}
+
+function renderFlashcard(flashcards, index) {
+  const card = flashcards.cards[index];
+  const fs = window.flashcardState;
+  const allDone = fs.knownCards.size === flashcards.cards.length;
+
+  if (allDone) {
+    return `
+      <div class="card" style="text-align: center; padding: 24px; margin-top: 24px; background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2);" class="animate-fade-in">
+        <div style="font-size: 48px; margin-bottom: 8px;">🎉</div>
+        <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--green-light); margin-bottom: 4px;">All cards learned!</div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Great job! You've reviewed all the vocabulary.</p>
+        <button id="completeFlashcardsBtn" class="btn btn-primary">Continue →</button>
+      </div>
+    `;
+  }
+
+  return `
+    <div style="display: flex; align-items: center; justify-content: space-between; margin-bottom: 24px;">
+      <div style="display: flex; align-items: center; gap: 8px;">
+        <span style="font-size: 12px; color: var(--text-muted);">Card ${index + 1} of ${flashcards.cards.length}</span>
+        <span style="display: inline-flex; align-items: center; gap: 4px; padding: 4px 10px; background: linear-gradient(135deg, rgba(245,158,11,0.2), rgba(239,68,68,0.2)); border: 1px solid rgba(245,158,11,0.3); border-radius: 20px; font-size: 12px; font-weight: 600; color: var(--amber-light);">
+          🔥 ${fs.knownCards.size} learned
+        </span>
+      </div>
+      <div style="flex: 1; max-width: 200px; height: 6px; background: rgba(255,255,255,0.06); border-radius: 999px; overflow: hidden; margin-left: 16px;">
+        <div style="height: 100%; background: var(--green); border-radius: 999px; transition: width 0.3s; width: ${(fs.knownCards.size / flashcards.cards.length) * 100}%;"></div>
+      </div>
+    </div>
+    <div class="flashcard-container" id="flashcard">
+      <div class="flashcard-inner ${fs.isFlipped ? 'flipped' : ''}">
+        <div class="flashcard-front">
+          <div style="font-size: 12px; color: var(--text-muted); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Tap to flip</div>
+          <div class="font-space" style="font-size: 24px; font-weight: 700; color: var(--text); margin-bottom: 8px;">${card.front}</div>
+          ${card.example ? `<div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-top: 16px; padding: 0 16px;">"${card.example}"</div>` : ''}
+        </div>
+        <div class="flashcard-back">
+          <div style="font-size: 12px; color: var(--blue-light); margin-bottom: 12px; text-transform: uppercase; letter-spacing: 0.08em;">Definition</div>
+          <div style="font-size: 18px; font-weight: 500; color: var(--text); margin-bottom: 12px;">${card.back}</div>
+          ${card.example ? `<div style="font-size: 14px; color: var(--text-muted); font-style: italic; margin-top: 8px; padding: 12px 16px; border-top: 1px solid rgba(255,255,255,0.1);">Example: "${card.example}"</div>` : ''}
+        </div>
+      </div>
+    </div>
+    <div style="display: flex; align-items: center; justify-content: center; gap: 12px; margin-top: 32px;">
+      <button id="prevCardBtn" ${index === 0 ? 'disabled style="opacity: 0.3;"' : ''} class="btn btn-secondary">← Prev</button>
+      ${fs.isFlipped ? `
+        <button id="markUnknownBtn" class="btn btn-secondary" style="border-color: rgba(239,68,68,0.3); color: #f87171;">Still Learning</button>
+        <button id="markKnownBtn" class="btn" style="background: linear-gradient(135deg, var(--green), #059669); color: white;">✓ Got It!</button>
+      ` : ''}
+      <button id="nextCardBtn" ${index === flashcards.cards.length - 1 ? 'disabled style="opacity: 0.3;"' : ''} class="btn btn-secondary">Next →</button>
+    </div>
+    <div style="display: flex; justify-content: center; gap: 6px; margin-top: 24px;">
+      ${flashcards.cards.map((_, i) => `
+        <div style="width: 8px; height: 8px; border-radius: 50%; transition: all 0.2s; background: ${i === index ? 'var(--blue)' : fs.knownCards.has(i) ? 'var(--green)' : 'rgba(255,255,255,0.15)'}; ${i === index ? 'width: 24px;' : ''}"></div>
+      `).join('')}
+    </div>
+  `;
+}
+
+function renderMatchingSection(matching) {
+  const shuffled = [...matching.pairs].sort(() => Math.random() - 0.5);
+  window.matchingState = { selectedLeft: null, selectedRight: null, matched: new Set(), attempts: 0, shuffled };
+  return `<div id="matchingContainer">${renderMatching(matching)}</div>`;
+}
+
+function renderMatching(matching) {
+  const ms = window.matchingState;
+  const allMatched = ms.matched.size === matching.pairs.length;
+
+  if (allMatched) {
+    return `
+      <div class="card" style="text-align: center; padding: 24px; margin-top: 32px; background: rgba(16,185,129,0.05); border-color: rgba(16,185,129,0.2);" class="animate-fade-in">
+        <div style="font-size: 48px; margin-bottom: 8px;">${ms.attempts === matching.pairs.length ? '🎯' : '⭐'}</div>
+        <div class="font-space" style="font-size: 18px; font-weight: 700; color: var(--green-light); margin-bottom: 4px;">${ms.attempts === matching.pairs.length ? 'Perfect matching!' : 'All matched!'}</div>
+        <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 16px;">Completed in ${ms.attempts} attempt${ms.attempts > 1 ? 's' : ''}</p>
+        <button id="completeMatchingBtn" class="btn btn-primary">Continue →</button>
+      </div>
+    `;
+  }
+
+  return `
+    <p style="font-size: 14px; color: var(--text-muted); margin-bottom: 24px;">${matching.instruction}</p>
+    <div style="display: flex; align-items: center; gap: 16px; margin-bottom: 24px;">
+      <div style="font-size: 12px; color: var(--text-muted);">Matched: <span style="color: var(--green-light); font-weight: 600;">${ms.matched.size}/${matching.pairs.length}</span></div>
+      <div style="font-size: 12px; color: var(--text-muted);">Attempts: <span style="color: var(--blue-light); font-weight: 600;">${ms.attempts}</span></div>
+    </div>
+    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 32px;">
+      <div>
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; text-align: center;">Term</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          ${matching.pairs.map((pair, i) => {
+            const isMatched = ms.matched.has(i);
+            const isSelected = ms.selectedLeft === i;
+            return `
+              <div class="match-item ${isMatched ? 'matched' : isSelected ? 'selected' : ''}" data-left="${i}">
+                ${pair.left} ${isMatched ? '✓' : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+      <div>
+        <div style="font-size: 11px; color: var(--text-muted); text-transform: uppercase; letter-spacing: 0.08em; font-family: 'Space Grotesk', sans-serif; font-weight: 600; margin-bottom: 8px; text-align: center;">Meaning</div>
+        <div style="display: flex; flex-direction: column; gap: 10px;">
+          ${ms.shuffled.map((pair, i) => {
+            const origIndex = matching.pairs.indexOf(pair);
+            const isMatched = ms.matched.has(origIndex);
+            const isSelected = ms.selectedRight === i;
+            return `
+              <div class="match-item ${isMatched ? 'matched' : isSelected ? 'selected' : ''}" data-right="${i}">
+                ${pair.right} ${isMatched ? '✓' : ''}
+              </div>
+            `;
+          }).join('')}
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+function renderDiscussionSection(discussion) {
+  return `
+    <div class="callout callout-purple" style="margin-bottom: 24px;">
+      <strong>💬 Speaking Practice:</strong> These questions are designed for conversation with your teacher. Take your time, use the vocabulary and grammar from this lesson, and don't worry about making mistakes — that's how we learn!
+    </div>
+    <div style="display: flex; flex-direction: column; gap: 16px; margin-bottom: 24px;">
+      ${discussion.questions.map((q, i) => `
+        <div class="card">
+          <div style="display: flex; align-items: flex-start; gap: 12px;">
+            <span class="font-space" style="font-size: 18px; font-weight: 700; color: var(--blue-light); flex-shrink: 0;">${i + 1}.</span>
+            <p style="font-size: 15px; line-height: 1.6;">${q}</p>
+          </div>
+        </div>
+      `).join('')}
+    </div>
+    ${discussion.tips ? `
+      <div class="callout callout-green" style="margin-bottom: 24px;">
+        <strong>💡 Tips for this activity:</strong>
+        <ul style="margin-top: 8px; display: flex; flex-direction: column; gap: 6px;">
+          ${discussion.tips.map(tip => `<li style="font-size: 14px; color: var(--text); display: flex; align-items: flex-start; gap: 8px;"><span style="color: var(--green-light);">•</span>${tip}</li>`).join('')}
+        </ul>
+      </div>
+    ` : ''}
+    <div style="display: flex; justify-content: flex-end;">
+      <button id="completeDiscussionBtn" class="btn btn-primary">Continue →</button>
+    </div>
+  `;
+}
+
+function attachLessonEvents() {
+  document.getElementById('backBtn').addEventListener('click', () => {
+    if (state.timerInterval) clearInterval(state.timerInterval);
+    state.view = 'dashboard';
+    state.activeLesson = null;
+    render();
+  });
+
+  document.querySelectorAll('.section-nav-btn').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.currentSection = parseInt(btn.dataset.section);
+      render();
+    });
+  });
+
+  const prevBtn = document.getElementById('prevBtn');
+  if (prevBtn && state.currentSection > 0) {
+    prevBtn.addEventListener('click', () => {
+      state.currentSection--;
+      render();
+    });
+  }
+
+  const nextBtn = document.getElementById('nextBtn');
+  if (nextBtn) {
+    nextBtn.addEventListener('click', () => {
+      state.completedSections.add(state.currentSection);
+      state.currentSection++;
+      render();
+    });
+  }
+
+  const finishBtn = document.getElementById('finishBtn');
+  if (finishBtn) {
+    finishBtn.addEventListener('click', () => {
+      if (state.timerInterval) clearInterval(state.timerInterval);
+      state.view = 'dashboard';
+      state.activeLesson = null;
+      render();
+    });
+  }
+
+  attachSectionEvents();
+}
+
+function attachSectionEvents() {
+  const section = state.activeLesson.sections[state.currentSection];
+
+  if (section.type === 'content') {
+    const btn = document.getElementById('completeContentBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        state.completedSections.add(state.currentSection);
+        if (state.currentSection < state.activeLesson.sections.length - 1) {
+          state.currentSection++;
+          render();
+        }
+      });
+    }
+  } else if (section.type === 'quiz') {
+    attachQuizEvents(section.quiz);
+  } else if (section.type === 'flashcards') {
+    attachFlashcardEvents(section.flashcards);
+  } else if (section.type === 'matching') {
+    attachMatchingEvents(section.matching);
+  } else if (section.type === 'discussion') {
+    const btn = document.getElementById('completeDiscussionBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        state.completedSections.add(state.currentSection);
+        if (state.currentSection < state.activeLesson.sections.length - 1) {
+          state.currentSection++;
+          render();
+        }
+      });
+    }
+  }
+}
+
+function attachQuizEvents(quiz) {
+  const qs = window.quizState;
+
+  if (qs.showResult) {
+    const btn = document.getElementById('completeQuizBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        state.completedSections.add(state.currentSection);
+        if (state.currentSection < state.activeLesson.sections.length - 1) {
+          state.currentSection++;
+          render();
+        }
+      });
+    }
+    return;
+  }
+
+  document.querySelectorAll('.quiz-option').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const index = parseInt(btn.dataset.index);
+      if (qs.answers[qs.currentQ] !== null) return;
+
+      qs.answers[qs.currentQ] = index;
+      const q = quiz.questions[qs.currentQ];
+      const isCorrect = index === q.answer;
+
+      document.querySelectorAll('.quiz-option').forEach((b, i) => {
+        b.disabled = true;
+        if (i === q.answer) b.classList.add('correct');
+        else if (i === index && !isCorrect) b.classList.add('wrong');
+      });
+
+      const feedback = document.getElementById('quizFeedback');
+      feedback.innerHTML = `
+        <div style="padding: 16px; border-radius: 8px; ${isCorrect ? 'background: rgba(16,185,129,0.1); border: 1px solid rgba(16,185,129,0.2);' : 'background: rgba(239,68,68,0.08); border: 1px solid rgba(239,68,68,0.2);'}">
+          <div style="font-size: 14px; font-weight: 500; margin-bottom: 4px; ${isCorrect ? 'color: var(--green-light);' : 'color: #f87171;'}">${isCorrect ? '✓ Correct!' : '✗ Not quite'}</div>
+          <div style="font-size: 14px; color: var(--text-muted);">${q.explanation}</div>
+        </div>
+      `;
+      feedback.style.display = 'block';
+
+      document.getElementById('quizNextBtn').style.display = 'block';
+      document.getElementById('quizNextBtn').querySelector('button').addEventListener('click', () => {
+        if (qs.currentQ < quiz.questions.length - 1) {
+          qs.currentQ++;
+          document.getElementById('quizContainer').innerHTML = renderQuizQuestion(quiz, qs.currentQ);
+          attachQuizEvents(quiz);
+        } else {
+          qs.showResult = true;
+          document.getElementById('quizContainer').innerHTML = renderQuizQuestion(quiz, qs.currentQ);
+          attachQuizEvents(quiz);
+        }
+      });
+    });
+  });
+}
+
+function attachFlashcardEvents(flashcards) {
+  const fs = window.flashcardState;
+
+  if (fs.knownCards.size === flashcards.cards.length) {
+    const btn = document.getElementById('completeFlashcardsBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        state.completedSections.add(state.currentSection);
+        if (state.currentSection < state.activeLesson.sections.length - 1) {
+          state.currentSection++;
+          render();
+        }
+      });
+    }
+    return;
+  }
+
+  const flashcard = document.getElementById('flashcard');
+  if (flashcard) {
+    flashcard.addEventListener('click', () => {
+      fs.isFlipped = !fs.isFlipped;
+      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
+      attachFlashcardEvents(flashcards);
+    });
+  }
+
+  const prevBtn = document.getElementById('prevCardBtn');
+  if (prevBtn && fs.currentIndex > 0) {
+    prevBtn.addEventListener('click', () => {
+      fs.isFlipped = false;
+      fs.currentIndex--;
+      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
+      attachFlashcardEvents(flashcards);
+    });
+  }
+
+  const nextBtn = document.getElementById('nextCardBtn');
+  if (nextBtn && fs.currentIndex < flashcards.cards.length - 1) {
+    nextBtn.addEventListener('click', () => {
+      fs.isFlipped = false;
+      fs.currentIndex++;
+      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
+      attachFlashcardEvents(flashcards);
+    });
+  }
+
+  const markKnownBtn = document.getElementById('markKnownBtn');
+  if (markKnownBtn) {
+    markKnownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fs.knownCards.add(fs.currentIndex);
+      fs.isFlipped = false;
+      if (fs.currentIndex < flashcards.cards.length - 1) {
+        fs.currentIndex++;
+      }
+      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
+      attachFlashcardEvents(flashcards);
+    });
+  }
+
+  const markUnknownBtn = document.getElementById('markUnknownBtn');
+  if (markUnknownBtn) {
+    markUnknownBtn.addEventListener('click', (e) => {
+      e.stopPropagation();
+      fs.isFlipped = false;
+      if (fs.currentIndex < flashcards.cards.length - 1) {
+        fs.currentIndex++;
+      }
+      document.getElementById('flashcardContainer').innerHTML = renderFlashcard(flashcards, fs.currentIndex);
+      attachFlashcardEvents(flashcards);
+    });
+  }
+}
+
+function attachMatchingEvents(matching) {
+  const ms = window.matchingState;
+
+  if (ms.matched.size === matching.pairs.length) {
+    const btn = document.getElementById('completeMatchingBtn');
+    if (btn) {
+      btn.addEventListener('click', () => {
+        state.completedSections.add(state.currentSection);
+        if (state.currentSection < state.activeLesson.sections.length - 1) {
+          state.currentSection++;
+          render();
+        }
+      });
+    }
+    return;
+  }
+
+  document.querySelectorAll('[data-left]').forEach(el => {
+    el.addEventListener('click', () => {
+      const index = parseInt(el.dataset.left);
+      if (ms.matched.has(index)) return;
+      ms.selectedLeft = index;
+      ms.attempts++;
+
+      if (ms.selectedRight !== null) {
+        const rightPairIndex = matching.pairs.indexOf(ms.shuffled[ms.selectedRight]);
+        if (index === rightPairIndex) {
+          ms.matched.add(index);
+          ms.selectedLeft = null;
+          ms.selectedRight = null;
+        } else {
+          setTimeout(() => {
+            ms.selectedLeft = null;
+            ms.selectedRight = null;
+            document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
+            attachMatchingEvents(matching);
+          }, 800);
+        }
+      }
+
+      document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
+      attachMatchingEvents(matching);
+    });
+  });
+
+  document.querySelectorAll('[data-right]').forEach(el => {
+    el.addEventListener('click', () => {
+      const index = parseInt(el.dataset.right);
+      const pairIndex = matching.pairs.indexOf(ms.shuffled[index]);
+      if (ms.matched.has(pairIndex)) return;
+      ms.selectedRight = index;
+      ms.attempts++;
+
+      if (ms.selectedLeft !== null) {
+        if (ms.selectedLeft === pairIndex) {
+          ms.matched.add(pairIndex);
+          ms.selectedLeft = null;
+          ms.selectedRight = null;
+        } else {
+          setTimeout(() => {
+            ms.selectedLeft = null;
+            ms.selectedRight = null;
+            document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
+            attachMatchingEvents(matching);
+          }, 800);
+        }
+      }
+
+      document.getElementById('matchingContainer').innerHTML = renderMatching(matching);
+      attachMatchingEvents(matching);
+    });
+  });
+}
+
+// ===== INIT =====
+render();
+</script>
+</body>
+</html>
