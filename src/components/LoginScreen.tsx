@@ -1,12 +1,12 @@
 import { useState } from 'react';
+import { loadStudents } from '../utils/xpSystem';
 
 interface LoginScreenProps {
   onLogin: (name: string, code: string, isAdmin: boolean) => void;
 }
 
-const VALID_CODES = ['STEVE2324', 'NICOLAS', 'MARIA', 'JOHN', 'ANNA', 'PEDRO', 'SOPHIE', 'DEMO'];
 const ADMIN_NAME = 'Steve';
-const ADMIN_CODE = 'STEVE2324';
+const ADMIN_CODE = '2324';
 
 export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [name, setName] = useState('');
@@ -21,7 +21,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
 
     setTimeout(() => {
       const trimmedName = name.trim();
-      const upperCode = code.trim().toUpperCase();
+      const trimmedCode = code.trim();
 
       if (!trimmedName) {
         setError('Please enter your name.');
@@ -29,19 +29,24 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
         return;
       }
 
-      if (!VALID_CODES.includes(upperCode)) {
+      // Admin logic: name="Steve" + code="2324"
+      if (trimmedName.toLowerCase() === ADMIN_NAME.toLowerCase() && trimmedCode === ADMIN_CODE) {
+        onLogin('Teacher Steve', ADMIN_CODE, true);
+        return;
+      }
+
+      // Check if code exists in student list
+      const students = loadStudents();
+      const student = students.find(s => s.code === trimmedCode);
+
+      if (!student) {
         setError('Invalid code. Please check with your teacher.');
         setIsLoading(false);
         return;
       }
 
-      // Admin logic: name="Steve" + code="STEVE2324"
-      if (trimmedName.toLowerCase() === ADMIN_NAME.toLowerCase() && upperCode === ADMIN_CODE) {
-        onLogin('Teacher Steve', upperCode, true);
-      } else {
-        // Regular student login - use their entered name
-        onLogin(trimmedName, upperCode, false);
-      }
+      // Regular student login
+      onLogin(student.name, student.code, false);
     }, 600);
   };
 

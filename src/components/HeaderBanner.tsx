@@ -1,4 +1,4 @@
-import { getTopStudents, getRankBadge } from '../utils/xpSystem';
+import { getTopStudents, getRankBadge, loadStudents } from '../utils/xpSystem';
 import LeaderboardModal from './LeaderboardModal';
 import { useState } from 'react';
 
@@ -11,7 +11,8 @@ interface HeaderBannerProps {
 
 export default function HeaderBanner({ subtitle, rightContent, compact, currentStudentCode }: HeaderBannerProps) {
   const [showLeaderboard, setShowLeaderboard] = useState(false);
-  const topStudents = getTopStudents(3);
+  const students = loadStudents();
+  const topStudents = getTopStudents(students, 3);
 
   return (
     <>

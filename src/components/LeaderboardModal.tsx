@@ -1,4 +1,4 @@
-import { getFullLeaderboard, getRankBadge, getLevelColor } from '../utils/xpSystem';
+import { getFullLeaderboard, getRankBadge, getLevelColor, loadStudents } from '../utils/xpSystem';
 
 interface LeaderboardModalProps {
   isOpen: boolean;
@@ -9,7 +9,8 @@ interface LeaderboardModalProps {
 export default function LeaderboardModal({ isOpen, onClose, currentStudentCode }: LeaderboardModalProps) {
   if (!isOpen) return null;
 
-  const leaderboard = getFullLeaderboard();
+  const students = loadStudents();
+  const leaderboard = getFullLeaderboard(students);
 
   return (
     <div

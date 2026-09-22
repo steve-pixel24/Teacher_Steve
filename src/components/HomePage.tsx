@@ -2,7 +2,8 @@ import { Lesson } from '../data/lessons';
 import HeaderBanner from './HeaderBanner';
 import FunFactsCarousel from './FunFactsCarousel';
 import WordOfDay from './WordOfDay';
-import { getLevelInfo, getLevelColor, SAMPLE_LEADERBOARD } from '../utils/xpSystem';
+import StudentManagement from './StudentManagement';
+import { getLevelInfo, getLevelColor, loadStudents } from '../utils/xpSystem';
 
 interface HomePageProps {
   lessons: Lesson[];
@@ -73,7 +74,8 @@ export default function HomePage({
   ];
 
   // Get student's XP from leaderboard or use studentScore as XP
-  const studentProfile = SAMPLE_LEADERBOARD.find(s => s.code === studentCode);
+  const students = loadStudents();
+  const studentProfile = students.find(s => s.code === studentCode);
   const studentXP = studentProfile ? studentProfile.xp : studentScore;
   const levelInfo = getLevelInfo(studentXP);
   const levelColor = getLevelColor(levelInfo.level);
@@ -312,33 +314,7 @@ export default function HomePage({
 
       {/* Admin Panel (if admin) */}
       {isAdmin && (
-        <div style={{ padding: '0 24px 48px' }}>
-          <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-            <div className="card" style={{
-              background: 'rgba(255, 255, 255, 0.75)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 152, 0, 0.2)',
-            }}>
-              <h3 className="font-space" style={{
-                fontSize: '20px',
-                fontWeight: 600,
-                color: '#E65100',
-                marginBottom: '16px',
-              }}>
-                👑 Admin Panel
-              </h3>
-              <p style={{ color: '#64748B', fontSize: '14px', marginBottom: '20px' }}>
-                Administrative controls and student management features will appear here.
-              </p>
-              <div style={{ display: 'flex', gap: '12px', flexWrap: 'wrap' }}>
-                <button className="btn btn-primary">Manage Lessons</button>
-                <button className="btn btn-secondary">View Student Progress</button>
-                <button className="btn btn-secondary">Edit Content</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <StudentManagement />
       )}
     </div>
   );

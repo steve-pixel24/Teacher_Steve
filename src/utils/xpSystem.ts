@@ -1,7 +1,9 @@
 // XP and Leveling System
 
 export interface StudentProfile {
-  name: string;
+  firstName: string;
+  surname: string;
+  name: string; // Full name (firstName + surname)
   code: string;
   xp: number;
   level: number;
@@ -58,28 +60,89 @@ export function getLevelInfo(xp: number) {
   return { level, currentXP, maxXP, progress };
 }
 
-// Sample leaderboard data
-export const SAMPLE_LEADERBOARD: StudentProfile[] = [
-  { name: 'Alex', code: 'ALEX', xp: 450, level: 4, activitiesCompleted: 28, lessonsCompleted: 8, storiesRead: 12, gamesPlayed: 8 },
-  { name: 'Maria', code: 'MARIA', xp: 380, level: 3, activitiesCompleted: 24, lessonsCompleted: 7, storiesRead: 10, gamesPlayed: 7 },
-  { name: 'John', code: 'JOHN', xp: 320, level: 3, activitiesCompleted: 20, lessonsCompleted: 6, storiesRead: 8, gamesPlayed: 6 },
-  { name: 'Anna', code: 'ANNA', xp: 280, level: 3, activitiesCompleted: 18, lessonsCompleted: 5, storiesRead: 7, gamesPlayed: 6 },
-  { name: 'Pedro', code: 'PEDRO', xp: 240, level: 3, activitiesCompleted: 16, lessonsCompleted: 5, storiesRead: 6, gamesPlayed: 5 },
-  { name: 'Sophie', code: 'SOPHIE', xp: 180, level: 2, activitiesCompleted: 12, lessonsCompleted: 4, storiesRead: 5, gamesPlayed: 3 },
-  { name: 'Nicolas', code: 'NICOLAS', xp: 150, level: 2, activitiesCompleted: 10, lessonsCompleted: 3, storiesRead: 4, gamesPlayed: 3 },
-  { name: 'Demo Student', code: 'DEMO', xp: 50, level: 1, activitiesCompleted: 3, lessonsCompleted: 1, storiesRead: 1, gamesPlayed: 1 },
-];
+// Dynamic student management
+const STORAGE_KEY = 'teacher_steve_students';
+
+// Load students from localStorage
+export function loadStudents(): StudentProfile[] {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+// Save students to localStorage
+export function saveStudents(students: StudentProfile[]): void {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+}
+
+// Generate unique 4-digit code
+export function generateUniqueCode(existingStudents: StudentProfile[]): string {
+  const existingCodes = new Set(existingStudents.map(s => s.code));
+  let code: string;
+  do {
+    code = Math.floor(1000 + Math.random() * 9000).toString();
+  } while (existingCodes.has(code));
+  return code;
+}
+
+// Create new student
+export function createStudent(
+  firstName: string,
+  surname: string,
+  code: string,
+  students: StudentProfile[]
+): StudentProfile {
+  const newStudent: StudentProfile = {
+    firstName,
+    surname,
+    name: `${firstName} ${surname}`,
+    code,
+    xp: 0,
+    level: 1,
+    activitiesCompleted: 0,
+    lessonsCompleted: 0,
+    storiesRead: 0,
+    gamesPlayed: 0,
+  };
+  
+  const updated = [...students, newStudent];
+  saveStudents(updated);
+  return newStudent;
+}
+
+// Update student
+export function updateStudent(
+  code: string,
+  updates: Partial<StudentProfile>,
+  students: StudentProfile[]
+): StudentProfile[] {
+  const updated = students.map(s => 
+    s.code === code ? { ...s, ...updates } : s
+  );
+  saveStudents(updated);
+  return updated;
+}
+
+// Delete student
+export function deleteStudent(code: string, students: StudentProfile[]): StudentProfile[] {
+  const updated = students.filter(s => s.code !== code);
+  saveStudents(updated);
+  return updated;
+}
 
 // Get top students
-export function getTopStudents(count: number = 3): StudentProfile[] {
-  return [...SAMPLE_LEADERBOARD]
+export function getTopStudents(students: StudentProfile[], count: number = 3): StudentProfile[] {
+  return [...students]
     .sort((a, b) => b.xp - a.xp)
     .slice(0, count);
 }
 
 // Get full leaderboard sorted by XP
-export function getFullLeaderboard(): StudentProfile[] {
-  return [...SAMPLE_LEADERBOARD].sort((a, b) => b.xp - a.xp);
+export function getFullLeaderboard(students: StudentProfile[]): StudentProfile[] {
+  return [...students].sort((a, b) => b.xp - a.xp);
 }
 
 // Rank badges

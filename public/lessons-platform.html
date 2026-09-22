@@ -136,9 +136,70 @@ body::before {
 <body>
 <div id="app"></div>
 <script>
-const VALID_CODES = ['STEVE2324','NICOLAS','MARIA','JOHN','ANNA','PEDRO','SOPHIE','DEMO'];
 const ADMIN_NAME = 'steve';
-const ADMIN_CODE = 'STEVE2324';
+const ADMIN_CODE = '2324';
+const STORAGE_KEY = 'teacher_steve_students';
+
+// Student management functions
+function loadStudents() {
+  try {
+    const stored = localStorage.getItem(STORAGE_KEY);
+    return stored ? JSON.parse(stored) : [];
+  } catch {
+    return [];
+  }
+}
+
+function saveStudents(students) {
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(students));
+}
+
+function generateUniqueCode(existingStudents) {
+  const existingCodes = new Set(existingStudents.map(s => s.code));
+  let code;
+  do {
+    code = Math.floor(1000 + Math.random() * 9000).toString();
+  } while (existingCodes.has(code));
+  return code;
+}
+
+function createStudent(firstName, surname, code, students) {
+  const newStudent = {
+    firstName,
+    surname,
+    name: `${firstName} ${surname}`,
+    code,
+    xp: 0,
+    level: 1,
+    activitiesCompleted: 0,
+    lessonsCompleted: 0,
+    storiesRead: 0,
+    gamesPlayed: 0,
+  };
+  const updated = [...students, newStudent];
+  saveStudents(updated);
+  return newStudent;
+}
+
+function updateStudent(code, updates, students) {
+  const updated = students.map(s => s.code === code ? { ...s, ...updates } : s);
+  saveStudents(updated);
+  return updated;
+}
+
+function deleteStudent(code, students) {
+  const updated = students.filter(s => s.code !== code);
+  saveStudents(updated);
+  return updated;
+}
+
+function getTopStudents(students, count = 3) {
+  return [...students].sort((a, b) => b.xp - a.xp).slice(0, count);
+}
+
+function getFullLeaderboard(students) {
+  return [...students].sort((a, b) => b.xp - a.xp);
+}
 
 const FUN_FACTS = [
   { emoji:'📚', title:'English has over 1 million words', fact:'The Oxford English Dictionary contains over 170,000 words in current use, with around 47,000 obsolete words. Linguists estimate over 1 million total words!', tip:'Focus on the 3,000 most common words which cover 95% of everyday conversation.' },
@@ -212,7 +273,7 @@ function renderLogin() {
         <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Student Name</label>
         <input type="text" id="nameInput" class="login-input" placeholder="Enter your name" autofocus style="margin-bottom:20px" />
         <label style="display:block;font-size:14px;font-weight:500;color:#1E293B;margin-bottom:8px">Student Code</label>
-        <input type="text" id="codeInput" class="login-input login-input-mono" placeholder="Enter your code" />
+        <input type="password" id="codeInput" class="login-input login-input-mono" placeholder="Enter your code" />
         <div id="loginError" style="margin-top:12px;font-size:14px;color:#ef4444;display:none"></div>
         <button type="submit" id="loginBtn" class="login-btn" disabled>Start Learning</button>
       </form>
@@ -238,24 +299,36 @@ function attachLoginEvents() {
   document.getElementById('loginForm').addEventListener('submit', e => {
     e.preventDefault();
     const trimmedName = nameInput.value.trim();
-    const upperCode = codeInput.value.trim().toUpperCase();
+    const trimmedCode = codeInput.value.trim();
     const err = document.getElementById('loginError');
 
     if (!trimmedName) { err.textContent='Please enter your name.'; err.style.display='block'; return; }
-    if (!VALID_CODES.includes(upperCode)) { err.textContent='Invalid code. Please check with your teacher.'; err.style.display='block'; return; }
+
+    // Admin logic: name="Steve" + code="2324"
+    if (trimmedName.toLowerCase() === ADMIN_NAME && trimmedCode === ADMIN_CODE) {
+      err.style.display = 'none';
+      state.studentName = 'Teacher Steve';
+      state.studentCode = ADMIN_CODE;
+      state.isAdmin = true;
+      state.view = 'home';
+      render();
+      return;
+    }
+
+    // Check if code exists in student list
+    const students = loadStudents();
+    const student = students.find(s => s.code === trimmedCode);
+
+    if (!student) {
+      err.textContent='Invalid code. Please check with your teacher.';
+      err.style.display='block';
+      return;
+    }
 
     err.style.display = 'none';
-
-    // Admin logic: name="Steve" + code="STEVE2324"
-    if (trimmedName.toLowerCase() === ADMIN_NAME && upperCode === ADMIN_CODE) {
-      state.studentName = 'Teacher Steve';
-      state.studentCode = upperCode;
-      state.isAdmin = true;
-    } else {
-      state.studentName = trimmedName;
-      state.studentCode = upperCode;
-      state.isAdmin = false;
-    }
+    state.studentName = student.name;
+    state.studentCode = student.code;
+    state.isAdmin = false;
     state.view = 'home';
     render();
   });
