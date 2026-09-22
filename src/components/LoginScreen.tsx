@@ -1,7 +1,7 @@
 import { useState } from 'react';
 
 interface LoginScreenProps {
-  onLogin: (name: string, code: string) => void;
+  onLogin: (name: string, code: string, isAdmin: boolean) => void;
 }
 
 const STUDENTS: Record<string, string> = {
@@ -12,7 +12,10 @@ const STUDENTS: Record<string, string> = {
   'PEDRO': 'Pedro',
   'SOPHIE': 'Sophie',
   'DEMO': 'Demo Student',
+  'STEVE2324': 'Teacher Steve',
 };
+
+const ADMIN_CODE = 'STEVE2324';
 
 export default function LoginScreen({ onLogin }: LoginScreenProps) {
   const [code, setCode] = useState('');
@@ -28,7 +31,8 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       const upperCode = code.trim().toUpperCase();
       const name = STUDENTS[upperCode];
       if (name) {
-        onLogin(name, upperCode);
+        const isAdmin = upperCode === ADMIN_CODE;
+        onLogin(name, upperCode, isAdmin);
       } else {
         setError('Invalid code. Please check with your teacher.');
         setIsLoading(false);
