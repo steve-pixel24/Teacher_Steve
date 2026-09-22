@@ -508,9 +508,454 @@ body {
 ::-webkit-scrollbar-thumb { background: rgba(30,41,59,0.15); border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: rgba(30,41,59,0.25); }
 
-/* ===== RESPONSIVE ===== */
-@media (max-width: 640px) {
-  .card { padding: 18px; border-radius: 14px; }
-  .flashcard-container { height: 200px; }
-  .header-banner { height: 56px; }
+/* ===== COMPREHENSIVE RESPONSIVE DESIGN SYSTEM ===== */
+
+/* Base responsive utilities */
+.responsive-container {
+  width: 100%;
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1rem;
+}
+
+/* Mobile First Approach */
+/* Small devices (phones, 320px and up) */
+@media (min-width: 20rem) {
+  :root {
+    --font-size-base: 14px;
+    --spacing-unit: 0.5rem;
+  }
+}
+
+/* Medium devices (tablets, 768px and up) */
+@media (min-width: 48rem) {
+  :root {
+    --font-size-base: 16px;
+    --spacing-unit: 1rem;
+  }
+}
+
+/* Large devices (laptops, 1024px and up) */
+@media (min-width: 64rem) {
+  :root {
+    --font-size-base: 16px;
+    --spacing-unit: 1.5rem;
+  }
+}
+
+/* Extra large devices (desktops/TVs, 1440px and up) */
+@media (min-width: 90rem) {
+  :root {
+    --font-size-base: 18px;
+    --spacing-unit: 2rem;
+  }
+}
+
+/* ===== MOBILE OPTIMIZATIONS (< 768px) ===== */
+@media (max-width: 767px) {
+  /* Header */
+  .header-banner {
+    height: auto;
+    min-height: 60px;
+    padding: 0.75rem 1rem;
+  }
+  
+  .header-content {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  .header-title {
+    font-size: 1.25rem;
+    text-align: center;
+  }
+  
+  .header-actions {
+    width: 100%;
+    justify-content: center;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  
+  /* Navigation */
+  .nav-menu {
+    position: fixed;
+    top: 60px;
+    left: 0;
+    right: 0;
+    background: var(--white);
+    box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    transform: translateY(-100%);
+    transition: transform 0.3s ease;
+    z-index: 999;
+  }
+  
+  .nav-menu.active {
+    transform: translateY(0);
+  }
+  
+  .nav-item {
+    padding: 1rem;
+    border-bottom: 1px solid var(--gray-100);
+  }
+  
+  /* Cards */
+  .card {
+    padding: 1rem;
+    margin-bottom: 1rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: 1fr !important;
+    gap: 1rem;
+  }
+  
+  /* Buttons */
+  .btn {
+    width: 100%;
+    padding: 0.875rem 1.5rem;
+    font-size: 0.875rem;
+  }
+  
+  .btn-group {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+  
+  /* Forms */
+  .form-group {
+    margin-bottom: 1rem;
+  }
+  
+  .form-input,
+  .form-textarea,
+  .form-select {
+    font-size: 16px; /* Prevents zoom on iOS */
+    padding: 0.75rem;
+  }
+  
+  /* Modals */
+  .modal {
+    width: 95%;
+    max-width: none;
+    margin: 1rem;
+    max-height: 90vh;
+  }
+  
+  .modal-content {
+    padding: 1rem;
+  }
+  
+  .modal-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.75rem;
+  }
+  
+  /* Typography */
+  h1 { font-size: 1.5rem; }
+  h2 { font-size: 1.25rem; }
+  h3 { font-size: 1.125rem; }
+  h4 { font-size: 1rem; }
+  
+  /* Spacing */
+  .section {
+    padding: 1.5rem 0;
+  }
+  
+  .container {
+    padding: 0 1rem;
+  }
+  
+  /* Hide desktop-only elements */
+  .desktop-only {
+    display: none !important;
+  }
+  
+  .mobile-only {
+    display: block !important;
+  }
+  
+  /* Touch-friendly targets */
+  .clickable {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  /* Flashcards */
+  .flashcard-container {
+    height: 200px;
+    max-width: 100%;
+  }
+}
+
+/* ===== TABLET OPTIMIZATIONS (768px - 1023px) ===== */
+@media (min-width: 768px) and (max-width: 1023px) {
+  .header-banner {
+    padding: 1rem 2rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: repeat(2, 1fr) !important;
+    gap: 1.5rem;
+  }
+  
+  .btn {
+    padding: 0.75rem 1.5rem;
+  }
+  
+  .modal {
+    width: 85%;
+    max-width: 600px;
+  }
+  
+  h1 { font-size: 2rem; }
+  h2 { font-size: 1.5rem; }
+  h3 { font-size: 1.25rem; }
+  
+  .desktop-only {
+    display: block !important;
+  }
+  
+  .mobile-only {
+    display: none !important;
+  }
+  
+  .flashcard-container {
+    height: 240px;
+  }
+}
+
+/* ===== LAPTOP OPTIMIZATIONS (1024px - 1439px) ===== */
+@media (min-width: 1024px) and (max-width: 1439px) {
+  .container {
+    max-width: 960px;
+    padding: 0 2rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: repeat(3, 1fr) !important;
+    gap: 2rem;
+  }
+  
+  .header-banner {
+    padding: 1.5rem 3rem;
+  }
+  
+  h1 { font-size: 2.5rem; }
+  h2 { font-size: 1.75rem; }
+  h3 { font-size: 1.5rem; }
+}
+
+/* ===== DESKTOP/TV OPTIMIZATIONS (1440px+) ===== */
+@media (min-width: 1440px) {
+  .container {
+    max-width: 1280px;
+    padding: 0 3rem;
+  }
+  
+  .card-grid {
+    grid-template-columns: repeat(4, 1fr) !important;
+    gap: 2.5rem;
+  }
+  
+  .header-banner {
+    padding: 2rem 4rem;
+  }
+  
+  /* Larger text for TV viewing */
+  body {
+    font-size: 18px;
+  }
+  
+  h1 { font-size: 3rem; }
+  h2 { font-size: 2rem; }
+  h3 { font-size: 1.5rem; }
+  
+  .btn {
+    padding: 1rem 2rem;
+    font-size: 1rem;
+  }
+  
+  .card {
+    padding: 2rem;
+  }
+  
+  .flashcard-container {
+    height: 280px;
+    max-width: 500px;
+  }
+}
+
+/* ===== ULTRA WIDE SCREENS (2560px+) ===== */
+@media (min-width: 2560px) {
+  .container {
+    max-width: 1920px;
+  }
+  
+  body {
+    font-size: 20px;
+  }
+  
+  h1 { font-size: 3.5rem; }
+  h2 { font-size: 2.5rem; }
+  
+  .card-grid {
+    grid-template-columns: repeat(5, 1fr) !important;
+  }
+  
+  .header-banner {
+    padding: 2.5rem 5rem;
+  }
+}
+
+/* ===== PRINT STYLES ===== */
+@media print {
+  .header-banner,
+  .nav-menu,
+  .btn,
+  .modal {
+    display: none !important;
+  }
+  
+  body {
+    font-size: 12pt;
+    color: #000;
+    background: #fff;
+  }
+  
+  .card {
+    border: 1px solid #000;
+    page-break-inside: avoid;
+  }
+}
+
+/* ===== DARK MODE SUPPORT ===== */
+@media (prefers-color-scheme: dark) {
+  :root {
+    --white: #1a1a1a;
+    --gray-100: #2a2a2a;
+    --gray-200: #3a3a3a;
+    --text-primary: #e0e0e0;
+    --text-secondary: #b0b0b0;
+  }
+}
+
+/* ===== REDUCED MOTION ===== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
+
+/* ===== HIGH CONTRAST MODE ===== */
+@media (prefers-contrast: high) {
+  :root {
+    --orange: #ff6600;
+    --text-primary: #000000;
+    --white: #ffffff;
+  }
+  
+  .btn {
+    border: 2px solid currentColor;
+  }
+}
+
+/* ===== LANDSCAPE ORIENTATION (Mobile) ===== */
+@media (max-height: 500px) and (orientation: landscape) {
+  .header-banner {
+    height: 50px;
+  }
+  
+  .modal {
+    max-height: 95vh;
+    overflow-y: auto;
+  }
+}
+
+/* ===== TOUCH DEVICE OPTIMIZATIONS ===== */
+@media (hover: none) and (pointer: coarse) {
+  /* Larger touch targets */
+  .btn {
+    min-height: 44px;
+    min-width: 44px;
+  }
+  
+  .nav-item {
+    min-height: 48px;
+  }
+  
+  /* Remove hover effects on touch devices */
+  .btn:hover,
+  .card:hover {
+    transform: none;
+  }
+  
+  /* Increase spacing for fingers */
+  .form-input {
+    padding: 1rem;
+    font-size: 16px;
+  }
+}
+
+/* ===== RESPONSIVE UTILITIES ===== */
+.hide-mobile {
+  @media (max-width: 767px) {
+    display: none !important;
+  }
+}
+
+.hide-tablet {
+  @media (min-width: 768px) and (max-width: 1023px) {
+    display: none !important;
+  }
+}
+
+.hide-desktop {
+  @media (min-width: 1024px) {
+    display: none !important;
+  }
+}
+
+.show-mobile {
+  display: none !important;
+  @media (max-width: 767px) {
+    display: block !important;
+  }
+}
+
+.show-tablet {
+  display: none !important;
+  @media (min-width: 768px) and (max-width: 1023px) {
+    display: block !important;
+  }
+}
+
+.show-desktop {
+  display: none !important;
+  @media (min-width: 1024px) {
+    display: block !important;
+  }
+}
+
+/* Responsive text sizing */
+.text-responsive {
+  font-size: clamp(1rem, 2.5vw, 1.5rem);
+}
+
+.heading-responsive {
+  font-size: clamp(1.5rem, 5vw, 3rem);
+}
+
+/* Responsive spacing */
+.gap-responsive {
+  gap: clamp(0.5rem, 2vw, 2rem);
+}
+
+.padding-responsive {
+  padding: clamp(1rem, 3vw, 3rem);
 }
