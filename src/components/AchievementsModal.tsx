@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { Achievement, loadAchievements } from '../utils/achievements';
+import { Achievement, loadAchievements, getAchievementPercentage } from '../utils/achievements';
 
 interface AchievementsModalProps {
   isOpen: boolean;
@@ -129,6 +129,14 @@ export const AchievementsModal: React.FC<AchievementsModalProps> = ({ isOpen, on
                         UNLOCKED
                       </span>
                     )}
+                    <span style={{
+                      fontSize: '11px',
+                      fontWeight: 600,
+                      color: 'var(--gray-500)',
+                      marginLeft: 'auto',
+                    }}>
+                      {getAchievementPercentage(achievement.id)}% of students
+                    </span>
                   </div>
                   <p style={{ fontSize: '13px', color: 'var(--gray-600)', margin: '0 0 8px 0' }}>
                     {achievement.description}

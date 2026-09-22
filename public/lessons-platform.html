@@ -443,14 +443,52 @@ const dictionary=[
   {word:'pragmatic',phonetic:'/præɡˈmæt.ɪk/',pos:'adjective',def:'Dealing with things sensibly and realistically.',synonyms:['practical','realistic','sensible'],example:'We need a pragmatic approach.',hasComparison:false}
 ];
 
-// Achievements
+// Enhanced Achievements with Statistics
 const ACHIEVEMENT_DEFS=[
   {id:'first-steps',title:'First Steps',desc:'Complete your 1st lesson',icon:'🚀',xp:50,type:'lessons_completed',target:1},
   {id:'bookworm',title:'Bookworm',desc:'Read 3 stories',icon:'📚',xp:100,type:'stories_read',target:3},
   {id:'quiz-master',title:'Quiz Master',desc:'Score 100% on any test',icon:'🎯',xp:150,type:'perfect_test',target:1},
   {id:'consistency-king',title:'Consistency King',desc:'Log in 3 days in a row',icon:'🔥',xp:200,type:'login_streak',target:3},
-  {id:'word-smith',title:'Word Smith',desc:'Submit 5 correct Word of the Day sentences',icon:'💬',xp:150,type:'word_submissions',target:5}
+  {id:'word-smith',title:'Word Smith',desc:'Submit 5 correct Word of the Day sentences',icon:'💬',xp:150,type:'word_submissions',target:5},
+  {id:'grammar-guru',title:'Grammar Guru',desc:'Complete 10 grammar lessons',icon:'📝',xp:300,type:'grammar_completed',target:10},
+  {id:'vocab-virtuoso',title:'Vocabulary Virtuoso',desc:'Learn 50 vocabulary words',icon:'📖',xp:250,type:'vocab_learned',target:50},
+  {id:'story-teller',title:'Story Teller',desc:'Read 10 stories',icon:'📚',xp:200,type:'stories_read',target:10},
+  {id:'test-champion',title:'Test Champion',desc:'Complete 20 tests',icon:'🏆',xp:400,type:'tests_completed',target:20},
+  {id:'game-master',title:'Game Master',desc:'Play 30 games',icon:'🎮',xp:350,type:'games_played',target:30},
+  {id:'spelling-bee',title:'Spelling Bee',desc:'Complete 15 spelling exercises',icon:'🐝',xp:200,type:'spelling_completed',target:15},
+  {id:'week-warrior',title:'Week Warrior',desc:'Log in 7 days in a row',icon:'⚔️',xp:500,type:'login_streak',target:7},
+  {id:'month-master',title:'Month Master',desc:'Log in 30 days in a row',icon:'👑',xp:1000,type:'login_streak',target:30},
+  {id:'level-10',title:'Rising Star',desc:'Reach Level 10',icon:'⭐',xp:300,type:'level_reached',target:10},
+  {id:'level-25',title:'Dedicated Learner',desc:'Reach Level 25',icon:'🌟',xp:500,type:'level_reached',target:25},
+  {id:'level-50',title:'Advanced Scholar',desc:'Reach Level 50',icon:'💫',xp:1000,type:'level_reached',target:50},
+  {id:'xp-1000',title:'XP Hunter',desc:'Earn 1000 total XP',icon:'💎',xp:200,type:'total_xp',target:1000},
+  {id:'xp-5000',title:'XP Master',desc:'Earn 5000 total XP',icon:'💠',xp:400,type:'total_xp',target:5000},
+  {id:'xp-10000',title:'XP Legend',desc:'Earn 10000 total XP',icon:'🔮',xp:800,type:'total_xp',target:10000},
+  {id:'all-rounder',title:'All-Rounder',desc:'Complete at least 1 of each category',icon:'🎯',xp:500,type:'categories_completed',target:5}
 ];
+
+// Achievement statistics tracking
+function getAchievementStats(){
+  const stats=ls('achievement_stats')||{};
+  return stats;
+}
+
+function updateAchievementStats(achievementId){
+  const stats=getAchievementStats();
+  if(!stats[achievementId]){
+    stats[achievementId]={unlocked:1,total:1};
+  }else{
+    stats[achievementId].unlocked++;
+    stats[achievementId].total++;
+  }
+  ls('achievement_stats',stats);
+}
+
+function getAchievementPercentage(achievementId){
+  const stats=getAchievementStats();
+  if(!stats[achievementId]||stats[achievementId].total===0)return 0;
+  return Math.round((stats[achievementId].unlocked/stats[achievementId].total)*100);
+}
 
 // Fun Facts
 const FUN_FACTS=[
@@ -506,10 +544,74 @@ function updateProgress(type,id,updates){const p=loadProgress();const ex=p.find(
 function completeItem(type,id,xp){updateProgress(type,id,{status:'completed',progress:100,xpEarned:xp,completedAt:new Date().toISOString()})}
 function getTotalXP(){return loadProgress().reduce((s,i)=>s+i.xpEarned,0)}
 
-// Level system
-const LEVELS=[{l:1,min:0,max:100},{l:2,min:101,max:250},{l:3,min:251,max:500},{l:4,min:501,max:800},{l:5,min:801,max:1200},{l:6,min:1201,max:1700},{l:7,min:1701,max:2300},{l:8,min:2301,max:3000},{l:9,min:3001,max:3800},{l:10,min:3801,max:5000}];
-function getLevelInfo(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min){const t=LEVELS[i];return{level:t.level,currentXP:xp-t.min,maxXP:t.max-t.min,progress:Math.min(((xp-t.min)/(t.max-t.min))*100,100)}};return{level:1,currentXP:xp,maxXP:100,progress:0}}
-function getLevelColor(l){if(l>=8)return'#FFD700';if(l>=5)return'#C0C0C0';if(l>=3)return'#CD7F32';return'#64748B'}
+// Enhanced Level System - 100 levels with exponential progression
+const LEVELS=[
+  // Beginner (1-10): 0-500 XP
+  {l:1,min:0,max:50},{l:2,min:51,max:100},{l:3,min:101,max:150},{l:4,min:151,max:200},{l:5,min:201,max:250},
+  {l:6,min:251,max:300},{l:7,min:301,max:350},{l:8,min:351,max:400},{l:9,min:401,max:450},{l:10,min:451,max:500},
+  // Elementary (11-20): 500-2000 XP
+  {l:11,min:501,max:600},{l:12,min:601,max:700},{l:13,min:701,max:800},{l:14,min:801,max:900},{l:15,min:901,max:1000},
+  {l:16,min:1001,max:1200},{l:17,min:1201,max:1400},{l:18,min:1401,max:1600},{l:19,min:1601,max:1800},{l:20,min:1801,max:2000},
+  // Intermediate (21-35): 2000-8000 XP
+  {l:21,min:2001,max:2300},{l:22,min:2301,max:2600},{l:23,min:2601,max:2900},{l:24,min:2901,max:3200},{l:25,min:3201,max:3500},
+  {l:26,min:3501,max:3800},{l:27,min:3801,max:4100},{l:28,min:4101,max:4400},{l:29,min:4401,max:4700},{l:30,min:4701,max:5000},
+  {l:31,min:5001,max:5500},{l:32,min:5501,max:6000},{l:33,min:6001,max:6500},{l:34,min:6501,max:7000},{l:35,min:7001,max:8000},
+  // Upper Intermediate (36-50): 8000-20000 XP
+  {l:36,min:8001,max:9000},{l:37,min:9001,max:10000},{l:38,min:10001,max:11000},{l:39,min:11001,max:12000},{l:40,min:12001,max:13000},
+  {l:41,min:13001,max:14000},{l:42,min:14001,max:15000},{l:43,min:15001,max:16000},{l:44,min:16001,max:17000},{l:45,min:17001,max:18000},
+  {l:46,min:18001,max:19000},{l:47,min:19001,max:20000},{l:48,min:20001,max:22000},{l:49,min:22001,max:24000},{l:50,min:24001,max:26000},
+  // Advanced (51-70): 26000-80000 XP
+  {l:51,min:26001,max:28000},{l:52,min:28001,max:30000},{l:53,min:30001,max:32000},{l:54,min:32001,max:34000},{l:55,min:34001,max:36000},
+  {l:56,min:36001,max:38000},{l:57,min:38001,max:40000},{l:58,min:40001,max:43000},{l:59,min:43001,max:46000},{l:60,min:46001,max:50000},
+  {l:61,min:50001,max:54000},{l:62,min:54001,max:58000},{l:63,min:58001,max:62000},{l:64,min:62001,max:66000},{l:65,min:66001,max:70000},
+  {l:66,min:70001,max:74000},{l:67,min:74001,max:78000},{l:68,min:78001,max:82000},{l:69,min:82001,max:86000},{l:70,min:86001,max:90000},
+  // Expert (71-85): 90000-200000 XP
+  {l:71,min:90001,max:100000},{l:72,min:100001,max:110000},{l:73,min:110001,max:120000},{l:74,min:120001,max:130000},{l:75,min:130001,max:140000},
+  {l:76,min:140001,max:150000},{l:77,min:150001,max:160000},{l:78,min:160001,max:170000},{l:79,min:170001,max:180000},{l:80,min:180001,max:190000},
+  {l:81,min:190001,max:200000},{l:82,min:200001,max:220000},{l:83,min:220001,max:240000},{l:84,min:240001,max:260000},{l:85,min:260001,max:280000},
+  // Master (86-100): 280000-1000000 XP
+  {l:86,min:280001,max:300000},{l:87,min:300001,max:330000},{l:88,min:330001,max:360000},{l:89,min:360001,max:400000},{l:90,min:400001,max:450000},
+  {l:91,min:450001,max:500000},{l:92,min:500001,max:560000},{l:93,min:560001,max:630000},{l:94,min:630001,max:700000},{l:95,min:700001,max:780000},
+  {l:96,min:780001,max:860000},{l:97,min:860001,max:940000},{l:98,min:940001,max:1000000},{l:99,min:1000001,max:1200000},{l:100,min:1200001,max:999999999}
+];
+
+function getLevelInfo(xp){
+  for(let i=LEVELS.length-1;i>=0;i--){
+    if(xp>=LEVELS[i].min){
+      const t=LEVELS[i];
+      return{
+        level:t.level,
+        currentXP:xp-t.min,
+        maxXP:t.max-t.min,
+        progress:Math.min(((xp-t.min)/(t.max-t.min))*100,100),
+        totalXP:xp
+      };
+    }
+  }
+  return{level:1,currentXP:xp,maxXP:50,progress:0,totalXP:xp};
+}
+
+function getLevelColor(l){
+  if(l>=96)return'#FFD700'; // Master Gold
+  if(l>=86)return'#E5C100'; // Expert Gold
+  if(l>=71)return'#C0C0C0'; // Expert Silver
+  if(l>=51)return'#CD7F32'; // Advanced Bronze
+  if(l>=36)return'#B87333'; // Upper Intermediate
+  if(l>=21)return'#A0522D'; // Intermediate
+  if(l>=11)return'#6B8E23'; // Elementary
+  return'#808080'; // Beginner Gray
+}
+
+function getLevelTitle(l){
+  if(l>=96)return'Grand Master';
+  if(l>=86)return'Master';
+  if(l>=71)return'Expert';
+  if(l>=51)return'Advanced';
+  if(l>=36)return'Upper Intermediate';
+  if(l>=21)return'Intermediate';
+  if(l>=11)return'Elementary';
+  return'Beginner';
+}
 
 function getDifficultyColor(difficulty){
   switch(difficulty){
@@ -570,7 +672,23 @@ function clearWOTD(){
 
 // Achievements
 function initAchievements(){if(!loadAchievements())saveAchievements(ACHIEVEMENT_DEFS.map(a=>({...a,current:0,unlocked:false})));return loadAchievements()}
-function checkAchievements(type,value){const achs=initAchievements();const newUn=[];achs.forEach(a=>{if(!a.unlocked&&a.type===type){a.current=value;if(value>=a.target){a.unlocked=true;a.unlockedAt=new Date().toISOString();newUn.push(a)}}});saveAchievements(achs);return newUn}
+function checkAchievements(type,value){
+  const achs=initAchievements();
+  const newUn=[];
+  achs.forEach(a=>{
+    if(!a.unlocked&&a.type===type){
+      a.current=value;
+      if(value>=a.target){
+        a.unlocked=true;
+        a.unlockedAt=new Date().toISOString();
+        newUn.push(a);
+        updateAchievementStats(a.id);
+      }
+    }
+  });
+  saveAchievements(achs);
+  return newUn;
+}
 
 // Login streak
 function trackLoginStreak(){const today=new Date().toDateString();const data=ls(STORAGE_KEYS.streak);let streak=0;if(data){const y=new Date();y.setDate(y.getDate()-1);if(data.lastLogin===today)return data.streak;else if(data.lastLogin===y.toDateString())streak=data.streak+1;else streak=1}else streak=1;ls(STORAGE_KEYS.streak,{lastLogin:today,streak});checkAchievements('login_streak',streak);return streak}
@@ -1408,12 +1526,20 @@ function renderAchievementsModal(){
   return`<div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header"><div style="display:flex;align-items:center;justify-content:space-between"><div><h2 class="font-heading" style="font-size:24px;font-weight:800;color:var(--brand-charcoal);margin:0 0 4px">🏆 Achievements</h2><p style="font-size:14px;color:var(--gray-600);margin:0">${unlocked} of ${achs.length} unlocked • ${totalXP} XP earned</p></div><button onclick="closeModal()" style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px;color:var(--gray-500)">✕</button></div></div>
     <div class="modal-body"><div style="display:flex;flex-direction:column;gap:12px">
-      ${achs.map(a=>`<div style="background:${a.unlocked?'rgba(16,185,129,.05)':'var(--brand-light-sand)'};border:2px solid ${a.unlocked?'var(--green)':'var(--gray-200)'};border-radius:12px;padding:16px;display:flex;align-items:center;gap:16px;opacity:${a.unlocked?1:.7}">
+      ${achs.map(a=>{
+        const pct=getAchievementPercentage(a.id);
+        return`<div style="background:${a.unlocked?'rgba(16,185,129,.05)':'var(--brand-light-sand)'};border:2px solid ${a.unlocked?'var(--green)':'var(--gray-200)'};border-radius:12px;padding:16px;display:flex;align-items:center;gap:16px;opacity:${a.unlocked?1:.7}">
         <div style="font-size:40px;width:60px;height:60px;display:flex;align-items:center;justify-content:center;background:${a.unlocked?'rgba(16,185,129,.1)':'var(--gray-100)'};border-radius:12px">${a.icon}</div>
-        <div style="flex:1"><div style="display:flex;align-items:center;gap:8px;margin-bottom:4px"><h3 style="font-size:16px;font-weight:700;color:var(--brand-charcoal);margin:0">${a.title}</h3>${a.unlocked?'<span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(16,185,129,.1);padding:2px 8px;border-radius:10px">UNLOCKED</span>':''}</div><p style="font-size:13px;color:var(--gray-600);margin:0 0 8px">${a.desc}</p>
+        <div style="flex:1">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:4px">
+            <h3 style="font-size:16px;font-weight:700;color:var(--brand-charcoal);margin:0">${a.title}</h3>
+            ${a.unlocked?'<span style="font-size:10px;font-weight:700;color:var(--green);background:rgba(16,185,129,.1);padding:2px 8px;border-radius:10px">UNLOCKED</span>':''}
+            <span style="font-size:11px;font-weight:600;color:var(--gray-500);margin-left:auto">${pct}% of students</span>
+          </div>
+          <p style="font-size:13px;color:var(--gray-600);margin:0 0 8px">${a.desc}</p>
           ${!a.unlocked?`<div class="progress-track" style="margin-bottom:4px"><div class="progress-fill" style="width:${(a.current/a.target)*100}%"></div></div><span style="font-size:11px;color:var(--gray-500)">${a.current} / ${a.target}</span>`:`<span style="font-size:13px;font-weight:700;color:var(--brand-orange)">+${a.xp} XP</span>`}
         </div>
-      </div>`).join('')}
+      </div>`}).join('')}
     </div></div>
   </div>`;
 }
@@ -1425,8 +1551,21 @@ function renderProfileModal(){
   const xp=sp?sp.xp:state.score;
   const li=getLevelInfo(xp);
   const avatars=['🎓','👨‍🎓','👩‍🎓','🧑‍💼','👨‍💼','👩‍💼','🦊','🐼','🦁','🐯','🦄','🐲','🚀','⭐','🎯','🏆','💎','🌟'];
-  const titles={1:['Grammar Novice','Vocabulary Beginner','Language Learner'],2:['Grammar Explorer','Vocabulary Builder','Word Enthusiast'],3:['Grammar Specialist','Vocabulary Explorer','Language Apprentice'],4:['Grammar Expert','Vocabulary Master','Communication Pro'],5:['Grammar Guru','Vocabulary Virtuoso','Master Communicator'],6:['Grammar Sage','Language Scholar','English Authority'],7:['Grammar Master','Linguistic Expert','Language Legend'],8:['Grammar Champion','Word Wizard','English Elite'],9:['Grammar Legend','Language Master','Vocabulary King'],10:['Grammar God','Language Deity','Ultimate Master']};
-  const myTitles=titles[li.level]||titles[1];
+  const titles={
+    1:['Grammar Novice','Vocabulary Beginner','Language Learner'],
+    2:['Grammar Explorer','Vocabulary Builder','Word Enthusiast'],
+    3:['Grammar Specialist','Vocabulary Explorer','Language Apprentice'],
+    4:['Grammar Expert','Vocabulary Master','Communication Pro'],
+    5:['Grammar Guru','Vocabulary Virtuoso','Master Communicator'],
+    6:['Grammar Sage','Language Scholar','English Authority'],
+    7:['Grammar Master','Linguistic Expert','Language Legend'],
+    8:['Grammar Champion','Word Wizard','English Elite'],
+    9:['Grammar Legend','Language Master','Vocabulary King'],
+    10:['Grammar God','Language Deity','Ultimate Master']
+  };
+  // Map 100 levels to 10 title tiers
+  const titleTier=Math.min(10,Math.ceil(li.level/10));
+  const myTitles=titles[titleTier]||titles[1];
   return`<div class="modal-content" onclick="event.stopPropagation()">
     <div class="modal-header"><div style="display:flex;align-items:center;justify-content:space-between"><div><h2 class="font-heading" style="font-size:24px;font-weight:800;color:var(--brand-charcoal);margin:0 0 4px">👤 My Profile</h2><p style="font-size:14px;color:var(--gray-600);margin:0">Customize your learning identity</p></div><button onclick="closeModal()" style="background:var(--gray-100);border:1px solid var(--gray-300);border-radius:10px;width:36px;height:36px;cursor:pointer;font-size:18px;color:var(--gray-500)">✕</button></div></div>
     <div class="modal-body">

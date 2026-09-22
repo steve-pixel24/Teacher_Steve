@@ -4,6 +4,7 @@ import { completeItem, updateItemProgress } from '../utils/progress';
 import { GrammarDash } from './GrammarDash';
 import { IdiomMatch } from './IdiomMatch';
 import ConversationalRoulette from './ConversationalRoulette';
+import SpellingPractice from './SpellingPractice';
 
 interface GameLauncherProps {
   game: Game;
@@ -31,6 +32,11 @@ export const GameLauncher: React.FC<GameLauncherProps> = ({ game, onBack, onComp
   if (game.id === 'conversational-roulette') {
     return <ConversationalRoulette onBack={onBack} onComplete={onComplete} />;
   }
+
+  if (game.id === 'spelling-practice') {
+    return <SpellingPractice onBack={onBack} onComplete={onComplete} />;
+  }
+
   const [currentWord, setCurrentWord] = useState('');
   const [scrambledWord, setScrambledWord] = useState('');
   const [userInput, setUserInput] = useState('');

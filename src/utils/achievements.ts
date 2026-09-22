@@ -12,7 +12,7 @@ export interface Achievement {
 }
 
 export interface AchievementRequirement {
-  type: 'lessons_completed' | 'stories_read' | 'perfect_test' | 'login_streak' | 'word_submissions';
+  type: 'lessons_completed' | 'stories_read' | 'perfect_test' | 'login_streak' | 'word_submissions' | 'grammar_completed' | 'vocab_learned' | 'tests_completed' | 'games_played' | 'spelling_completed' | 'level_reached' | 'total_xp' | 'categories_completed';
   target: number;
   current: number;
 }
@@ -63,6 +63,141 @@ export const ACHIEVEMENTS: Achievement[] = [
     requirement: { type: 'word_submissions', target: 5, current: 0 },
     unlocked: false,
   },
+  {
+    id: 'grammar-guru',
+    title: 'Grammar Guru',
+    description: 'Complete 10 grammar lessons',
+    icon: '📝',
+    xpReward: 300,
+    requirement: { type: 'grammar_completed', target: 10, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'vocab-virtuoso',
+    title: 'Vocabulary Virtuoso',
+    description: 'Learn 50 vocabulary words',
+    icon: '📖',
+    xpReward: 250,
+    requirement: { type: 'vocab_learned', target: 50, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'story-teller',
+    title: 'Story Teller',
+    description: 'Read 10 stories',
+    icon: '📚',
+    xpReward: 200,
+    requirement: { type: 'stories_read', target: 10, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'test-champion',
+    title: 'Test Champion',
+    description: 'Complete 20 tests',
+    icon: '🏆',
+    xpReward: 400,
+    requirement: { type: 'tests_completed', target: 20, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'game-master',
+    title: 'Game Master',
+    description: 'Play 30 games',
+    icon: '🎮',
+    xpReward: 350,
+    requirement: { type: 'games_played', target: 30, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'spelling-bee',
+    title: 'Spelling Bee',
+    description: 'Complete 15 spelling exercises',
+    icon: '🐝',
+    xpReward: 200,
+    requirement: { type: 'spelling_completed', target: 15, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'week-warrior',
+    title: 'Week Warrior',
+    description: 'Log in 7 days in a row',
+    icon: '⚔️',
+    xpReward: 500,
+    requirement: { type: 'login_streak', target: 7, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'month-master',
+    title: 'Month Master',
+    description: 'Log in 30 days in a row',
+    icon: '👑',
+    xpReward: 1000,
+    requirement: { type: 'login_streak', target: 30, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'level-10',
+    title: 'Rising Star',
+    description: 'Reach Level 10',
+    icon: '⭐',
+    xpReward: 300,
+    requirement: { type: 'level_reached', target: 10, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'level-25',
+    title: 'Dedicated Learner',
+    description: 'Reach Level 25',
+    icon: '🌟',
+    xpReward: 500,
+    requirement: { type: 'level_reached', target: 25, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'level-50',
+    title: 'Advanced Scholar',
+    description: 'Reach Level 50',
+    icon: '💫',
+    xpReward: 1000,
+    requirement: { type: 'level_reached', target: 50, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'xp-1000',
+    title: 'XP Hunter',
+    description: 'Earn 1000 total XP',
+    icon: '💎',
+    xpReward: 200,
+    requirement: { type: 'total_xp', target: 1000, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'xp-5000',
+    title: 'XP Master',
+    description: 'Earn 5000 total XP',
+    icon: '💠',
+    xpReward: 400,
+    requirement: { type: 'total_xp', target: 5000, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'xp-10000',
+    title: 'XP Legend',
+    description: 'Earn 10000 total XP',
+    icon: '🔮',
+    xpReward: 800,
+    requirement: { type: 'total_xp', target: 10000, current: 0 },
+    unlocked: false,
+  },
+  {
+    id: 'all-rounder',
+    title: 'All-Rounder',
+    description: 'Complete at least 1 of each category',
+    icon: '🎯',
+    xpReward: 500,
+    requirement: { type: 'categories_completed', target: 5, current: 0 },
+    unlocked: false,
+  },
 ];
 
 const STORAGE_KEY = 'teacher_steve_achievements';
@@ -86,6 +221,42 @@ export function saveAchievements(achievements: Achievement[]): void {
   localStorage.setItem(STORAGE_KEY, JSON.stringify(achievements));
 }
 
+// Achievement statistics tracking
+const STATS_KEY = 'teacher_steve_achievement_stats';
+
+export interface AchievementStats {
+  [achievementId: string]: {
+    unlocked: number;
+    total: number;
+  };
+}
+
+export function getAchievementStats(): AchievementStats {
+  try {
+    const stored = localStorage.getItem(STATS_KEY);
+    return stored ? JSON.parse(stored) : {};
+  } catch {
+    return {};
+  }
+}
+
+export function updateAchievementStats(achievementId: string): void {
+  const stats = getAchievementStats();
+  if (!stats[achievementId]) {
+    stats[achievementId] = { unlocked: 1, total: 1 };
+  } else {
+    stats[achievementId].unlocked++;
+    stats[achievementId].total++;
+  }
+  localStorage.setItem(STATS_KEY, JSON.stringify(stats));
+}
+
+export function getAchievementPercentage(achievementId: string): number {
+  const stats = getAchievementStats();
+  if (!stats[achievementId] || stats[achievementId].total === 0) return 0;
+  return Math.round((stats[achievementId].unlocked / stats[achievementId].total) * 100);
+}
+
 // Check and unlock achievements
 export function checkAchievements(
   type: AchievementRequirement['type'],
@@ -101,6 +272,7 @@ export function checkAchievements(
         achievement.unlocked = true;
         achievement.unlockedAt = new Date().toISOString();
         newlyUnlocked.push(achievement);
+        updateAchievementStats(achievement.id);
       }
     }
   });

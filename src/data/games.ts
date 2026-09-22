@@ -507,4 +507,11 @@ export const games: Game[] = [
     description: 'Spin the wheel for random topics with unexpected twists! Practice speaking skills.',
     category: 'Speaking'
   },
+  {
+    id: 'spelling-practice',
+    title: 'Spelling Practice',
+    icon: '📝',
+    description: 'Master English spelling with interactive exercises across multiple difficulty levels.',
+    category: 'Spelling'
+  },
 ];

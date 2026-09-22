@@ -29,6 +29,11 @@ const TITLES_BY_LEVEL: Record<number, string[]> = {
   10: ['Grammar God', 'Language Deity', 'Ultimate Master'],
 };
 
+// Map 100 levels to 10 title tiers
+const getTitleTier = (level: number): number => {
+  return Math.min(10, Math.ceil(level / 10));
+};
+
 export const ProfileModal: React.FC<ProfileModalProps> = ({
   isOpen,
   onClose,
@@ -43,7 +48,8 @@ export const ProfileModal: React.FC<ProfileModalProps> = ({
 
   if (!isOpen) return null;
 
-  const availableTitles = TITLES_BY_LEVEL[studentLevel] || TITLES_BY_LEVEL[1];
+  const titleTier = getTitleTier(studentLevel);
+  const availableTitles = TITLES_BY_LEVEL[titleTier] || TITLES_BY_LEVEL[1];
 
   const handleSave = () => {
     onSave(selectedAvatar, selectedTitle);

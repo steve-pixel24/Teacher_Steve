@@ -2,7 +2,7 @@
 
 export interface ProgressItem {
   id: string;
-  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar';
+  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar' | 'spelling';
   status: 'not-started' | 'in-progress' | 'completed';
   progress: number; // 0-100
   xpEarned: number;
@@ -35,7 +35,7 @@ export function getItemProgress(type: string, id: string): ProgressItem | null {
 
 // Update or create progress for an item
 export function updateItemProgress(
-  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar',
+  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar' | 'spelling',
   id: string,
   updates: Partial<ProgressItem>
 ): ProgressItem {
@@ -62,7 +62,7 @@ export function updateItemProgress(
 
 // Mark item as completed
 export function completeItem(
-  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar',
+  type: 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'grammar' | 'spelling',
   id: string,
   xpReward: number
 ): ProgressItem {
