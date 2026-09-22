@@ -1,14 +1,22 @@
 import { useState } from 'react';
+import LoginScreen from './components/LoginScreen';
 import Dashboard from './components/Dashboard';
 import LessonPlayer from './components/LessonPlayer';
 import { lessons, Lesson } from './data/lessons';
 
-export type AppView = 'dashboard' | 'lesson';
+type AppView = 'login' | 'dashboard' | 'lesson';
 
 export default function App() {
-  const [view, setView] = useState<AppView>('dashboard');
+  const [view, setView] = useState<AppView>('login');
+  const [studentName, setStudentName] = useState('');
+  const [studentCode, setStudentCode] = useState('');
   const [activeLesson, setActiveLesson] = useState<Lesson | null>(null);
-  const [studentName, setStudentName] = useState('Nicolas');
+
+  const handleLogin = (name: string, code: string) => {
+    setStudentName(name);
+    setStudentCode(code);
+    setView('dashboard');
+  };
 
   const openLesson = (lesson: Lesson) => {
     setActiveLesson(lesson);
@@ -20,14 +28,25 @@ export default function App() {
     setActiveLesson(null);
   };
 
+  const logout = () => {
+    setView('login');
+    setStudentName('');
+    setStudentCode('');
+    setActiveLesson(null);
+  };
+
   return (
     <div className="min-h-screen">
+      {view === 'login' && (
+        <LoginScreen onLogin={handleLogin} />
+      )}
       {view === 'dashboard' && (
         <Dashboard
           lessons={lessons}
           onSelectLesson={openLesson}
           studentName={studentName}
-          onNameChange={setStudentName}
+          studentCode={studentCode}
+          onLogout={logout}
         />
       )}
       {view === 'lesson' && activeLesson && (

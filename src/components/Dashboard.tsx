@@ -4,7 +4,8 @@ interface DashboardProps {
   lessons: Lesson[];
   onSelectLesson: (lesson: Lesson) => void;
   studentName: string;
-  onNameChange: (name: string) => void;
+  studentCode: string;
+  onLogout: () => void;
 }
 
 const levelColors: Record<Level, string> = {
@@ -22,7 +23,7 @@ const typeIcons: Record<string, string> = {
   mixed: '🎯',
 };
 
-export default function Dashboard({ lessons, onSelectLesson, studentName, onNameChange }: DashboardProps) {
+export default function Dashboard({ lessons, onSelectLesson, studentName, studentCode, onLogout }: DashboardProps) {
   return (
     <div className="min-h-screen">
       {/* Header */}
@@ -39,15 +40,16 @@ export default function Dashboard({ lessons, onSelectLesson, studentName, onName
           </div>
           <div className="flex items-center gap-3">
             <div className="hidden sm:flex items-center gap-2 bg-[var(--card)] border border-[var(--border)] rounded-lg px-3 py-2">
-              <span className="text-xs text-[var(--text-muted)]">Student:</span>
-              <input
-                type="text"
-                value={studentName}
-                onChange={(e) => onNameChange(e.target.value)}
-                className="bg-transparent border-none outline-none text-sm font-medium text-[var(--text)] w-24"
-                placeholder="Name"
-              />
+              <span className="text-xs text-[var(--text-muted)]">Code:</span>
+              <span className="text-sm font-mono font-medium text-[var(--blue-light)]">{studentCode}</span>
             </div>
+            <button
+              onClick={onLogout}
+              className="btn btn-ghost text-xs"
+              title="Log out"
+            >
+              🚪 Exit
+            </button>
           </div>
         </div>
       </header>
