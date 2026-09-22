@@ -454,11 +454,26 @@ const ACHIEVEMENT_DEFS=[
 
 // Fun Facts
 const FUN_FACTS=[
-  {emoji:'📚',title:'English has over 1 million words',fact:'The Oxford English Dictionary contains over 170,000 words in current use. Linguists estimate over 1 million total!',tip:'Focus on the 3,000 most common words which cover 95% of conversation.'},
-  {emoji:'🔤',title:'"Set" has the most definitions',fact:'The word "set" has over 430 different definitions — more than any other English word!',tip:'Context is everything. The same word can mean completely different things.'},
-  {emoji:'🌍',title:'English is the most studied language',fact:'Over 1 billion people are learning English worldwide. It\'s official in 67 countries.',tip:'You\'re part of a global community!'},
-  {emoji:'✍️',title:'Shakespeare invented 1,700+ words',fact:'Shakespeare coined words like "assassination," "bump," and "lonely."',tip:'Language is creative! Combine existing words to express new ideas.'},
-  {emoji:'💡',title:'The "silent e" rule',fact:'A silent "e" at the end often makes the vowel say its name — "kit" becomes "kite."',tip:'When you see a silent e, try making the vowel long!'}
+  {emoji:'📚',title:'English has over 1 million words',fact:'The Oxford English Dictionary contains over 170,000 words in current use, with around 47,000 obsolete words. But linguists estimate there are over 1 million total words when you include scientific terms, slang, and jargon!',tip:'Don\'t try to learn them all — focus on the 3,000 most common words which cover 95% of everyday conversation.',category:'vocabulary',difficulty:'A2'},
+  {emoji:'🔤',title:'"Set" has the most definitions',fact:'The word "set" has over 430 different definitions in the dictionary — more than any other English word! It can be a verb, noun, or adjective.',tip:'Context is everything in English. The same word can mean completely different things depending on how it\'s used.',category:'vocabulary',difficulty:'B1'},
+  {emoji:'🌍',title:'English is the most studied language',fact:'Over 1 billion people are currently learning English worldwide. It\'s the official language of 67 countries and 27 international organizations.',tip:'You\'re part of a global community! Every minute of practice connects you with millions of other learners.',category:'culture',difficulty:'A1'},
+  {emoji:'✍️',title:'The longest English word',fact:'The longest word in major dictionaries is "pneumonoultramicroscopicsilicovolcanoconiosis" — a 45-letter lung disease. But most English speakers never use it!',tip:'Long words aren\'t always better. Clear, simple communication is the real goal of language learning.',category:'fun',difficulty:'C1'},
+  {emoji:'🎵',title:'English has no official academy',fact:'Unlike French (Académie Française) or Spanish (Real Academia Española), English has no official regulatory body. New words are added based on usage.',tip:'This means English is always evolving. Don\'t be afraid to experiment — if people understand you, you\'re communicating successfully!',category:'culture',difficulty:'B2'},
+  {emoji:'📖',title:'Shakespeare invented 1,700+ words',fact:'William Shakespeare coined or first recorded over 1,700 words we still use today, including "assassination," "bump," "lonely," and "eyeball."',tip:'Language is creative! You can combine existing words to express new ideas. That\'s how English grows.',category:'history',difficulty:'B1'},
+  {emoji:'🗣️',title:'There are 200+ English dialects',fact:'English varies dramatically around the world — from American to British to Australian to Indian English. Each has unique vocabulary, pronunciation, and grammar.',tip:'There\'s no single "correct" English. Focus on being understood rather than sounding like a specific region.',category:'culture',difficulty:'B2'},
+  {emoji:'💡',title:'The "silent e" rule',fact:'In English, a silent "e" at the end of a word often makes the previous vowel "say its name" — "kit" becomes "kite," "hop" becomes "hope."',tip:'This pattern helps with spelling and pronunciation. When you see a silent e, try making the vowel long!',category:'grammar',difficulty:'A1'},
+  {emoji:'🎭',title:'English has 3 words for "you"',fact:'Old English had "thou" (singular informal), "you" (plural or formal), and "ye" (plural subject). Modern English simplified to just "you" for all cases.',tip:'This simplification makes English easier to learn! One word for all situations.',category:'history',difficulty:'B2'},
+  {emoji:'🔢',title:'The most common letter is "E"',fact:'The letter "E" appears in about 11% of all English words. The least common letters are Z, Q, X, and J.',tip:'When playing word games or solving puzzles, start with words containing E!',category:'fun',difficulty:'A2'},
+  {emoji:'📝',title:'English has no gender for nouns',fact:'Unlike French, Spanish, or German, English nouns don\'t have grammatical gender. "The table" is neither masculine nor feminine.',tip:'This makes English easier in some ways! No need to memorize gender for every noun.',category:'grammar',difficulty:'A1'},
+  {emoji:'🌐',title:'English borrows from many languages',fact:'About 60% of English words come from Latin or French, 25% from Germanic languages, and the rest from Greek and other languages.',tip:'If you know French, Spanish, or German, you already know many English words!',category:'history',difficulty:'B1'},
+  {emoji:'🎯',title:'The shortest complete sentence',fact:'"Go." is the shortest complete sentence in English. It has a subject (you, implied) and a verb.',tip:'Complete sentences need both a subject and a verb, even if the subject is implied.',category:'grammar',difficulty:'A1'},
+  {emoji:'📊',title:'New words are added daily',fact:'The Oxford English Dictionary adds about 1,000 new words every year. Recent additions include "selfie," "tweet," and "google" (as a verb).',tip:'Language is alive! Don\'t be afraid to use new words you encounter.',category:'vocabulary',difficulty:'B1'},
+  {emoji:'🎪',title:'English has pangrams',fact:'A pangram is a sentence that uses every letter of the alphabet. The most famous is: "The quick brown fox jumps over the lazy dog."',tip:'Pangrams are used to test fonts and keyboards. Try creating your own!',category:'fun',difficulty:'B2'},
+  {emoji:'🔤',title:'Contractions make speech natural',fact:'Native speakers use contractions constantly: "I\'m," "you\'re," "don\'t," "can\'t." Without them, you sound robotic!',tip:'Always use contractions in speaking and informal writing. Save full forms for formal contexts.',category:'grammar',difficulty:'A2'},
+  {emoji:'📚',title:'English has compound words',fact:'Compound words combine two words: "bookshelf," "toothbrush," "sunflower." Some are one word, some hyphenated, some separate.',tip:'When in doubt, check a dictionary. Compound words can be tricky!',category:'vocabulary',difficulty:'A2'},
+  {emoji:'🌟',title:'The most common word is "the"',fact:'"The" appears in about 5% of all written English. The next most common words are "be," "to," "of," and "and."',tip:'Master these high-frequency words first — they appear everywhere!',category:'vocabulary',difficulty:'A1'},
+  {emoji:'🎨',title:'English spelling is chaotic',fact:'English spelling doesn\'t always match pronunciation. "Through," "though," "thought," and "tough" all look similar but sound different!',tip:'Learn spelling patterns, but accept that English has many exceptions. Reading helps!',category:'grammar',difficulty:'B1'},
+  {emoji:'🗺️',title:'English is a global lingua franca',fact:'More people speak English as a second language than as a first language. It\'s the language of business, science, aviation, and the internet.',tip:'You\'re learning the world\'s most useful language. Keep going!',category:'culture',difficulty:'A2'}
 ];
 
 // Words of the Day
@@ -507,7 +522,34 @@ function loadProfile(){return ls(STORAGE_KEYS.profile)||{avatar:'🎓',title:'La
 function saveProfile(p){ls(STORAGE_KEYS.profile,p)}
 
 // ==================== STATE ====================
-let state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,activeVocabSubcategory:null,factIndex:0};
+let state={view:'login',studentName:'',studentCode:'',isAdmin:false,score:0,activeCategory:null,activeLesson:null,activeStory:null,activeTest:null,activeGame:null,activeVocabSubcategory:null,factIndex:0,showTip:false};
+
+function getCategoryColor(category){
+  switch(category){
+    case 'vocabulary':return{bg:'rgba(139,92,246,.1)',border:'rgba(139,92,246,.3)',text:'#8b5cf6'};
+    case 'grammar':return{bg:'rgba(59,130,246,.1)',border:'rgba(59,130,246,.3)',text:'#3b82f6'};
+    case 'culture':return{bg:'rgba(16,185,129,.1)',border:'rgba(16,185,129,.3)',text:'#10b981'};
+    case 'history':return{bg:'rgba(245,158,11,.1)',border:'rgba(245,158,11,.3)',text:'#f59e0b'};
+    case 'fun':return{bg:'rgba(236,72,153,.1)',border:'rgba(236,72,153,.3)',text:'#ec4899'};
+    default:return{bg:'rgba(107,114,128,.1)',border:'rgba(107,114,128,.3)',text:'#6b7280'};
+  }
+}
+
+function getDifficultyColor(difficulty){
+  switch(difficulty){
+    case 'A1':return'#10b981';
+    case 'A2':return'#3b82f6';
+    case 'B1':return'#f59e0b';
+    case 'B2':return'#f97316';
+    case 'C1':return'#ef4444';
+    default:return'#6b7280';
+  }
+}
+
+function toggleTip(){
+  state.showTip=!state.showTip;
+  render();
+}
 let toastQueue=[];
 
 // ==================== RENDER ====================
@@ -618,25 +660,52 @@ function renderHome(){
     </div></div>
 
     <div style="padding:0 24px 32px"><div style="max-width:1200px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:24px">
-      <div class="card" style="background:linear-gradient(to bottom right,var(--white),var(--brand-light-sand));border:1px solid var(--gray-200)">
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+      <div style="background:linear-gradient(135deg,rgba(255,255,255,.95) 0%,rgba(250,248,245,.95) 100%);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(227,108,36,.15);border-radius:20px;padding:32px;box-shadow:0 8px 32px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);overflow:hidden;position:relative">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#E36C24 0%,#FF9800 50%,#FFC107 100%)"></div>
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(227,108,36,.1),rgba(255,152,0,.1));display:flex;align-items:center;justify-content:center;font-size:24px">💡</div>
+            <div>
+              <h3 class="font-heading" style="font-size:20px;font-weight:700;color:#1F1F1F;margin:0;letter-spacing:-.02em">Fun Fact of the Moment</h3>
+              <p style="font-size:13px;color:#6B7280;margin:2px 0 0">Discover something new about English</p>
+            </div>
+          </div>
           <div style="display:flex;align-items:center;gap:8px">
-            <span style="padding:4px 10px;background:var(--brand-charcoal);color:var(--brand-orange);font-size:10px;font-weight:700;text-transform:uppercase;border-radius:4px">Fun Fact</span>
-          </div>
-          <div style="display:flex;gap:4px">
-            <button onclick="prevFact()" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:var(--white);cursor:pointer;font-size:12px;font-weight:700">←</button>
-            <button onclick="nextFact()" style="width:32px;height:32px;border-radius:8px;border:1px solid var(--gray-200);background:var(--white);cursor:pointer;font-size:12px;font-weight:700">→</button>
+            <button onclick="prevFact()" style="background:rgba(255,255,255,.8);border:1px solid rgba(227,108,36,.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#E36C24;transition:all .2s;font-weight:700">←</button>
+            <button onclick="nextFact()" style="background:rgba(255,255,255,.8);border:1px solid rgba(227,108,36,.2);border-radius:10px;width:36px;height:36px;display:flex;align-items:center;justify-content:center;cursor:pointer;font-size:16px;color:#E36C24;transition:all .2s;font-weight:700">→</button>
           </div>
         </div>
-        <div style="display:flex;gap:16px;margin-bottom:16px">
-          <div style="font-size:40px;line-height:1">${fact.emoji}</div>
-          <div><h4 class="font-heading" style="font-size:18px;font-weight:700;color:var(--brand-charcoal);margin:0 0 8px">${fact.title}</h4><p style="font-size:14px;color:var(--gray-600);line-height:1.6;margin:0">${fact.fact}</p></div>
+
+        <div class="animate-fade-in" style="margin-bottom:24px">
+          <div style="background:rgba(255,255,255,.6);border-radius:16px;padding:24px;border:1px solid rgba(227,108,36,.1);margin-bottom:16px">
+            <div style="display:flex;align-items:center;gap:8px;margin-bottom:16px;flex-wrap:wrap">
+              <span style="padding:6px 12px;background:${getCategoryColor(fact.category).bg};border:1px solid ${getCategoryColor(fact.category).border};border-radius:8px;font-size:11px;font-weight:700;color:${getCategoryColor(fact.category).text};text-transform:uppercase;letter-spacing:.05em">${fact.category}</span>
+              <span style="padding:6px 12px;background:${getDifficultyColor(fact.difficulty)}15;border:1px solid ${getDifficultyColor(fact.difficulty)}30;border-radius:8px;font-size:11px;font-weight:700;color:${getDifficultyColor(fact.difficulty)};text-transform:uppercase;letter-spacing:.05em">Level ${fact.difficulty}</span>
+              <span style="font-size:12px;color:#9CA3AF;margin-left:auto">${state.factIndex+1} of ${FUN_FACTS.length}</span>
+            </div>
+            <div style="display:flex;align-items:flex-start;gap:16px;margin-bottom:16px">
+              <div style="font-size:48px;line-height:1;flex-shrink:0">${fact.emoji}</div>
+              <div style="flex:1">
+                <h4 class="font-heading" style="font-size:22px;font-weight:700;color:#1F1F1F;margin:0 0 12px;line-height:1.3">${fact.title}</h4>
+                <p style="font-size:15px;color:#4B5563;line-height:1.7;margin:0">${fact.fact}</p>
+              </div>
+            </div>
+          </div>
+
+          <div id="tipSection" style="background:${state.showTip?'rgba(227,108,36,.08)':'rgba(227,108,36,.04)'};border:1px solid ${state.showTip?'rgba(227,108,36,.3)':'rgba(227,108,36,.15)'};border-radius:12px;padding:16px 20px;transition:all .3s ease">
+            <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:${state.showTip?'12px':'0'}">
+              <div style="display:flex;align-items:center;gap:8px">
+                <span style="font-size:18px">💡</span>
+                <span style="font-size:13px;font-weight:700;color:#E36C24;text-transform:uppercase;letter-spacing:.05em">Learning Tip</span>
+              </div>
+              <button onclick="toggleTip()" style="background:transparent;border:none;color:#E36C24;font-size:13px;font-weight:600;cursor:pointer;padding:4px 8px;border-radius:6px;transition:all .2s">${state.showTip?'Hide':'Show'}</button>
+            </div>
+            ${state.showTip?`<p style="font-size:14px;color:#1F1F1F;line-height:1.6;margin:0;animation:fadeIn .3s ease-out">${fact.tip}</p>`:''}
+          </div>
         </div>
-        <div style="background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:10px;padding:12px 16px">
-          <div style="font-size:11px;font-weight:600;color:var(--blue);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px">💡 Tip</div>
-          <p style="font-size:13px;color:var(--brand-graphite);margin:0;line-height:1.5">${fact.tip}</p>
-        </div>
-        <div style="display:flex;justify-content:center;gap:6px;margin-top:16px">${FUN_FACTS.map((_,i)=>`<button onclick="setFact(${i})" style="width:${i===state.factIndex?'24':'8'}px;height:8px;border-radius:${i===state.factIndex?'4':'50'}px;background:${i===state.factIndex?'var(--blue)':'rgba(59,130,246,.2)'};border:none;cursor:pointer;padding:0;transition:all .3s"></button>`).join('')}</div>
+
+        <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap">${FUN_FACTS.map((_,i)=>`<button onclick="setFact(${i})" style="width:${i===state.factIndex?'32':'8'}px;height:8px;border-radius:4px;background:${i===state.factIndex?'linear-gradient(90deg,#E36C24,#FF9800)':'rgba(227,108,36,.2)'};border:none;cursor:pointer;transition:all .3s;padding:0"></button>`).join('')}</div>
       </div>
 
       <div class="card" style="border-top:4px solid var(--brand-orange)">
@@ -1429,9 +1498,9 @@ function submitWOTD(){const input=document.getElementById('wotdInput');const fb=
   if(!val){fb.innerHTML='<div style="padding:12px;border-radius:8px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:var(--red);font-size:14px">Please write a sentence first.</div>';fb.style.display='block';return}
   if(val.toLowerCase().includes(wotd.word.toLowerCase())){const wc=val.split(/\s+/).length;if(wc>=5){fb.innerHTML='<div style="padding:12px;border-radius:8px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);color:var(--green);font-size:14px">Excellent! +20 XP 🎉</div>';fb.style.display='block';state.score+=20;const students=loadStudents();const s=students.find(x=>x.code===state.studentCode);if(s){s.xp+=20;saveStudents(students)}const c=parseInt(localStorage.getItem(STORAGE_KEYS.wordSubs)||'0')+1;localStorage.setItem(STORAGE_KEYS.wordSubs,''+c);const newA=checkAchievements('word_submissions',c);newA.forEach(a=>{showToast(a);state.score+=a.xp});input.value=''}else{fb.innerHTML='<div style="padding:12px;border-radius:8px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:var(--red);font-size:14px">Write at least 5 words.</div>';fb.style.display='block'}}else{fb.innerHTML=`<div style="padding:12px;border-radius:8px;background:rgba(239,68,68,.06);border:1px solid rgba(239,68,68,.15);color:var(--red);font-size:14px">Include "${wotd.word}" in your sentence.</div>`;fb.style.display='block'}}
 
-function prevFact(){state.factIndex=(state.factIndex-1+FUN_FACTS.length)%FUN_FACTS.length;render()}
-function nextFact(){state.factIndex=(state.factIndex+1)%FUN_FACTS.length;render()}
-function setFact(i){state.factIndex=i;render()}
+function prevFact(){state.factIndex=(state.factIndex-1+FUN_FACTS.length)%FUN_FACTS.length;state.showTip=false;render()}
+function nextFact(){state.factIndex=(state.factIndex+1)%FUN_FACTS.length;state.showTip=false;render()}
+function setFact(i){state.factIndex=i;state.showTip=false;render()}
 
 function showCreateForm(){const area=document.getElementById('studentFormArea');area.innerHTML=`<div style="background:var(--white);border-radius:12px;padding:20px;margin-bottom:20px;border:1px solid var(--gray-200)">
   <h4 style="margin:0 0 16px;font-size:18px">Create New Student</h4>
