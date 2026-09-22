@@ -8,6 +8,7 @@ import { getLevelInfo, getLevelColor, loadStudents } from '../utils/xpSystem';
 interface HomePageProps {
   lessons: Lesson[];
   onSelectLesson: (lesson: Lesson) => void;
+  onOpenCategory: (category: 'lessons' | 'stories' | 'tests' | 'games') => void;
   studentName: string;
   studentCode: string;
   isAdmin: boolean;
@@ -19,6 +20,7 @@ interface HomePageProps {
 export default function HomePage({
   lessons,
   onSelectLesson,
+  onOpenCategory,
   studentName,
   studentCode,
   isAdmin,
@@ -28,48 +30,44 @@ export default function HomePage({
 }: HomePageProps) {
   const categories = [
     {
-      id: 'lessons',
+      id: 'lessons' as const,
       icon: '📖',
       title: 'Lessons',
       description: 'Interactive grammar and vocabulary lessons',
       count: lessons.length,
       color: 'rgba(227, 108, 36, 0.1)',
       borderColor: 'rgba(227, 108, 36, 0.2)',
-      action: () => {
-        if (lessons.length > 0) {
-          onSelectLesson(lessons[0]);
-        }
-      },
+      action: () => onOpenCategory('lessons'),
     },
     {
-      id: 'stories',
+      id: 'stories' as const,
       icon: '📚',
       title: 'Stories',
       description: 'Reading comprehension and analysis',
-      count: 3,
+      count: 5,
       color: 'rgba(43, 45, 49, 0.08)',
       borderColor: 'rgba(43, 45, 49, 0.15)',
-      action: () => alert('Stories section coming soon!'),
+      action: () => onOpenCategory('stories'),
     },
     {
-      id: 'tests',
+      id: 'tests' as const,
       icon: '📝',
       title: 'Tests',
       description: 'Practice quizzes and assessments',
-      count: 5,
+      count: 6,
       color: 'rgba(227, 108, 36, 0.08)',
       borderColor: 'rgba(227, 108, 36, 0.15)',
-      action: () => alert('Tests section coming soon!'),
+      action: () => onOpenCategory('tests'),
     },
     {
-      id: 'games',
+      id: 'games' as const,
       icon: '🎮',
       title: 'Games',
       description: 'Fun learning games and challenges',
-      count: 4,
+      count: 6,
       color: 'rgba(53, 57, 94, 0.08)',
       borderColor: 'rgba(53, 57, 94, 0.15)',
-      action: () => alert('Games section coming soon!'),
+      action: () => onOpenCategory('games'),
     },
   ];
 
