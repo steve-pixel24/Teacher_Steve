@@ -2,6 +2,7 @@ import { Lesson } from '../data/lessons';
 import HeaderBanner from './HeaderBanner';
 import FunFactsCarousel from './FunFactsCarousel';
 import WordOfDay from './WordOfDay';
+import { getLevelInfo, getLevelColor, SAMPLE_LEADERBOARD } from '../utils/xpSystem';
 
 interface HomePageProps {
   lessons: Lesson[];
@@ -71,10 +72,17 @@ export default function HomePage({
     },
   ];
 
+  // Get student's XP from leaderboard or use studentScore as XP
+  const studentProfile = SAMPLE_LEADERBOARD.find(s => s.code === studentCode);
+  const studentXP = studentProfile ? studentProfile.xp : studentScore;
+  const levelInfo = getLevelInfo(studentXP);
+  const levelColor = getLevelColor(levelInfo.level);
+
   return (
     <div style={{ minHeight: '100vh' }}>
       <HeaderBanner
         subtitle={isAdmin ? 'Admin Mode' : 'Interactive Learning'}
+        currentStudentCode={studentCode}
         rightContent={
           <>
             <div style={{
@@ -151,11 +159,65 @@ export default function HomePage({
           }}>
             {isAdmin ? 'Welcome back, Teacher Steve 👑' : `Welcome back, ${studentName} 👋`}
           </h2>
-          <p style={{ color: '#64748B', fontSize: '16px', maxWidth: '600px', lineHeight: 1.6 }}>
+          <p style={{ color: '#64748B', fontSize: '16px', maxWidth: '600px', lineHeight: 1.6, marginBottom: '20px' }}>
             {isAdmin
               ? 'You have full administrative access. Manage lessons and monitor student progress.'
               : 'Choose a category below to start learning. Track your progress and earn points!'}
           </p>
+
+          {/* XP Progress Bar */}
+          {!isAdmin && (
+            <div style={{
+              background: 'rgba(255, 255, 255, 0.75)',
+              backdropFilter: 'blur(10px)',
+              WebkitBackdropFilter: 'blur(10px)',
+              border: '1px solid rgba(255, 255, 255, 0.5)',
+              borderRadius: '16px',
+              padding: '20px',
+              maxWidth: '500px',
+            }}>
+              <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: '12px' }}>
+                <div style={{ display: 'flex', alignItems: 'center', gap: '10px' }}>
+                  <span style={{ fontSize: '24px' }}>⭐</span>
+                  <div>
+                    <div className="font-space" style={{ fontSize: '18px', fontWeight: 700, color: levelColor }}>
+                      Level {levelInfo.level}
+                    </div>
+                    <div style={{ fontSize: '12px', color: '#64748B' }}>
+                      {levelInfo.currentXP} / {levelInfo.maxXP} XP
+                    </div>
+                  </div>
+                </div>
+                <div style={{ textAlign: 'right' }}>
+                  <div style={{ fontSize: '24px', fontWeight: 700, color: '#1E293B' }}>
+                    {studentXP}
+                  </div>
+                  <div style={{ fontSize: '12px', color: '#64748B' }}>Total XP</div>
+                </div>
+              </div>
+              <div style={{
+                height: '12px',
+                background: 'rgba(255, 255, 255, 0.5)',
+                borderRadius: '999px',
+                overflow: 'hidden',
+                border: '1px solid rgba(255, 255, 255, 0.6)',
+              }}>
+                <div
+                  style={{
+                    height: '100%',
+                    width: `${levelInfo.progress}%`,
+                    background: `linear-gradient(90deg, ${levelColor}, ${levelColor}dd)`,
+                    borderRadius: '999px',
+                    transition: 'width 0.5s ease',
+                    boxShadow: `0 0 10px ${levelColor}40`,
+                  }}
+                />
+              </div>
+              <div style={{ fontSize: '11px', color: '#64748B', marginTop: '8px', textAlign: 'center' }}>
+                {levelInfo.maxXP - levelInfo.currentXP} XP to Level {levelInfo.level + 1}
+              </div>
+            </div>
+          )}
         </div>
       </div>
 

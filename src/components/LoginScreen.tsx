@@ -167,7 +167,7 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
             Student Code
           </label>
           <input
-            type="text"
+            type="password"
             value={code}
             onChange={(e) => { setCode(e.target.value); setError(''); }}
             placeholder="Enter your code"

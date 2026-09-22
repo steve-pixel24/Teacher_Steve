@@ -65,6 +65,7 @@ export default function App() {
         <LessonPlayer
           lesson={activeLesson}
           studentName={studentName}
+          studentCode={studentCode}
           onBack={goBack}
         />
       )}

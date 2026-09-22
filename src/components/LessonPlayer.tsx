@@ -12,10 +12,11 @@ import StoryPanel from './StoryPanel';
 interface LessonPlayerProps {
   lesson: Lesson;
   studentName: string;
+  studentCode?: string;
   onBack: () => void;
 }
 
-export default function LessonPlayer({ lesson, studentName, onBack }: LessonPlayerProps) {
+export default function LessonPlayer({ lesson, studentName, studentCode, onBack }: LessonPlayerProps) {
   const [currentSection, setCurrentSection] = useState(0);
   const [completedSections, setCompletedSections] = useState<Set<number>>(new Set());
   const [totalSeconds, setTotalSeconds] = useState(lesson.duration * 60);
@@ -45,6 +46,7 @@ export default function LessonPlayer({ lesson, studentName, onBack }: LessonPlay
       <HeaderBanner
         subtitle={`${lesson.level} · ${lesson.duration} min`}
         compact
+        currentStudentCode={studentCode}
         rightContent={
           <>
             <div style={{
