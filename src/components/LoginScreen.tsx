@@ -58,188 +58,238 @@ export default function LoginScreen({ onLogin }: LoginScreenProps) {
       alignItems: 'center',
       justifyContent: 'center',
       padding: '16px',
-      background: '#F4F2EE',
+      background: 'var(--brand-sand)',
       position: 'relative',
-      overflow: 'hidden',
     }}>
-      {/* Subtle texture overlay */}
-      <div style={{
-        position: 'absolute', width: '800px', height: '400px', top: '20%', left: '10%',
-        background: 'rgba(227,108,36,0.03)', borderRadius: '50%', filter: 'blur(80px)',
-      }} />
-      <div style={{
-        position: 'absolute', width: '600px', height: '300px', bottom: '20%', right: '15%',
-        background: 'rgba(43,45,49,0.02)', borderRadius: '50%', filter: 'blur(60px)',
-      }} />
-
-      {/* Geometric header banner at top */}
-      <div style={{
-        position: 'absolute',
-        top: 0,
-        left: 0,
-        right: 0,
-        height: '80px',
-        overflow: 'hidden',
-        background: '#1F1F1F',
-      }}>
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(227,108,36,0.9), rgba(227,108,36,0.6))', clipPath: 'polygon(0 0, 48% 0, 32% 100%, 0 100%)', zIndex: 1 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(227,108,36,0.7), rgba(227,108,36,0.4))', clipPath: 'polygon(12% 0, 58% 0, 42% 100%, 0% 100%)', zIndex: 2 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(227,108,36,0.5), rgba(31,31,31,0.8))', clipPath: 'polygon(25% 0, 68% 0, 52% 100%, 10% 100%)', zIndex: 3 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(31,31,31,0.6), rgba(31,31,31,0.9))', clipPath: 'polygon(40% 0, 78% 0, 62% 100%, 25% 100%)', zIndex: 4 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(31,31,31,0.7), rgba(31,31,31,0.95))', clipPath: 'polygon(55% 0, 88% 0, 72% 100%, 40% 100%)', zIndex: 5 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(31,31,31,0.8), rgba(31,31,31,1))', clipPath: 'polygon(68% 0, 95% 0, 82% 100%, 55% 100%)', zIndex: 6 }} />
-        <div style={{ position: 'absolute', inset: 0, background: 'linear-gradient(135deg, rgba(31,31,31,0.9), rgba(31,31,31,1))', clipPath: 'polygon(80% 0, 100% 0, 100% 100%, 68% 100%)', zIndex: 7 }} />
-        <div style={{ position: 'absolute', bottom: 0, left: 0, right: 0, height: '3px', background: 'linear-gradient(90deg, #E36C24, #C85A1C, transparent 70%)', zIndex: 10 }} />
-        
-        {/* Brand text on banner */}
+      {/* Login Card */}
+      <div style={{ width: '100%', maxWidth: '448px', position: 'relative', zIndex: 10 }} className="animate-fade-in">
         <div style={{
+          background: 'var(--white)',
+          border: '1px solid var(--gray-200)',
+          borderRadius: '12px',
+          boxShadow: 'var(--card-shadow)',
+          padding: '40px',
           position: 'relative',
-          zIndex: 20,
-          height: '100%',
-          maxWidth: '1200px',
-          margin: '0 auto',
-          padding: '0 24px',
-          display: 'flex',
-          alignItems: 'center',
+          overflow: 'hidden',
         }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '12px' }}>
+          {/* Top Accent Line */}
+          <div style={{
+            position: 'absolute',
+            top: 0,
+            left: 0,
+            right: 0,
+            height: '6px',
+            background: 'var(--brand-orange)',
+          }} />
+
+          <div style={{ textAlign: 'center', marginBottom: '32px' }}>
             <div style={{
-              width: '36px', height: '36px', borderRadius: '10px',
-              background: 'rgba(255,255,255,0.15)', display: 'flex',
-              alignItems: 'center', justifyContent: 'center', fontSize: '18px',
-              boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-            }}>🎓</div>
-            <h1 className="font-space" style={{ fontSize: '18px', fontWeight: 700, color: '#FFFFFF', margin: 0 }}>
-              Teacher Steve's
-            </h1>
+              width: '48px',
+              height: '48px',
+              borderRadius: '12px',
+              background: 'var(--brand-charcoal)',
+              color: 'var(--brand-orange)',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'center',
+              fontSize: '20px',
+              fontWeight: 700,
+              margin: '0 auto 12px',
+              boxShadow: '0 4px 6px -1px rgba(0, 0, 0, 0.1)',
+              border: '1px solid var(--gray-800)',
+            }}>
+              🎓
+            </div>
+            <h2 className="font-heading" style={{
+              fontSize: '24px',
+              fontWeight: 800,
+              color: 'var(--brand-charcoal)',
+              margin: 0,
+            }}>
+              Sign In
+            </h2>
+            <p style={{
+              fontSize: '12px',
+              color: 'var(--gray-500)',
+              marginTop: '4px',
+            }}>
+              Enter your student details to access your portal
+            </p>
+          </div>
+
+          <form onSubmit={handleSubmit} style={{ display: 'flex', flexDirection: 'column', gap: '20px' }}>
+            {/* Student Name */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: 'var(--brand-graphite)',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}>
+                Student Name
+              </label>
+              <input
+                type="text"
+                value={name}
+                onChange={(e) => { setName(e.target.value); setError(''); }}
+                placeholder="Enter your full name"
+                autoFocus
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  fontSize: '14px',
+                  background: 'var(--brand-light-sand)',
+                  border: '1px solid var(--gray-300)',
+                  borderRadius: '8px',
+                  color: 'var(--brand-graphite)',
+                  outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--brand-orange)';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(227, 108, 36, 0.1)';
+                  e.target.style.background = 'var(--white)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--gray-300)';
+                  e.target.style.boxShadow = 'none';
+                  e.target.style.background = 'var(--brand-light-sand)';
+                }}
+              />
+            </div>
+
+            {/* Student Code */}
+            <div>
+              <label style={{
+                display: 'block',
+                fontSize: '11px',
+                fontWeight: 700,
+                color: 'var(--brand-graphite)',
+                marginBottom: '6px',
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+              }}>
+                Student Code
+              </label>
+              <input
+                type="password"
+                value={code}
+                onChange={(e) => { setCode(e.target.value); setError(''); }}
+                placeholder="Enter your personal code"
+                style={{
+                  width: '100%',
+                  padding: '12px 16px',
+                  fontSize: '14px',
+                  background: 'var(--brand-light-sand)',
+                  border: '1px solid var(--gray-300)',
+                  borderRadius: '8px',
+                  color: 'var(--brand-graphite)',
+                  fontFamily: "'JetBrains Mono', monospace",
+                  letterSpacing: '0.05em',
+                  outline: 'none',
+                  transition: 'all 0.2s',
+                }}
+                onFocus={(e) => {
+                  e.target.style.borderColor = 'var(--brand-orange)';
+                  e.target.style.boxShadow = '0 0 0 3px rgba(227, 108, 36, 0.1)';
+                  e.target.style.background = 'var(--white)';
+                }}
+                onBlur={(e) => {
+                  e.target.style.borderColor = 'var(--gray-300)';
+                  e.target.style.boxShadow = 'none';
+                  e.target.style.background = 'var(--brand-light-sand)';
+                }}
+              />
+              <p style={{
+                fontSize: '10px',
+                color: 'var(--gray-400)',
+                marginTop: '6px',
+              }}>
+                Use <code style={{
+                  background: 'var(--gray-200)',
+                  padding: '2px 6px',
+                  borderRadius: '4px',
+                  color: 'var(--brand-charcoal)',
+                  fontFamily: "'JetBrains Mono', monospace",
+                }}>Steve2324</code> for Admin Mode
+              </p>
+            </div>
+
+            {error && (
+              <div className="animate-fade-in" style={{
+                padding: '12px',
+                background: 'var(--red-bg)',
+                border: '1px solid var(--red-border)',
+                borderRadius: '8px',
+                fontSize: '13px',
+                color: 'var(--red)',
+              }}>
+                {error}
+              </div>
+            )}
+
+            {/* Submit Button */}
+            <button
+              type="submit"
+              disabled={isLoading || !name.trim() || !code.trim()}
+              className="font-heading"
+              style={{
+                width: '100%',
+                padding: '14px',
+                background: 'var(--brand-orange)',
+                color: 'var(--white)',
+                fontSize: '14px',
+                fontWeight: 700,
+                textTransform: 'uppercase',
+                letterSpacing: '0.05em',
+                border: 'none',
+                borderRadius: '8px',
+                cursor: isLoading || !name.trim() || !code.trim() ? 'not-allowed' : 'pointer',
+                transition: 'all 0.2s',
+                marginTop: '8px',
+                opacity: isLoading || !name.trim() || !code.trim() ? 0.6 : 1,
+                boxShadow: '0 4px 6px -1px rgba(227, 108, 36, 0.2)',
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                gap: '8px',
+              }}
+              onMouseEnter={(e) => {
+                if (!isLoading && name.trim() && code.trim()) {
+                  e.currentTarget.style.background = 'var(--brand-orange-hover)';
+                  e.currentTarget.style.transform = 'translateY(-1px)';
+                  e.currentTarget.style.boxShadow = '0 6px 12px -1px rgba(227, 108, 36, 0.3)';
+                }
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'var(--brand-orange)';
+                e.currentTarget.style.transform = 'translateY(0)';
+                e.currentTarget.style.boxShadow = '0 4px 6px -1px rgba(227, 108, 36, 0.2)';
+              }}
+            >
+              <span>{isLoading ? 'Checking...' : 'Start Learning'}</span>
+              {!isLoading && <span>→</span>}
+            </button>
+          </form>
+
+          <div style={{
+            marginTop: '24px',
+            paddingTop: '24px',
+            borderTop: '1px solid var(--gray-100)',
+            textAlign: 'center',
+          }}>
+            <span style={{
+              fontSize: '12px',
+              color: 'var(--gray-400)',
+            }}>
+              Need a code? Contact Teacher Steve directly.
+            </span>
           </div>
         </div>
       </div>
-
-      {/* Login Card */}
-      <div style={{ width: '100%', maxWidth: '420px', position: 'relative', zIndex: 10, marginTop: '40px' }} className="animate-fade-in">
-        <form onSubmit={handleSubmit} style={{
-          background: '#FFFFFF',
-          border: '1px solid #E0E0E0',
-          borderRadius: '24px',
-          boxShadow: '0 8px 24px rgba(0, 0, 0, 0.08)',
-          padding: '48px 40px',
-        }}>
-          <h2 className="font-space" style={{ fontSize: '28px', fontWeight: 600, color: '#2B2D31', marginBottom: '32px', marginTop: 0 }}>
-            Sign in
-          </h2>
-
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#2B2D31', marginBottom: '8px' }}>
-            Student Name
-          </label>
-          <input
-            type="text"
-            value={name}
-            onChange={(e) => { setName(e.target.value); setError(''); }}
-            placeholder="Enter your name"
-            autoFocus
-            style={{
-              width: '100%',
-              background: '#FFFFFF',
-              border: '1px solid #E0E0E0',
-              borderRadius: '12px',
-              padding: '14px 18px',
-              color: '#2B2D31',
-              fontSize: '16px',
-              outline: 'none',
-              transition: 'all 0.2s',
-              marginBottom: '20px',
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = '#E36C24';
-              e.target.style.boxShadow = '0 0 0 3px rgba(227, 108, 36, 0.1)';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = '#E0E0E0';
-              e.target.style.boxShadow = 'none';
-            }}
-          />
-
-          <label style={{ display: 'block', fontSize: '14px', fontWeight: 500, color: '#2B2D31', marginBottom: '8px' }}>
-            Student Code
-          </label>
-          <input
-            type="password"
-            value={code}
-            onChange={(e) => { setCode(e.target.value); setError(''); }}
-            placeholder="Enter your code"
-            style={{
-              width: '100%',
-              background: '#FFFFFF',
-              border: '1px solid #E0E0E0',
-              borderRadius: '12px',
-              padding: '14px 18px',
-              color: '#2B2D31',
-              fontFamily: "'JetBrains Mono', monospace",
-              fontSize: '16px',
-              letterSpacing: '0.05em',
-              outline: 'none',
-              transition: 'all 0.2s',
-            }}
-            onFocus={(e) => {
-              e.target.style.borderColor = '#E36C24';
-              e.target.style.boxShadow = '0 0 0 3px rgba(227, 108, 36, 0.1)';
-            }}
-            onBlur={(e) => {
-              e.target.style.borderColor = '#E0E0E0';
-              e.target.style.boxShadow = 'none';
-            }}
-          />
-
-          {error && (
-            <div className="animate-fade-in" style={{ marginTop: '12px', fontSize: '14px', color: '#ef4444' }}>
-              {error}
-            </div>
-          )}
-
-          <button
-            type="submit"
-            disabled={isLoading || !name.trim() || !code.trim()}
-            style={{
-              width: '100%',
-              background: '#E36C24',
-              color: '#ffffff',
-              fontFamily: "'Space Grotesk', sans-serif",
-              fontWeight: 600,
-              fontSize: '16px',
-              padding: '14px 24px',
-              border: 'none',
-              borderRadius: '12px',
-              cursor: isLoading || !name.trim() || !code.trim() ? 'not-allowed' : 'pointer',
-              transition: 'all 0.2s',
-              marginTop: '24px',
-              opacity: isLoading || !name.trim() || !code.trim() ? 0.6 : 1,
-              boxShadow: '0 4px 12px rgba(227, 108, 36, 0.25)',
-            }}
-            onMouseEnter={(e) => {
-              if (!isLoading && name.trim() && code.trim()) {
-                e.currentTarget.style.background = '#C85A1C';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 6px 16px rgba(227, 108, 36, 0.35)';
-              }
-            }}
-            onMouseLeave={(e) => {
-              e.currentTarget.style.background = '#E36C24';
-              e.currentTarget.style.transform = 'translateY(0)';
-              e.currentTarget.style.boxShadow = '0 4px 12px rgba(227, 108, 36, 0.25)';
-            }}
-          >
-            {isLoading ? 'Checking...' : 'Start Learning'}
-          </button>
-        </form>
-      </div>
-
-      <style>{`
-        @keyframes float {
-          0%, 100% { transform: translate(0, 0); }
-          50% { transform: translate(30px, -30px); }
-        }
-      `}</style>
     </div>
   );
 }

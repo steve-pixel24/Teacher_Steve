@@ -18,25 +18,20 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
     <>
       <header
         className="header-banner"
-        style={{ height: compact ? '56px' : '72px' }}
+        style={{ height: compact ? '64px' : '80px' }}
       >
-        {/* Geometric layers - clean overlapping diagonal blocks at 45° */}
+        {/* Geometric Orange Patterns */}
         <div className="header-geo-1" />
         <div className="header-geo-2" />
         <div className="header-geo-3" />
-        <div className="header-geo-4" />
-        <div className="header-geo-5" />
 
-        {/* Bottom accent line */}
-        <div className="header-banner-line" />
-
-        {/* Content container */}
+        {/* Content Container */}
         <div
           style={{
             position: 'relative',
             zIndex: 20,
             height: '100%',
-            maxWidth: '1200px',
+            maxWidth: '1280px',
             margin: '0 auto',
             padding: '0 24px',
             display: 'flex',
@@ -44,96 +39,104 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
             justifyContent: 'space-between',
           }}
         >
-          {/* Left content - High Scores Widget */}
+          {/* Left: High Scores Widget */}
           {!compact && (
-            <div
+            <button
               onClick={() => setShowLeaderboard(true)}
               style={{
-                background: 'rgba(255, 255, 255, 0.1)',
-                backdropFilter: 'blur(10px)',
-                WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
-                borderRadius: '12px',
-                padding: '8px 14px',
-                cursor: 'pointer',
-                transition: 'all 0.2s',
                 display: 'flex',
                 alignItems: 'center',
-                gap: '10px',
+                gap: '12px',
+                background: 'rgba(43, 45, 49, 0.8)',
+                border: '1px solid rgba(75, 85, 99, 0.8)',
+                borderRadius: '8px',
+                padding: '6px 12px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                e.currentTarget.style.transform = 'translateY(-1px)';
-                e.currentTarget.style.boxShadow = '0 4px 12px rgba(0, 0, 0, 0.2)';
+                e.currentTarget.style.background = 'rgba(43, 45, 49, 1)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.transform = 'translateY(0)';
-                e.currentTarget.style.boxShadow = 'none';
+                e.currentTarget.style.background = 'rgba(43, 45, 49, 0.8)';
               }}
             >
-              <span style={{ fontSize: '16px' }}>🏆</span>
-              <div style={{ display: 'flex', flexDirection: 'column', gap: '2px' }}>
-                <span style={{ fontSize: '10px', fontWeight: 600, color: 'rgba(255,255,255,0.7)', textTransform: 'uppercase', letterSpacing: '0.05em' }}>
-                  Top Students
-                </span>
-                <div style={{ display: 'flex', gap: '8px', fontSize: '11px' }}>
-                  {topStudents.map((student, idx) => (
-                    <span key={student.code} style={{ color: '#FFFFFF', fontWeight: 500 }}>
-                      {getRankBadge(idx + 1)} {student.name}
-                    </span>
-                  ))}
-                </div>
-              </div>
-            </div>
-          )}
-
-          {/* Center content - Title */}
-          <div style={{ display: 'flex', alignItems: 'center', gap: '14px', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
-            <div
-              style={{
-                width: '40px',
-                height: '40px',
-                borderRadius: '12px',
-                background: 'rgba(255,255,255,0.15)',
+              <div style={{
+                width: '28px',
+                height: '28px',
+                borderRadius: '6px',
+                background: 'var(--brand-orange)',
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                fontSize: '20px',
-                boxShadow: '0 2px 8px rgba(0,0,0,0.2)',
-              }}
-            >
-              🎓
-            </div>
-            <h1
-              className="font-space"
-              style={{
-                fontSize: compact ? '20px' : '26px',
+                fontSize: '14px',
                 fontWeight: 700,
-                color: '#FFFFFF',
+                color: 'white',
+              }}>
+                🏆
+              </div>
+              <div style={{ textAlign: 'left' }}>
+                <div style={{
+                  fontSize: '10px',
+                  fontWeight: 600,
+                  color: 'var(--gray-400)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.05em',
+                }}>
+                  Top Students
+                </div>
+                <div style={{
+                  fontSize: '12px',
+                  fontWeight: 700,
+                  color: 'white',
+                }}>
+                  {topStudents.length > 0 ? (
+                    <>
+                      {getRankBadge(1)} {topStudents[0]?.name}{' '}
+                      <span style={{ color: 'var(--gray-400)', fontWeight: 400 }}>
+                        • Lvl {topStudents[0]?.level || 1}
+                      </span>{' '}
+                      <span style={{ color: 'var(--brand-orange)' }}>
+                        ({topStudents[0]?.xp || 0} pts)
+                      </span>
+                    </>
+                  ) : (
+                    <span style={{ color: 'var(--gray-400)' }}>No students yet</span>
+                  )}
+                </div>
+              </div>
+            </button>
+          )}
+
+          {/* Center: Title */}
+          <div style={{ textAlign: 'center', position: 'absolute', left: '50%', transform: 'translateX(-50%)' }}>
+            <h1
+              className="font-heading"
+              style={{
+                fontSize: compact ? '20px' : '28px',
+                fontWeight: 800,
+                color: 'white',
                 margin: 0,
                 lineHeight: 1.2,
-                letterSpacing: '-0.02em',
+                letterSpacing: '0.05em',
+                textTransform: 'uppercase',
               }}
             >
               Teacher Steve's
             </h1>
-            {subtitle && (
-              <span
-                style={{
-                  fontSize: '12px',
-                  fontWeight: 500,
-                  color: 'rgba(255,255,255,0.7)',
-                  letterSpacing: '0.02em',
-                  marginLeft: '8px',
-                }}
-              >
-                {subtitle}
-              </span>
-            )}
+            <p style={{
+              fontSize: '11px',
+              fontWeight: 500,
+              color: 'var(--gray-400)',
+              margin: '2px 0 0 0',
+              letterSpacing: '0.15em',
+              textTransform: 'uppercase',
+            }}>
+              {subtitle || 'Interactive English Platform'}
+            </p>
           </div>
 
-          {/* Right content */}
+          {/* Right: User Status */}
           {rightContent && (
             <div style={{
               display: 'flex',

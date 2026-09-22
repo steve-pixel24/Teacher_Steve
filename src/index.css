@@ -1,46 +1,49 @@
 @import "tailwindcss";
 
-/* ===== GLOBAL THEME VARIABLES - CORPORATE EXECUTIVE PALETTE ===== */
+/* ===== EXECUTIVE CORPORATE PALETTE ===== */
 :root {
-  /* New Corporate Color Palette */
-  --burnt-orange: #E36C24;
-  --burnt-orange-hover: #C85A1C;
-  --burnt-orange-light: rgba(227, 108, 36, 0.1);
+  /* Brand Colors - Exact from reference design */
+  --brand-orange: #E36C24;
+  --brand-orange-hover: #C85A18;
+  --brand-orange-light: rgba(227, 108, 36, 0.08);
+  --brand-orange-50: #FFF7ED;
   
-  --charcoal-black: #1F1F1F;
-  --charcoal-dark: #2A2A2A;
-  
-  --graphite: #2B2D31;
-  --slate-grey: #35395E;
-  --slate-light: #4A4E69;
-  
-  --soft-sand: #F4F2EE;
-  --stone: #EFE8DF;
-  --stone-light: #F7F5F2;
+  --brand-charcoal: #1F1F1F;
+  --brand-graphite: #2B2D31;
+  --brand-stone: #B8BAC0;
+  --brand-sand: #F4F2EE;
+  --brand-light-sand: #FAF8F5;
   
   --white: #FFFFFF;
-  --graphite-border: #E0E0E0;
+  --gray-100: #F3F4F6;
+  --gray-200: #E5E7EB;
+  --gray-300: #D1D5DB;
+  --gray-400: #9CA3AF;
+  --gray-500: #6B7280;
+  --gray-600: #4B5563;
+  --gray-700: #374151;
+  --gray-800: #1F2937;
 
   /* Typography */
   --text-primary: #2B2D31;
-  --text-secondary: #35395E;
-  --text-tertiary: #6B7280;
+  --text-secondary: #6B7280;
+  --text-tertiary: #9CA3AF;
   --text-light: #FFFFFF;
 
   /* Card surfaces */
   --card-bg: #FFFFFF;
   --card-bg-hover: #FAFAFA;
-  --card-border: #E0E0E0;
-  --card-border-hover: #D0D0D0;
-  --card-shadow: 0 8px 24px rgba(0, 0, 0, 0.08);
-  --card-shadow-hover: 0 12px 32px rgba(0, 0, 0, 0.12);
+  --card-border: #E5E7EB;
+  --card-border-hover: #D1D5DB;
+  --card-shadow: 0 4px 20px -2px rgba(31, 31, 31, 0.05);
+  --card-shadow-hover: 0 8px 30px -4px rgba(31, 31, 31, 0.1);
 
   /* Interactive */
   --btn-primary: #E36C24;
-  --btn-primary-hover: #C85A1C;
+  --btn-primary-hover: #C85A18;
   --btn-primary-text: #FFFFFF;
-  --btn-secondary-bg: #EFE8DF;
-  --btn-secondary-border: #E0E0E0;
+  --btn-secondary-bg: #FAF8F5;
+  --btn-secondary-border: #E5E7EB;
   --btn-secondary-text: #2B2D31;
 
   /* Feedback */
@@ -77,7 +80,7 @@
   box-sizing: border-box;
 }
 
-/* ===== GLOBAL BACKGROUND - CORPORATE NEUTRAL ===== */
+/* ===== GLOBAL BACKGROUND - EXECUTIVE SAND ===== */
 body {
   font-family: 'Inter', sans-serif;
   color: var(--text-primary);
@@ -85,19 +88,11 @@ body {
   margin: 0;
   padding: 0;
   overflow-x: hidden;
-  background: var(--soft-sand);
+  background: var(--brand-sand);
 }
 
-/* Subtle texture overlay */
-body::before {
-  content: '';
-  position: fixed;
-  inset: 0;
-  z-index: 0;
-  pointer-events: none;
-  background: 
-    radial-gradient(ellipse 800px 400px at 20% 30%, rgba(227, 108, 36, 0.03) 0%, transparent 70%),
-    radial-gradient(ellipse 600px 300px at 80% 70%, rgba(43, 45, 49, 0.02) 0%, transparent 70%);
+.font-heading {
+  font-family: 'Montserrat', sans-serif;
 }
 
 /* Make sure content sits above clouds */
@@ -146,98 +141,61 @@ body::before {
 .animate-pulse-glow { animation: pulse-glow 2s infinite; }
 .animate-shake { animation: shake 0.4s ease-in-out; }
 
-/* ===== GEOMETRIC HEADER BANNER - CORPORATE DARK THEME ===== */
+/* ===== EXECUTIVE HEADER BANNER ===== */
 .header-banner {
   position: relative;
   width: 100%;
-  height: 72px;
+  height: 80px;
   overflow: hidden;
-  background: var(--charcoal-black);
+  background: var(--brand-charcoal);
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
 }
 
-/* Burnt orange geometric shapes on left, fading to charcoal */
-.header-banner::before {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(227, 108, 36, 0.9) 0%, rgba(227, 108, 36, 0.6) 100%);
-  clip-path: polygon(0 0, 48% 0, 32% 100%, 0 100%);
-  z-index: 1;
-}
-
-.header-banner::after {
-  content: '';
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(227, 108, 36, 0.7) 0%, rgba(227, 108, 36, 0.4) 100%);
-  clip-path: polygon(12% 0, 58% 0, 42% 100%, 0% 100%);
-  z-index: 2;
-}
-
+/* Geometric Orange Patterns - Exact from reference */
 .header-geo-1 {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(227, 108, 36, 0.5) 0%, rgba(31, 31, 31, 0.8) 100%);
-  clip-path: polygon(25% 0, 68% 0, 52% 100%, 10% 100%);
-  z-index: 3;
+  top: 0;
+  left: 0;
+  width: 320px;
+  height: 100%;
+  background: linear-gradient(135deg, #E36C24 0%, #C85A18 100%);
+  clip-path: polygon(0 0, 100% 0, 68% 100%, 0 100%);
+  z-index: 1;
 }
 
 .header-geo-2 {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.6) 0%, rgba(31, 31, 31, 0.9) 100%);
-  clip-path: polygon(40% 0, 78% 0, 62% 100%, 25% 100%);
-  z-index: 4;
+  top: 0;
+  left: 180px;
+  width: 140px;
+  height: 100%;
+  background: rgba(227, 108, 36, 0.35);
+  clip-path: polygon(25% 0, 100% 0, 75% 100%, 0% 100%);
+  z-index: 2;
 }
 
 .header-geo-3 {
   position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.7) 0%, rgba(31, 31, 31, 0.95) 100%);
-  clip-path: polygon(55% 0, 88% 0, 72% 100%, 40% 100%);
-  z-index: 5;
+  top: 0;
+  left: 280px;
+  width: 80px;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.1);
+  clip-path: polygon(30% 0, 100% 0, 70% 100%, 0% 100%);
+  z-index: 3;
 }
 
-.header-geo-4 {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.8) 0%, rgba(31, 31, 31, 1) 100%);
-  clip-path: polygon(68% 0, 95% 0, 82% 100%, 55% 100%);
-  z-index: 6;
-}
-
-.header-geo-5 {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(135deg, rgba(31, 31, 31, 0.9) 0%, rgba(31, 31, 31, 1) 100%);
-  clip-path: polygon(80% 0, 100% 0, 100% 100%, 68% 100%);
-  z-index: 7;
-}
-
-/* Burnt orange accent line at bottom of banner */
-.header-banner-line {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  height: 3px;
-  background: linear-gradient(90deg, var(--burnt-orange), var(--burnt-orange-hover), transparent 70%);
-  z-index: 10;
-}
-
-/* ===== CORPORATE CARDS - PURE WHITE WITH GRAPHITE BORDERS ===== */
+/* ===== EXECUTIVE CARDS ===== */
 .card {
   background: var(--white);
-  border: 1px solid var(--graphite-border);
-  border-radius: 16px;
+  border: 1px solid var(--card-border);
+  border-radius: 12px;
   padding: 24px;
   box-shadow: var(--card-shadow);
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
 }
 
 .card:hover {
-  background: var(--card-bg-hover);
-  border-color: var(--card-border-hover);
   box-shadow: var(--card-shadow-hover);
 }
 
@@ -245,8 +203,8 @@ body::before {
   cursor: pointer;
 }
 .card-interactive:hover {
-  transform: translateY(-4px);
-  box-shadow: 0 16px 40px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
+  box-shadow: var(--card-shadow-hover);
 }
 
 /* ===== TAGS ===== */
@@ -270,41 +228,43 @@ body::before {
 .tag-pink { background: rgba(236,72,153,0.1); color: #f472b6; border: 1px solid rgba(236,72,153,0.2); }
 .tag-cyan { background: rgba(6,182,212,0.1); color: #22d3ee; border: 1px solid rgba(6,182,212,0.2); }
 
-/* ===== CORPORATE BUTTONS ===== */
+/* ===== EXECUTIVE BUTTONS ===== */
 .btn {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: 8px;
-  font-family: 'Space Grotesk', sans-serif;
-  font-weight: 600;
+  font-family: 'Montserrat', sans-serif;
+  font-weight: 700;
   border: none;
-  border-radius: 12px;
+  border-radius: 8px;
   cursor: pointer;
   transition: all 0.2s ease;
   font-size: 14px;
   padding: 12px 24px;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
 }
 
 .btn-primary {
-  background: var(--burnt-orange);
+  background: var(--brand-orange);
   color: var(--white);
-  box-shadow: 0 4px 12px rgba(227, 108, 36, 0.25);
+  box-shadow: 0 4px 6px -1px rgba(227, 108, 36, 0.2);
 }
 .btn-primary:hover {
-  background: var(--burnt-orange-hover);
+  background: var(--brand-orange-hover);
   transform: translateY(-1px);
-  box-shadow: 0 6px 16px rgba(227, 108, 36, 0.35);
+  box-shadow: 0 6px 12px -1px rgba(227, 108, 36, 0.3);
 }
 
 .btn-secondary {
-  background: var(--stone);
-  border: 1px solid var(--graphite-border);
-  color: var(--graphite);
+  background: var(--brand-light-sand);
+  border: 1px solid var(--gray-200);
+  color: var(--brand-graphite);
 }
 .btn-secondary:hover {
-  background: #E8E1D7;
-  border-color: #D0D0D0;
+  background: var(--gray-100);
+  border-color: var(--gray-300);
 }
 
 .btn-success {
@@ -316,9 +276,12 @@ body::before {
   background: transparent;
   color: var(--text-secondary);
   padding: 8px 16px;
+  text-transform: none;
+  letter-spacing: normal;
+  font-weight: 500;
 }
 .btn-ghost:hover {
-  color: var(--graphite);
+  color: var(--brand-graphite);
   background: rgba(255, 255, 255, 0.5);
 }
 
