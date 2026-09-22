@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 interface WordOfDayProps {
   onAddScore: (points: number) => void;
+  onWordSubmission?: () => void;
 }
 
 interface WordData {
@@ -51,7 +52,7 @@ const WORDS: WordData[] = [
   },
 ];
 
-export default function WordOfDay({ onAddScore }: WordOfDayProps) {
+export default function WordOfDay({ onAddScore, onWordSubmission }: WordOfDayProps) {
   // Use date to pick a consistent "word of the day"
   const dayIndex = new Date().getDate() % WORDS.length;
   const wordData = WORDS[dayIndex];
@@ -87,6 +88,9 @@ export default function WordOfDay({ onAddScore }: WordOfDayProps) {
         if (!hasEarnedPoints) {
           onAddScore(10);
           setHasEarnedPoints(true);
+          if (onWordSubmission) {
+            onWordSubmission();
+          }
         }
       } else {
         setFeedback({

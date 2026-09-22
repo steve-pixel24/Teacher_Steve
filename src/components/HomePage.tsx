@@ -13,8 +13,14 @@ interface HomePageProps {
   studentCode: string;
   isAdmin: boolean;
   studentScore: number;
+  studentAvatar: string;
+  studentTitle: string;
   onLogout: () => void;
   onAddScore: (points: number) => void;
+  onOpenAchievements: () => void;
+  onOpenProfile: () => void;
+  onOpenDictionary: () => void;
+  onWordSubmission: () => void;
 }
 
 export default function HomePage({
@@ -25,8 +31,14 @@ export default function HomePage({
   studentCode,
   isAdmin,
   studentScore,
+  studentAvatar,
+  studentTitle,
   onLogout,
   onAddScore,
+  onOpenAchievements,
+  onOpenProfile,
+  onOpenDictionary,
+  onWordSubmission,
 }: HomePageProps) {
   const categories = [
     {
@@ -85,21 +97,80 @@ export default function HomePage({
         currentStudentCode={studentCode}
         rightContent={
           <>
-            <div style={{
-              display: 'flex',
-              alignItems: 'center',
-              gap: '8px',
-              background: 'rgba(255, 255, 255, 0.1)',
-              backdropFilter: 'blur(10px)',
-              WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(255, 255, 255, 0.2)',
-              borderRadius: '12px',
-              padding: '8px 14px',
-            }}>
-              <span style={{ fontSize: '12px', color: 'rgba(255,255,255,0.9)' }}>
-                {isAdmin ? '👑' : '👤'} {studentName}
-              </span>
-            </div>
+            {!isAdmin && (
+              <>
+                <button
+                  onClick={onOpenDictionary}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    padding: '8px 14px',
+                    fontSize: '13px',
+                    color: 'rgba(255,255,255,0.9)',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                >
+                  📖 Dictionary
+                </button>
+                <button
+                  onClick={onOpenAchievements}
+                  style={{
+                    background: 'rgba(255, 255, 255, 0.1)',
+                    backdropFilter: 'blur(10px)',
+                    WebkitBackdropFilter: 'blur(10px)',
+                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    borderRadius: '12px',
+                    padding: '8px 14px',
+                    fontSize: '13px',
+                    color: 'rgba(255,255,255,0.9)',
+                    cursor: 'pointer',
+                    fontWeight: 500,
+                    transition: 'all 0.2s',
+                  }}
+                  onMouseEnter={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                  }}
+                  onMouseLeave={(e) => {
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                  }}
+                >
+                  🏆 Achievements
+                </button>
+              </>
+            )}
+            <button
+              onClick={onOpenProfile}
+              style={{
+                background: 'rgba(255, 255, 255, 0.1)',
+                backdropFilter: 'blur(10px)',
+                WebkitBackdropFilter: 'blur(10px)',
+                border: '1px solid rgba(255, 255, 255, 0.2)',
+                borderRadius: '12px',
+                padding: '8px 14px',
+                fontSize: '20px',
+                cursor: 'pointer',
+                transition: 'all 0.2s',
+              }}
+              onMouseEnter={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+              }}
+              onMouseLeave={(e) => {
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+              }}
+            >
+              {studentAvatar}
+            </button>
             <div style={{
               display: 'flex',
               alignItems: 'center',
@@ -312,7 +383,7 @@ export default function HomePage({
       {/* Word of the Day */}
       <div style={{ padding: '0 24px 48px' }}>
         <div style={{ maxWidth: '1200px', margin: '0 auto' }}>
-          <WordOfDay onAddScore={onAddScore} />
+          <WordOfDay onAddScore={onAddScore} onWordSubmission={onWordSubmission} />
         </div>
       </div>
 
