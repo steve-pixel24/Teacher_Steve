@@ -478,11 +478,12 @@ const FUN_FACTS=[
 
 // Words of the Day
 const WOTD=[
-  {word:'Serendipity',pos:'Noun',def:'The occurrence of events by chance in a happy way.',ex:'Finding that rare book was pure serendipity.',pron:'/ˌser.ənˈdɪp.ə.ti/'},
-  {word:'Eloquent',pos:'Adjective',def:'Fluent or persuasive in speaking or writing.',ex:'She gave an eloquent speech.',pron:'/ˈel.ə.kwənt/'},
-  {word:'Resilient',pos:'Adjective',def:'Able to recover quickly from difficult conditions.',ex:'Children are remarkably resilient.',pron:'/rɪˈzɪl.i.ənt/'},
-  {word:'Ambiguous',pos:'Adjective',def:'Open to more than one interpretation.',ex:'The ending was deliberately ambiguous.',pron:'/æmˈbɪɡ.ju.əs/'},
-  {word:'Pragmatic',pos:'Adjective',def:'Dealing with things sensibly and realistically.',ex:'We need a pragmatic approach.',pron:'/præɡˈmæt.ɪk/'}
+  {word:'Serendipity',pos:'Noun',def:'The occurrence of events by chance in a happy or beneficial way; a pleasant surprise.',examples:['Finding that rare book at the garage sale was pure serendipity.','Their meeting was a moment of serendipity that changed both their lives.','Many scientific discoveries have been the result of serendipity.'],pron:'/ˌser.ənˈdɪp.ə.ti/',synonyms:['luck','fortune','chance','fate'],antonyms:['misfortune','bad luck'],etymology:'Coined by Horace Walpole in 1754, based on the Persian fairy tale "The Three Princes of Serendip"',collocations:['pure serendipity','moment of serendipity'],usageNote:'Often used to describe fortunate accidental discoveries or meetings',difficulty:'B2',category:'Abstract Concepts'},
+  {word:'Eloquent',pos:'Adjective',def:'Fluent or persuasive in speaking or writing; clearly expressing feelings or meaning.',examples:['She gave an eloquent speech that moved the entire audience to tears.','His eloquent argument convinced everyone in the room.','The poet\'s eloquent words captured the beauty of nature.'],pron:'/ˈel.ə.kwənt/',synonyms:['articulate','fluent','expressive','persuasive'],antonyms:['inarticulate','tongue-tied'],etymology:'From Latin "eloquens" (speaking out), from "e-" (out) + "loqui" (to speak)',collocations:['eloquent speech','eloquent argument'],usageNote:'Can describe both spoken and written communication, as well as non-verbal expressions',difficulty:'B2',category:'Communication'},
+  {word:'Resilient',pos:'Adjective',def:'Able to recover quickly from difficult conditions; tough and adaptable.',examples:['Children are remarkably resilient and can adapt to new situations faster than adults.','The resilient economy recovered quickly from the recession.','She proved herself resilient after facing numerous setbacks.'],pron:'/rɪˈzɪl.i.ənt/',synonyms:['tough','strong','adaptable','flexible'],antonyms:['fragile','weak','vulnerable'],etymology:'From Latin "resilire" (to leap back, rebound)',collocations:['resilient person','resilient economy'],usageNote:'Often used in psychology and business contexts to describe recovery from adversity',difficulty:'B1',category:'Personal Qualities'},
+  {word:'Ambiguous',pos:'Adjective',def:'Open to more than one interpretation; not having one obvious meaning.',examples:['The ending of the movie was deliberately ambiguous, leaving viewers to decide for themselves.','His ambiguous response made it unclear whether he agreed or not.','The contract contained several ambiguous clauses that led to disputes.'],pron:'/æmˈbɪɡ.ju.əs/',synonyms:['unclear','vague','equivocal','cryptic'],antonyms:['clear','unambiguous','definite'],etymology:'From Latin "ambiguus" (wavering, uncertain), from "ambigere" (to go around)',collocations:['ambiguous statement','ambiguous meaning'],usageNote:'Can be used negatively (confusing) or positively (open to interpretation)',difficulty:'B2',category:'Communication'},
+  {word:'Pragmatic',pos:'Adjective',def:'Dealing with things sensibly and realistically; practical rather than idealistic.',examples:['We need a pragmatic approach to solve this problem, not just theoretical ideas.','She\'s known for her pragmatic leadership style.','The pragmatic solution was to compromise rather than fight.'],pron:'/præɡˈmæt.ɪk/',synonyms:['practical','realistic','sensible','rational'],antonyms:['idealistic','impractical','unrealistic'],etymology:'From Greek "pragmatikos" (relating to fact), from "pragma" (deed, act)',collocations:['pragmatic approach','pragmatic solution'],usageNote:'Often used in business and politics to describe realistic, non-idealistic approaches',difficulty:'B2',category:'Thinking & Approach'},
+  {word:'Ubiquitous',pos:'Adjective',def:'Present, appearing, or found everywhere; very common.',examples:['Smartphones have become ubiquitous in modern society.','Coffee shops are ubiquitous in this city.','The ubiquitous nature of social media has changed how we communicate.'],pron:'/juːˈbɪk.wɪ.təs/',synonyms:['omnipresent','pervasive','universal','widespread'],antonyms:['rare','scarce','uncommon'],etymology:'From Latin "ubique" (everywhere), from "ubi" (where)',collocations:['ubiquitous presence','ubiquitous technology'],usageNote:'Often used to describe technology, trends, or phenomena that are everywhere',difficulty:'C1',category:'Abstract Concepts'}
 ];
 
 // ==================== STORAGE HELPERS ====================
@@ -509,6 +510,63 @@ function getTotalXP(){return loadProgress().reduce((s,i)=>s+i.xpEarned,0)}
 const LEVELS=[{l:1,min:0,max:100},{l:2,min:101,max:250},{l:3,min:251,max:500},{l:4,min:501,max:800},{l:5,min:801,max:1200},{l:6,min:1201,max:1700},{l:7,min:1701,max:2300},{l:8,min:2301,max:3000},{l:9,min:3001,max:3800},{l:10,min:3801,max:5000}];
 function getLevelInfo(xp){for(let i=LEVELS.length-1;i>=0;i--)if(xp>=LEVELS[i].min){const t=LEVELS[i];return{level:t.level,currentXP:xp-t.min,maxXP:t.max-t.min,progress:Math.min(((xp-t.min)/(t.max-t.min))*100,100)}};return{level:1,currentXP:xp,maxXP:100,progress:0}}
 function getLevelColor(l){if(l>=8)return'#FFD700';if(l>=5)return'#C0C0C0';if(l>=3)return'#CD7F32';return'#64748B'}
+
+function getDifficultyColor(difficulty){
+  switch(difficulty){
+    case 'A1':return'#10b981';
+    case 'A2':return'#3b82f6';
+    case 'B1':return'#f59e0b';
+    case 'B2':return'#f97316';
+    case 'C1':return'#ef4444';
+    default:return'#6b7280';
+  }
+}
+
+let wotdDetailsVisible=false;
+let wotdLearned=false;
+
+function toggleWOTDDetails(){
+  wotdDetailsVisible=!wotdDetailsVisible;
+  const details=document.getElementById('wotdDetails');
+  const btn=document.getElementById('wotdDetailsBtn');
+  if(details){
+    details.style.display=wotdDetailsVisible?'block':'none';
+    btn.querySelector('span:first-child').textContent=wotdDetailsVisible?'Hide More Details':'Show More Details';
+    btn.querySelector('span:last-child').textContent=wotdDetailsVisible?'▲':'▼';
+  }
+}
+
+function toggleWOTDLearned(){
+  wotdLearned=!wotdLearned;
+  const btn=document.getElementById('wotdLearnedBtn');
+  if(btn){
+    if(wotdLearned){
+      btn.style.background='rgba(16,185,129,.1)';
+      btn.style.borderColor='rgba(16,185,129,.3)';
+      btn.style.color='#10b981';
+      btn.textContent='✓ Learned (+5 XP)';
+      if(!btn.dataset.xpGiven){
+        state.score+=5;
+        const students=loadStudents();
+        const s=students.find(x=>x.code===state.studentCode);
+        if(s){s.xp+=5;saveStudents(students)}
+        btn.dataset.xpGiven='true';
+      }
+    }else{
+      btn.style.background='transparent';
+      btn.style.borderColor='rgba(107,114,128,.2)';
+      btn.style.color='#6B7280';
+      btn.textContent='Mark as Learned';
+    }
+  }
+}
+
+function clearWOTD(){
+  const input=document.getElementById('wotdInput');
+  const feedback=document.getElementById('wotdFeedback');
+  if(input)input.value='';
+  if(feedback)feedback.style.display='none';
+}
 
 // Achievements
 function initAchievements(){if(!loadAchievements())saveAchievements(ACHIEVEMENT_DEFS.map(a=>({...a,current:0,unlocked:false})));return loadAchievements()}
@@ -708,22 +766,101 @@ function renderHome(){
         <div style="display:flex;justify-content:center;gap:6px;flex-wrap:wrap">${FUN_FACTS.map((_,i)=>`<button onclick="setFact(${i})" style="width:${i===state.factIndex?'32':'8'}px;height:8px;border-radius:4px;background:${i===state.factIndex?'linear-gradient(90deg,#E36C24,#FF9800)':'rgba(227,108,36,.2)'};border:none;cursor:pointer;transition:all .3s;padding:0"></button>`).join('')}</div>
       </div>
 
-      <div class="card" style="border-top:4px solid var(--brand-orange)">
-        <div style="display:flex;justify-content:space-between;align-items:start;margin-bottom:12px">
-          <span style="font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;color:var(--brand-orange);background:rgba(227,108,36,.08);padding:4px 8px;border-radius:4px;border:1px solid rgba(227,108,36,.2)">Word of the Day</span>
-          <span style="font-size:12px;font-weight:600;color:var(--gray-400)">${wotd.pos}</span>
+      <div style="background:linear-gradient(135deg,rgba(255,255,255,.95) 0%,rgba(250,248,245,.95) 100%);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(227,108,36,.15);border-radius:20px;padding:32px;box-shadow:0 8px 32px rgba(0,0,0,.08),0 2px 8px rgba(0,0,0,.04);position:relative;overflow:hidden">
+        <div style="position:absolute;top:0;left:0;right:0;height:4px;background:linear-gradient(90deg,#E36C24 0%,#FF9800 50%,#FFC107 100%)"></div>
+        
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:24px">
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:48px;height:48px;border-radius:12px;background:linear-gradient(135deg,rgba(227,108,36,.1),rgba(255,152,0,.1));display:flex;align-items:center;justify-content:center;font-size:24px">📖</div>
+            <div>
+              <h3 class="font-heading" style="font-size:20px;font-weight:700;color:#1F1F1F;margin:0;letter-spacing:-.02em">Word of the Day</h3>
+              <p style="font-size:13px;color:#6B7280;margin:2px 0 0">Expand your vocabulary daily</p>
+            </div>
+          </div>
+          <div style="display:flex;align-items:center;gap:8px">
+            <span style="padding:6px 12px;background:${getDifficultyColor(wotd.difficulty)}15;border:1px solid ${getDifficultyColor(wotd.difficulty)}30;border-radius:8px;font-size:11px;font-weight:700;color:${getDifficultyColor(wotd.difficulty)};text-transform:uppercase;letter-spacing:.05em">Level ${wotd.difficulty}</span>
+            <span style="padding:6px 12px;background:rgba(227,108,36,.08);border:1px solid rgba(227,108,36,.2);border-radius:8px;font-size:12px;font-weight:600;color:#E36C24">${new Date().toLocaleDateString('en-US',{month:'short',day:'numeric'})}</span>
+          </div>
         </div>
-        <h4 class="font-heading" style="font-size:28px;font-weight:800;color:var(--brand-charcoal);margin:0">${wotd.word}</h4>
-        <p class="font-mono" style="font-size:12px;color:var(--gray-400);font-style:italic;margin:2px 0 0">${wotd.pron}</p>
-        <p style="font-size:13px;color:var(--gray-600);margin:12px 0;line-height:1.5"><strong>Definition:</strong> ${wotd.def}</p>
-        <div style="background:var(--brand-light-sand);border-radius:8px;padding:10px 14px;border-left:3px solid var(--brand-orange);margin-bottom:16px">
-          <div style="font-size:10px;font-weight:600;color:var(--brand-orange);text-transform:uppercase;margin-bottom:4px">Example</div>
-          <p style="font-size:13px;color:var(--brand-graphite);font-style:italic;margin:0;line-height:1.5">"${wotd.ex}"</p>
+
+        <div style="background:rgba(255,255,255,.6);border-radius:16px;padding:28px;margin-bottom:20px;border:1px solid rgba(227,108,36,.1)">
+          <div style="display:flex;align-items:baseline;gap:12px;margin-bottom:16px;flex-wrap:wrap">
+            <h2 class="font-heading" style="font-size:36px;font-weight:800;color:#E36C24;margin:0;letter-spacing:-.02em">${wotd.word}</h2>
+            <span style="font-size:14px;font-style:italic;color:#6B7280;padding:4px 12px;background:rgba(107,114,128,.08);border-radius:6px">${wotd.pos}</span>
+            <span class="font-mono" style="font-size:14px;color:#9CA3AF">${wotd.pron}</span>
+          </div>
+
+          <div style="display:inline-block;padding:4px 12px;background:rgba(227,108,36,.08);border-radius:6px;font-size:11px;font-weight:600;color:#E36C24;margin-bottom:16px;text-transform:uppercase;letter-spacing:.05em">${wotd.category}</div>
+
+          <div style="margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Definition</div>
+            <p style="font-size:16px;color:#1F1F1F;line-height:1.7;margin:0">${wotd.def}</p>
+          </div>
+
+          <div style="background:rgba(227,108,36,.04);border-radius:12px;padding:16px 20px;border-left:4px solid #E36C24;margin-bottom:20px">
+            <div style="font-size:11px;font-weight:700;color:#E36C24;text-transform:uppercase;letter-spacing:.05em;margin-bottom:12px">Examples</div>
+            <div style="display:flex;flex-direction:column;gap:10px">
+              ${wotd.examples.map((ex,i)=>`<p style="font-size:14px;color:#4B5563;font-style:italic;line-height:1.6;margin:0;padding-left:${i>0?'12px':'0'};border-left:${i>0?'2px solid rgba(227,108,36,.2)':'none'}">"${ex}"</p>`).join('')}
+            </div>
+          </div>
+
+          <button onclick="toggleWOTDDetails()" id="wotdDetailsBtn" style="background:transparent;border:1px solid rgba(227,108,36,.2);border-radius:8px;padding:10px 16px;font-size:13px;font-weight:600;color:#E36C24;cursor:pointer;transition:all .2s;width:100%;display:flex;align-items:center;justify-content:space-between">
+            <span>Show More Details</span>
+            <span style="font-size:16px">▼</span>
+          </button>
+
+          <div id="wotdDetails" style="display:none;margin-top:16px">
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px">
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#10b981;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Synonyms</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  ${wotd.synonyms.map(s=>`<span style="padding:4px 10px;background:rgba(16,185,129,.08);border:1px solid rgba(16,185,129,.2);border-radius:6px;font-size:12px;color:#10b981;font-weight:500">${s}</span>`).join('')}
+                </div>
+              </div>
+              <div>
+                <div style="font-size:11px;font-weight:700;color:#ef4444;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Antonyms</div>
+                <div style="display:flex;flex-wrap:wrap;gap:6px">
+                  ${wotd.antonyms.map(a=>`<span style="padding:4px 10px;background:rgba(239,68,68,.08);border:1px solid rgba(239,68,68,.2);border-radius:6px;font-size:12px;color:#ef4444;font-weight:500">${a}</span>`).join('')}
+                </div>
+              </div>
+            </div>
+
+            <div style="margin-bottom:16px">
+              <div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Etymology</div>
+              <p style="font-size:13px;color:#4B5563;line-height:1.6;margin:0;font-style:italic">${wotd.etymology}</p>
+            </div>
+
+            <div style="margin-bottom:16px">
+              <div style="font-size:11px;font-weight:700;color:#6B7280;text-transform:uppercase;letter-spacing:.05em;margin-bottom:8px">Common Collocations</div>
+              <div style="display:flex;flex-wrap:wrap;gap:6px">
+                ${wotd.collocations.map(c=>`<span style="padding:4px 10px;background:rgba(59,130,246,.08);border:1px solid rgba(59,130,246,.2);border-radius:6px;font-size:12px;color:#3b82f6;font-weight:500">${c}</span>`).join('')}
+              </div>
+            </div>
+
+            <div style="background:rgba(59,130,246,.04);border:1px solid rgba(59,130,246,.15);border-radius:8px;padding:12px 16px">
+              <div style="font-size:11px;font-weight:700;color:#3b82f6;text-transform:uppercase;letter-spacing:.05em;margin-bottom:6px">💡 Usage Note</div>
+              <p style="font-size:13px;color:#1F1F1F;line-height:1.6;margin:0">${wotd.usageNote}</p>
+            </div>
+          </div>
         </div>
-        <label style="display:block;font-size:11px;font-weight:700;color:var(--brand-graphite);margin-bottom:6px">✍️ Write your own example (+20 XP):</label>
-        <input type="text" id="wotdInput" placeholder="e.g. He showed great ${wotd.word.toLowerCase()}..." style="width:100%;padding:10px 14px;background:var(--brand-light-sand);border:1px solid var(--gray-300);border-radius:8px;font-size:13px;outline:none;color:var(--brand-graphite)">
-        <div id="wotdFeedback" style="display:none;margin-top:8px"></div>
-        <button onclick="submitWOTD()" class="btn btn-primary" style="width:100%;margin-top:12px;padding:10px">Submit Example ✨</button>
+
+        <div style="background:rgba(255,255,255,.6);border-radius:16px;padding:24px;border:1px solid rgba(227,108,36,.1)">
+          <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:16px">
+            <label style="font-size:15px;font-weight:600;color:#1F1F1F;margin:0">✍️ Your Turn: Write a sentence using "${wotd.word}"</label>
+            <button onclick="toggleWOTDLearned()" id="wotdLearnedBtn" style="background:transparent;border:1px solid rgba(107,114,128,.2);border-radius:8px;padding:6px 12px;font-size:12px;font-weight:600;color:#6B7280;cursor:pointer;transition:all .2s">Mark as Learned</button>
+          </div>
+
+          <textarea id="wotdInput" placeholder="Type your sentence here..." style="width:100%;min-height:120px;padding:16px 20px;background:rgba(255,255,255,.9);border:1px solid rgba(148,163,184,.2);border-radius:12px;color:#1F1F1F;font-size:15px;line-height:1.6;font-family:Inter,sans-serif;resize:vertical;outline:none;transition:all .2s"></textarea>
+          
+          <div id="wotdFeedback" style="display:none;margin-top:12px"></div>
+          
+          <div style="display:flex;gap:12px;margin-top:16px;flex-wrap:wrap">
+            <button onclick="submitWOTD()" class="btn btn-primary" style="flex:1">Submit Example (+10 XP)</button>
+            <button onclick="clearWOTD()" class="btn btn-secondary" style="min-width:100px">Clear</button>
+          </div>
+
+          <p style="font-size:12px;color:#9CA3AF;margin:12px 0 0;font-style:italic;text-align:center">💡 Earn 10 XP for correct sentences + 5 XP for marking as learned</p>
+        </div>
       </div>
     </div></div>
 
