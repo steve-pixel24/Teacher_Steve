@@ -8,6 +8,8 @@ import { TestEngine } from './components/TestEngine';
 import { GameLauncher } from './components/GameLauncher';
 import { VocabularyCategory } from './components/VocabularyCategory';
 import { VocabularyPractice } from './components/VocabularyPractice';
+import { GrammarCategoryView } from './components/GrammarCategory';
+import { GrammarRuleViewer } from './components/GrammarRuleViewer';
 import { AchievementsModal, AchievementToast } from './components/AchievementsModal';
 import { ProfileModal } from './components/ProfileModal';
 import { DictionaryWidget } from './components/DictionaryWidget';
@@ -16,12 +18,13 @@ import { stories, Story } from './data/stories';
 import { tests, Test } from './data/tests';
 import { games, Game } from './data/games';
 import { VocabSubcategory } from './data/vocabulary';
+import { GrammarCategory } from './data/grammar';
 import { Achievement, checkAchievements, trackLoginStreak, loadAchievements } from './utils/achievements';
 import { getCompletionStats } from './utils/progress';
 import { getLevelInfo } from './utils/xpSystem';
 
-type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'vocabPractice';
-type CategoryType = 'lessons' | 'vocabulary' | 'stories' | 'tests' | 'games';
+type AppView = 'login' | 'home' | 'category' | 'lesson' | 'story' | 'test' | 'game' | 'vocabulary' | 'vocabPractice' | 'grammar' | 'grammarRule';
+type CategoryType = 'lessons' | 'vocabulary' | 'grammar' | 'stories' | 'tests' | 'games';
 
 export default function App() {
   const [view, setView] = useState<AppView>('login');
@@ -33,6 +36,7 @@ export default function App() {
   const [activeTest, setActiveTest] = useState<Test | null>(null);
   const [activeGame, setActiveGame] = useState<Game | null>(null);
   const [activeVocabSubcategory, setActiveVocabSubcategory] = useState<VocabSubcategory | null>(null);
+  const [activeGrammarCategory, setActiveGrammarCategory] = useState<GrammarCategory | null>(null);
   const [activeCategory, setActiveCategory] = useState<CategoryType | null>(null);
   const [studentScore, setStudentScore] = useState(0);
   
@@ -89,10 +93,17 @@ export default function App() {
     setView('vocabPractice');
   };
 
+  const openGrammarCategory = (category: GrammarCategory) => {
+    setActiveGrammarCategory(category);
+    setView('grammarRule');
+  };
+
   const openCategory = (category: CategoryType) => {
     setActiveCategory(category);
     if (category === 'vocabulary') {
       setView('vocabulary');
+    } else if (category === 'grammar') {
+      setView('grammar');
     } else {
       setView('category');
     }
@@ -123,6 +134,8 @@ export default function App() {
   const goBackToCategory = () => {
     if (activeCategory === 'vocabulary') {
       setView('vocabulary');
+    } else if (activeCategory === 'grammar') {
+      setView('grammar');
     } else {
       setView('category');
     }
@@ -131,6 +144,7 @@ export default function App() {
     setActiveTest(null);
     setActiveGame(null);
     setActiveVocabSubcategory(null);
+    setActiveGrammarCategory(null);
   };
 
   const goBackToDashboard = () => {
@@ -140,6 +154,7 @@ export default function App() {
     setActiveTest(null);
     setActiveGame(null);
     setActiveVocabSubcategory(null);
+    setActiveGrammarCategory(null);
     setActiveCategory(null);
   };
 
@@ -153,6 +168,7 @@ export default function App() {
     setActiveTest(null);
     setActiveGame(null);
     setActiveVocabSubcategory(null);
+    setActiveGrammarCategory(null);
     setActiveCategory(null);
     setStudentScore(0);
   };
@@ -275,6 +291,19 @@ export default function App() {
       {view === 'vocabPractice' && activeVocabSubcategory && (
         <VocabularyPractice
           subcategory={activeVocabSubcategory}
+          onBack={goBackToCategory}
+          onComplete={addScore}
+        />
+      )}
+      {view === 'grammar' && (
+        <GrammarCategoryView
+          onBack={goBackToDashboard}
+          onSelectCategory={openGrammarCategory}
+        />
+      )}
+      {view === 'grammarRule' && activeGrammarCategory && (
+        <GrammarRuleViewer
+          category={activeGrammarCategory}
           onBack={goBackToCategory}
           onComplete={addScore}
         />

@@ -9,7 +9,7 @@ import { getLevelInfo, getLevelColor, loadStudents } from '../utils/xpSystem';
 interface HomePageProps {
   lessons: Lesson[];
   onSelectLesson: (lesson: Lesson) => void;
-  onOpenCategory: (category: 'lessons' | 'vocabulary' | 'stories' | 'tests' | 'games') => void;
+  onOpenCategory: (category: 'lessons' | 'vocabulary' | 'grammar' | 'stories' | 'tests' | 'games') => void;
   studentName: string;
   studentCode: string;
   isAdmin: boolean;
@@ -61,6 +61,16 @@ export default function HomePage({
       color: 'rgba(139, 92, 246, 0.08)',
       borderColor: 'rgba(139, 92, 246, 0.15)',
       action: () => onOpenCategory('vocabulary'),
+    },
+    {
+      id: 'grammar' as const,
+      icon: '📚',
+      title: 'Grammar Rules',
+      description: 'Complete English grammar reference',
+      count: 15,
+      color: 'rgba(59, 130, 246, 0.08)',
+      borderColor: 'rgba(59, 130, 246, 0.15)',
+      action: () => onOpenCategory('grammar'),
     },
     {
       id: 'stories' as const,
