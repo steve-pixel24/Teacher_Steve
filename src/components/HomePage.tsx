@@ -127,23 +127,23 @@ export default function HomePage({
                 <button
                   onClick={onOpenDictionary}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
                     borderRadius: '12px',
                     padding: '8px 14px',
                     fontSize: '13px',
-                    color: 'rgba(255,255,255,0.9)',
+                    color: 'var(--brand-charcoal)',
                     cursor: 'pointer',
-                    fontWeight: 500,
+                    fontWeight: 600,
                     transition: 'all 0.2s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
                   }}
                 >
                   📖 Dictionary
@@ -151,23 +151,23 @@ export default function HomePage({
                 <button
                   onClick={onOpenAchievements}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
                     borderRadius: '12px',
                     padding: '8px 14px',
                     fontSize: '13px',
-                    color: 'rgba(255,255,255,0.9)',
+                    color: 'var(--brand-charcoal)',
                     cursor: 'pointer',
-                    fontWeight: 500,
+                    fontWeight: 600,
                     transition: 'all 0.2s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
                   }}
                 >
                   🏆 Achievements
@@ -175,23 +175,23 @@ export default function HomePage({
                 <button
                   onClick={onOpenFeedback}
                   style={{
-                    background: 'rgba(255, 255, 255, 0.1)',
+                    background: 'rgba(255, 255, 255, 0.95)',
                     backdropFilter: 'blur(10px)',
                     WebkitBackdropFilter: 'blur(10px)',
-                    border: '1px solid rgba(255, 255, 255, 0.2)',
+                    border: '1px solid rgba(255, 255, 255, 0.3)',
                     borderRadius: '12px',
                     padding: '8px 14px',
                     fontSize: '13px',
-                    color: 'rgba(255,255,255,0.9)',
+                    color: 'var(--brand-charcoal)',
                     cursor: 'pointer',
-                    fontWeight: 500,
+                    fontWeight: 600,
                     transition: 'all 0.2s',
                   }}
                   onMouseEnter={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
                   }}
                   onMouseLeave={(e) => {
-                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                    e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
                   }}
                 >
                   💬 Feedback
@@ -202,23 +202,25 @@ export default function HomePage({
               <button
                 onClick={onOpenAdminFeedback}
                 style={{
-                  background: 'rgba(227, 108, 36, 0.2)',
+                  background: 'rgba(255, 255, 255, 0.95)',
                   backdropFilter: 'blur(10px)',
                   WebkitBackdropFilter: 'blur(10px)',
-                  border: '1px solid rgba(227, 108, 36, 0.4)',
+                  border: '2px solid var(--brand-orange)',
                   borderRadius: '12px',
                   padding: '8px 14px',
                   fontSize: '13px',
-                  color: 'rgba(255,255,255,0.9)',
+                  color: 'var(--brand-orange)',
                   cursor: 'pointer',
-                  fontWeight: 500,
+                  fontWeight: 700,
                   transition: 'all 0.2s',
                 }}
                 onMouseEnter={(e) => {
-                  e.currentTarget.style.background = 'rgba(227, 108, 36, 0.3)';
+                  e.currentTarget.style.background = 'var(--brand-orange)';
+                  e.currentTarget.style.color = 'white';
                 }}
                 onMouseLeave={(e) => {
-                  e.currentTarget.style.background = 'rgba(227, 108, 36, 0.2)';
+                  e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
+                  e.currentTarget.style.color = 'var(--brand-orange)';
                 }}
               >
                 📊 Admin Feedback
@@ -227,10 +229,10 @@ export default function HomePage({
             <button
               onClick={onOpenProfile}
               style={{
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '8px 14px',
                 fontSize: '20px',
@@ -238,10 +240,10 @@ export default function HomePage({
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
               }}
             >
               {studentAvatar}
@@ -250,40 +252,38 @@ export default function HomePage({
               display: 'flex',
               alignItems: 'center',
               gap: '6px',
-              background: 'rgba(227, 108, 36, 0.15)',
+              background: 'rgba(255, 255, 255, 0.95)',
               backdropFilter: 'blur(10px)',
               WebkitBackdropFilter: 'blur(10px)',
-              border: '1px solid rgba(227, 108, 36, 0.3)',
+              border: '1px solid rgba(255, 255, 255, 0.3)',
               borderRadius: '12px',
               padding: '8px 14px',
             }}>
               <span style={{ fontSize: '14px' }}>⭐</span>
-              <span className="font-space" style={{ fontSize: '14px', fontWeight: 600, color: '#FFFFFF' }}>
+              <span className="font-space" style={{ fontSize: '14px', fontWeight: 700, color: 'var(--brand-orange)' }}>
                 {studentScore}
               </span>
             </div>
             <button
               onClick={onLogout}
               style={{
-                background: 'rgba(255, 255, 255, 0.1)',
+                background: 'rgba(255, 255, 255, 0.95)',
                 backdropFilter: 'blur(10px)',
                 WebkitBackdropFilter: 'blur(10px)',
-                border: '1px solid rgba(255, 255, 255, 0.2)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '12px',
                 padding: '8px 16px',
                 fontSize: '13px',
-                color: 'rgba(255,255,255,0.9)',
+                color: 'var(--brand-charcoal)',
                 cursor: 'pointer',
-                fontWeight: 500,
+                fontWeight: 600,
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.15)';
-                e.currentTarget.style.color = '#FFFFFF';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.1)';
-                e.currentTarget.style.color = 'rgba(255,255,255,0.9)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
               }}
             >
               🚪 Exit

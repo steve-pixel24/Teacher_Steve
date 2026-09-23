@@ -47,18 +47,18 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 display: 'flex',
                 alignItems: 'center',
                 gap: '12px',
-                background: 'rgba(43, 45, 49, 0.8)',
-                border: '1px solid rgba(75, 85, 99, 0.8)',
+                background: 'rgba(255, 255, 255, 0.95)',
+                border: '1px solid rgba(255, 255, 255, 0.3)',
                 borderRadius: '8px',
                 padding: '6px 12px',
                 cursor: 'pointer',
                 transition: 'all 0.2s',
               }}
               onMouseEnter={(e) => {
-                e.currentTarget.style.background = 'rgba(43, 45, 49, 1)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 1)';
               }}
               onMouseLeave={(e) => {
-                e.currentTarget.style.background = 'rgba(43, 45, 49, 0.8)';
+                e.currentTarget.style.background = 'rgba(255, 255, 255, 0.95)';
               }}
             >
               <div style={{
@@ -79,7 +79,7 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 <div style={{
                   fontSize: '10px',
                   fontWeight: 600,
-                  color: 'var(--gray-400)',
+                  color: 'var(--brand-charcoal)',
                   textTransform: 'uppercase',
                   letterSpacing: '0.05em',
                 }}>
@@ -88,12 +88,12 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                 <div style={{
                   fontSize: '12px',
                   fontWeight: 700,
-                  color: 'white',
+                  color: 'var(--brand-charcoal)',
                 }}>
                   {topStudents.length > 0 ? (
                     <>
                       {getRankBadge(1)} {topStudents[0]?.name}{' '}
-                      <span style={{ color: 'var(--gray-400)', fontWeight: 400 }}>
+                      <span style={{ color: 'var(--gray-600)', fontWeight: 400 }}>
                         • Lvl {topStudents[0]?.level || 1}
                       </span>{' '}
                       <span style={{ color: 'var(--brand-orange)' }}>
@@ -101,7 +101,7 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
                       </span>
                     </>
                   ) : (
-                    <span style={{ color: 'var(--gray-400)' }}>No students yet</span>
+                    <span style={{ color: 'var(--gray-600)' }}>No students yet</span>
                   )}
                 </div>
               </div>
@@ -131,7 +131,7 @@ export default function HeaderBanner({ subtitle, rightContent, compact, currentS
             <p style={{
               fontSize: '11px',
               fontWeight: 500,
-              color: 'var(--gray-400)',
+              color: 'rgba(255, 255, 255, 0.85)',
               margin: '2px 0 0 0',
               letterSpacing: '0.15em',
               textTransform: 'uppercase',
