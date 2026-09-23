@@ -830,16 +830,7 @@ body {
   }
 }
 
-/* ===== DARK MODE SUPPORT ===== */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --white: #1a1a1a;
-    --gray-100: #2a2a2a;
-    --gray-200: #3a3a3a;
-    --text-primary: #e0e0e0;
-    --text-secondary: #b0b0b0;
-  }
-}
+/* Note: Dark mode intentionally disabled - platform uses light theme for better readability */
 
 /* ===== REDUCED MOTION ===== */
 @media (prefers-reduced-motion: reduce) {
