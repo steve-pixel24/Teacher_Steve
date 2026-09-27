@@ -15,6 +15,9 @@ execution: code
 - **Objective:** Steve's students log in from any device and keep their vocabulary progress. The app runs at $0/month, and the maintainer (a Python developer) can run, change, and deploy every part of it.
 - **Means:** Rebuild the repo as a monorepo. The existing React app becomes the frontend, a new FastAPI backend owns the data, Supabase stores the data and accounts, and Vercel hosts both parts. The work ships as a sequence of small PRs (see Delivery Sequence).
 - **Product authority:** The maintainer decides scope and product behavior. Steve is the app's only teacher and its main user-side stakeholder. Porting the features beyond vocabulary is follow-on work, not active scope for this plan.
+- **Execution scope:** The Implementation Units cover PR1 only. PR2 through PR5 get their units when each one is planned.
+- **Stop conditions:** Stop when the Definition of Done holds, and do not start PR2 work. Stop and ask if a PR1 unit seems to need a change to app code, build config, or dependencies.
+- **Ships:** The maintainer opens PR1 against `main` on `steve-pixel24/Teacher_Steve` and merges it after review.
 - **Open blockers:** None.
 
 ---
@@ -24,6 +27,8 @@ execution: code
 ### Summary
 
 Teacher Steve becomes a monorepo: the existing React app as the frontend, talking to a new FastAPI backend, with accounts and progress stored in Supabase and both parts deployed on the free tiers of Vercel and Supabase. The first release is a thin slice, deployed end to end. Steve logs in, creates a student, and the student logs in and practices vocabulary, with progress saved on the server. The remaining features are ported one PR at a time after that.
+
+Implementation planning currently covers PR1. The README is rewritten to describe the repo as it stands, the root report files are deleted, and `frontend/` and `backend/` exist as placeholder folders. PR2 through PR5 are planned when each comes up.
 
 ### Problem Frame
 
@@ -135,8 +140,8 @@ flowchart TB
 
 Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds the files, tests, and verification for each one.
 
-- **PR1. README and monorepo structure.** Delivers R2 and R3, and the layout part of R1. The README is rewritten, the folder layout for frontend and backend is in place, and the root report files are gone. App behavior is unchanged.
-- **PR2. Frontend moves into the monorepo.** Delivers R4 and R5. The React app runs and builds from its new folder, still saving to localStorage. The single-file app is removed.
+- **PR1. README and monorepo structure.** Delivers R2, the report-file part of R3, and the layout part of R1. The README is rewritten, the folder layout for frontend and backend is in place, and the root report files are gone. App behavior is unchanged.
+- **PR2. Frontend moves into the monorepo.** Delivers R4 and R5, and completes R3 once the frontend's files leave the root. The React app runs and builds from its new folder, still saving to localStorage. The single-file app is removed.
 - **PR3. Backend skeleton and first deploy.** Delivers R8, R9, and R10, and the backend part of R1. A minimal FastAPI app runs locally and on Vercel next to the frontend. PRs get preview deployments, and the Supabase project is connected through environment settings.
 - **PR4. Teacher and student accounts.** Delivers R11 through R16. Steve logs in with a real account, creates students and resets their passwords, and students log in with their own credentials. The hardcoded login is removed.
 - **PR5. Vocabulary progress on the server.** Delivers R17 through R20. The thin slice is complete once this lands.
@@ -162,6 +167,12 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - More than one teacher.
 - Migrating existing localStorage data, since nothing is live.
 
+**Deferred to Follow-Up Work**
+
+- PR2: moving the React app into `frontend/`, retiring `public/index.html`, pruning unused dependencies, and replacing the `sandbox-workspace` package name in `package.json`.
+- PR3: Python, virtualenv, and `.env` entries in `.gitignore`, automatic checks on PRs, and the README's backend and deploy sections.
+- Unpublishing the GitHub Pages site, a manual step outside any PR (see Operational Notes).
+
 ### Dependencies / Assumptions
 
 - The app stays non-commercial. Vercel Hobby forbids commercial use, including charging students or paying someone to build or host the site. If that changes, the hosting moves to a paid plan first.
@@ -178,12 +189,11 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 
 **Deferred to Planning**
 
-- Does the frontend sign in through Supabase Auth directly and pass the session to FastAPI, or does FastAPI handle login itself? Supabase Auth expects an email or phone number, so usernames may need mapping.
-- Do the frontend and backend share one Vercel project or use two?
-- Are the root report files archived in a folder or deleted, with git history keeping them?
-- Which unused frontend dependencies are removed in PR2? Per the repo scan, `@supabase/supabase-js`, `@dnd-kit/*`, `framer-motion`, `canvas-confetti`, and `recharts` have no imports.
-- Which checks (backend tests, frontend type check, lint) run automatically on each PR, and where?
-- Does vocabulary content live on the backend and get served by the API, or stay bundled with the frontend build?
+- Does the frontend sign in through Supabase Auth directly and pass the session to FastAPI, or does FastAPI handle login itself? Supabase Auth expects an email or phone number, so usernames may need mapping. (resolve in PR4)
+- Do the frontend and backend share one Vercel project or use two? (resolve in PR3)
+- Which unused frontend dependencies are removed? Per the repo scan, `@supabase/supabase-js`, `@dnd-kit/*`, `framer-motion`, `canvas-confetti`, and `recharts` have no imports. (resolve in PR2)
+- Which checks (backend tests, frontend type check, lint) run automatically on each PR, and where? (resolve in PR3)
+- Does vocabulary content live on the backend and get served by the API, or stay bundled with the frontend build? (resolve in PR5)
 
 ### Sources / Research
 
@@ -192,10 +202,138 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - Global, non-per-student storage keys: `src/utils/progress.ts:13`, `src/utils/achievements.ts:203`.
 - Single storage helper in the single-file app: `public/index.html:634`.
 - Placeholder test questions: `public/index.html:1658`.
-- Admin screen is student management only: `src/components/HomePage.tsx:465-468`, `public/index.html:1197`. The content editor described in `REAL_TIME_EDITING_GUIDE.md` does not exist in code.
+- Admin screen is student management only: `src/components/HomePage.tsx:465-468`, `public/index.html:1197`. The content editor described in `REAL_TIME_EDITING_GUIDE.md` (removed from the tree in PR1, still in git history) does not exist in code.
 - Every screen in `public/index.html` has a React counterpart in `src/components/`. React also has Conversational Roulette, Fun Facts, and Word of the Day, which the single-file app lacks.
 - Content modules: `src/data/*.ts`. Root `index.html` boots the React app via `/src/main.tsx`.
 - Vercel Hobby non-commercial rule: https://vercel.com/docs/plans/hobby and https://vercel.com/docs/limits/fair-use-guidelines
 - FastAPI on Vercel (zero-config, one function): https://vercel.com/docs/frameworks/backend/fastapi
+- Vercel monorepos (one project per folder via Root Directory): https://vercel.com/docs/monorepos
 - Supabase Free pausing and limits: https://supabase.com/docs/guides/platform/free-project-pausing and https://supabase.com/pricing
 - Supabase email sending limits: https://supabase.com/docs/guides/auth/auth-smtp
+
+---
+
+## Planning Contract
+
+**Product Contract preservation:** no scope change. Edits made while planning PR1:
+
+- Delivery Sequence: R3 now lands across PR1 (report files leave the root) and PR2 (the frontend's files leave the root), because the React app stays at the root until PR2 moves it.
+- Outstanding Questions: KTD2 resolves the report-files question, so it was removed. Each remaining deferred question names the PR that resolves it.
+- Summary, Scope Boundaries, and Sources gained PR1 lines.
+
+### Key Technical Decisions
+
+- KTD1. **Top-level `frontend/` and `backend/` folders, each holding a placeholder README until its PR fills it.** Git does not track empty folders, and a README tells a reader what the folder is for, which a `.gitkeep` cannot. The layout keeps PR3's one-or-two-Vercel-projects question open: Vercel creates one project per folder through its Root Directory setting, and a single project can reach a FastAPI app under `backend/` through `tool.vercel.entrypoint` in `pyproject.toml` (Vercel monorepos and FastAPI docs in Sources). Serves R1. (session-settled: user-approved — chosen over `apps/web` and `apps/api`: plain names are easier to follow for a Python developer new to JavaScript)
+- KTD2. **Delete the 23 root report files instead of archiving them.** Git history keeps them. `QUICK_START_GUIDE.md` prints the teacher login, and `REAL_TIME_EDITING_GUIDE.md` describes a content editor that does not exist, so an archive folder would keep both problems in the tree. No tracked file outside this plan references them, and the plan's Sources already notes the removal. Serves R3. (session-settled: user-approved — chosen over moving them to an archive folder under `docs/`: several describe features that don't exist and one prints the teacher login)
+- KTD3. **The README describes the repo as it is after the PR that last changed it.** The report files went wrong by describing features that did not exist. So the README labels anything not built yet (backend, database, deploy, automated tests) as planned and links to Delivery Sequence instead of documenting it. Each later PR updates the README sections for what it adds. Serves R2, R22.
+- KTD4. **The README names the file holding the hardcoded teacher login instead of printing the login.** The repo is public and PR4 removes the credential (R12), so the README should not add a second copy. Serves R12.
+- KTD5. **GitHub Pages stays out of PR1's diff.** The repo's Pages site at `https://steve-pixel24.github.io/Teacher_Steve/` still serves a 2026-09-25 deployment of the unbuilt root `index.html`, which renders a blank page. A Pages workflow was added to `main` and then deleted, so no file in the repo controls the site. (session-settled: user-approved — chosen over folding the takedown into PR1: it is a setting on Steve's repo, not a file change)
+
+### Output Structure
+
+The repo root after PR1. Anything not listed is unchanged.
+
+```text
+README.md             rewritten (U3)
+.gitignore            unchanged
+docs/plans/           this plan
+frontend/README.md    new placeholder (U2); the React app moves here in PR2
+backend/README.md     new placeholder (U2); the FastAPI app arrives in PR3
+index.html            unchanged until PR2
+package.json          unchanged until PR2
+package-lock.json     unchanged until PR2
+tsconfig.json         unchanged until PR2
+vite.config.js        unchanged until PR2
+src/                  unchanged until PR2
+public/index.html     unchanged until PR2 retires it
+```
+
+### Sequencing
+
+- PR1 starts from `origin/main`, not from the local branch `conditionals--probability---modals-d4bea`. That branch belongs to the already-merged PR #1, and `origin/main` has five commits it lacks. The two trees differ only by this plan file, so PR1 carries this plan file as well.
+- Units land in the order U1, U2, U3, because U3 describes the layout that U1 and U2 produce.
+
+### Operational Notes
+
+- **Unpublish the GitHub Pages site (manual, repo admin).** An admin of `steve-pixel24/Teacher_Steve` unpublishes the site from the repository's Pages settings on GitHub (KTD5). It does not block PR1. Doing it before PR3's first Vercel deploy leaves the app with one public URL.
+
+---
+
+## Implementation Units
+
+### U1. Remove the root report files
+
+- **Goal:** The repo root holds no AI-generated report files.
+- **Requirements:** R3 (report-file part, per Delivery Sequence), KTD2.
+- **Dependencies:** None.
+- **Files:** Delete every root-level `.md` file except `README.md`. These are the 23 files matching `*_COMPLETE.md`, `*_GUIDE.md`, `*_SUMMARY.md`, and `*_REPORT.md`.
+- **Approach:** Delete the files without carrying any of their content elsewhere (KTD2). Nothing in `src/`, `public/`, or the root config files references them.
+- **Test expectation:** none -- documentation deletion with no code or behavior change.
+- **Verification:** `README.md` is the only `.md` file at the repo root, and a search of tracked files for the deleted filenames matches only this plan.
+
+### U2. Add the `frontend/` and `backend/` folders
+
+- **Goal:** The monorepo's two top-level parts exist as folders, and each one says what it will hold.
+- **Requirements:** R1 (layout part), KTD1.
+- **Dependencies:** None.
+- **Files:** Create `frontend/README.md` and `backend/README.md`.
+- **Approach:**
+  1. `frontend/README.md` says the React app will live here, that it runs from the repo root until the Delivery Sequence step that moves it, and links to the root `README.md` for run instructions.
+  2. `backend/README.md` says the FastAPI backend will live here and links to the Delivery Sequence step that adds it.
+  3. Keep each to a few lines, with relative links so they work both on GitHub and locally.
+  4. Add nothing else to either folder. `tsconfig.json` includes only `src`, and Vite builds from the root `index.html`, so neither tool picks up the new files.
+- **Test expectation:** none -- placeholder docs only.
+- **Verification:** Both folders show on GitHub with their README rendered, both relative links resolve, and the app still installs, runs, and builds from the root as before (Verification Contract).
+
+### U3. Rewrite the root README
+
+- **Goal:** Someone who clones the repo, including a Python developer new to JavaScript, understands what Teacher Steve is and can run the frontend by following only the README.
+- **Requirements:** R2, KTD3, KTD4. Covers the frontend half of the Success Criterion about running both parts from the README alone. PR3 adds the backend half.
+- **Dependencies:** U1, U2.
+- **Files:** Modify `README.md`.
+- **Approach:** Replace the current two-line README with these sections, in this order:
+  1. **What it is:** an English-learning app for Steve's students (vocabulary, grammar, stories, tests, and games), plus a teacher screen for managing students.
+  2. **Status:** frontend only. Everything saves to the browser's localStorage. There is no backend or database yet, and nothing is deployed. Link to Delivery Sequence for what comes next.
+  3. **Stack:** today, React 18, TypeScript 5, Vite 6, and Tailwind CSS 4 (from `package.json`). FastAPI, Supabase, and Vercel appear too, each labeled as planned.
+  4. **Repo layout:** the root as shown in Output Structure. Say that `public/index.html` is an older single-file copy of the app that PR2 removes, so readers don't mistake it for the real app.
+  5. **Run the frontend:** requires Node.js 22 or newer, because `@supabase/supabase-js` and its sibling `@supabase/*` packages in `package-lock.json` require Node `>= 22`. npm comes with Node. Cover install, the dev server, build, and type-check using the scripts in `package.json`. The dev server listens on port 3000 on all network interfaces (`vite.config.js`), so a phone on the same Wi-Fi can open it. It exits instead of switching ports when 3000 is taken (`strictPort`).
+  6. **For Python developers:** a short mapping. npm is like pip, `package.json` is like `pyproject.toml`, `package-lock.json` is the lock file, `node_modules/` is like a virtualenv's installed packages, and `npm run <script>` is like a Makefile target.
+  7. **Checks:** there are no automated tests yet. Type-checking is the only check, and nothing runs it on PRs.
+  8. **Logging in locally:** the teacher login is hardcoded in `src/components/LoginScreen.tsx` until real accounts replace it (KTD4). The teacher creates students in the app, each student gets a 4-digit code, and all data stays in the current browser.
+  9. **Deploy:** not deployed yet. Link to the Delivery Sequence step that adds Vercel.
+  10. **Planning docs:** `docs/plans/` holds the rebuild plan.
+- **Execution note:** Prove the README by following it in a fresh clone, not by reading it over.
+- **Patterns to follow:** None in the repo, since the current README is two lines. Match this plan's plain, short-sentence style.
+- **Test expectation:** none -- documentation only. The Verification checks every claim the README makes.
+- **Verification:**
+  - Following only the README in a fresh clone with Node 22 or newer installs the app and opens it at `http://localhost:3000`.
+  - The build and type-check commands the README names give the same results as on `main`.
+  - Every repo path and relative link in the README exists.
+  - The README contains no credential: no teacher name and code pair, and no student code.
+  - Every part the README describes as present exists in the tree. Backend, database, deploy, and automated tests are labeled as planned.
+
+---
+
+## Verification Contract
+
+PR1 changes no app code, so each app check compares against `main`. Record the `main` results before starting. No CI runs on PRs yet (PR3 decides which checks run automatically), and preview deploys (R9) start in PR3, so every check below runs locally.
+
+| Check | How | Expected after PR1 |
+|---|---|---|
+| Install | `npm install` at the repo root on Node 22+ | Succeeds, and the diff shows no change to `package-lock.json` |
+| Dev server | `npm run dev`, then open `http://localhost:3000` | Login screen, teacher student management, and student practice behave as on `main` |
+| Build | `npm run build` | Same result as on `main` |
+| Type check | `npm run typecheck` | Same result as on `main`; any difference is a regression |
+| Root cleanup | List tracked files at the repo root | `README.md` is the only `.md` file, and `frontend/` and `backend/` exist |
+| Links | Open each of the three READMEs on the PR branch on GitHub | Every relative link resolves |
+| No credential | Search the three READMEs | No teacher name and code pair, and no student code |
+
+---
+
+## Definition of Done
+
+- U1, U2, and U3 each meet their Verification.
+- Every row of the Verification Contract holds.
+- The diff touches only the deleted report files, `README.md`, `frontend/README.md`, `backend/README.md`, and this plan file. No app code, build config, dependency, or lock file changes.
+- The PR description names what PR1 leaves for later: the rest of R3 (PR2) and the manual GitHub Pages step (Operational Notes).
+- No scratch, draft, or abandoned files remain in the diff.
