@@ -28,7 +28,7 @@ execution: code
 
 Teacher Steve becomes a monorepo: the existing React app as the frontend, talking to a new FastAPI backend, with accounts and progress stored in Supabase and both parts deployed on the free tiers of Vercel and Supabase. The first release is a thin slice, deployed end to end. Steve logs in, creates a student, and the student logs in and practices vocabulary, with progress saved on the server. The remaining features are ported one PR at a time after that.
 
-Implementation planning currently covers PR1. The README is rewritten to describe the repo as it stands, the root report files are deleted, and `frontend/` and `backend/` exist as placeholder folders. PR2 through PR5 are planned when each comes up.
+Implementation planning currently covers PR1. The README is rewritten to describe the repo as it stands, the root report files move to `docs/legacy/`, and `frontend/` and `backend/` exist as placeholder folders. PR2 through PR5 are planned when each comes up.
 
 ### Problem Frame
 
@@ -202,7 +202,7 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - Global, non-per-student storage keys: `src/utils/progress.ts:13`, `src/utils/achievements.ts:203`.
 - Single storage helper in the single-file app: `public/index.html:634`.
 - Placeholder test questions: `public/index.html:1658`.
-- Admin screen is student management only: `src/components/HomePage.tsx:465-468`, `public/index.html:1197`. The content editor described in `REAL_TIME_EDITING_GUIDE.md` (removed from the tree in PR1, still in git history) does not exist in code.
+- Admin screen is student management only: `src/components/HomePage.tsx:465-468`, `public/index.html:1197`. The content editor described in `REAL_TIME_EDITING_GUIDE.md` (moved to `docs/legacy/` in PR1) does not exist in code.
 - Every screen in `public/index.html` has a React counterpart in `src/components/`. React also has Conversational Roulette, Fun Facts, and Word of the Day, which the single-file app lacks.
 - Content modules: `src/data/*.ts`. Root `index.html` boots the React app via `/src/main.tsx`.
 - Vercel Hobby non-commercial rule: https://vercel.com/docs/plans/hobby and https://vercel.com/docs/limits/fair-use-guidelines
@@ -224,7 +224,7 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 ### Key Technical Decisions
 
 - KTD1. **Top-level `frontend/` and `backend/` folders, each holding a placeholder README until its PR fills it.** Git does not track empty folders, and a README tells a reader what the folder is for, which a `.gitkeep` cannot. The layout keeps PR3's one-or-two-Vercel-projects question open: Vercel creates one project per folder through its Root Directory setting, and a single project can reach a FastAPI app under `backend/` through `tool.vercel.entrypoint` in `pyproject.toml` (Vercel monorepos and FastAPI docs in Sources). Serves R1. (session-settled: user-approved — chosen over `apps/web` and `apps/api`: plain names are easier to follow for a Python developer new to JavaScript)
-- KTD2. **Delete the 23 root report files instead of archiving them.** Git history keeps them. `QUICK_START_GUIDE.md` prints the teacher login, and `REAL_TIME_EDITING_GUIDE.md` describes a content editor that does not exist, so an archive folder would keep both problems in the tree. No tracked file outside this plan references them, and the plan's Sources already notes the removal. Serves R3. (session-settled: user-approved — chosen over moving them to an archive folder under `docs/`: several describe features that don't exist and one prints the teacher login)
+- KTD2. **Move the 23 root report files, unchanged, to `docs/legacy/`.** That clears them from the root (R3) while keeping them in the tree for reference. A short `docs/legacy/README.md` says they are pre-rebuild AI-generated reports that don't describe the current code, because several describe features that don't exist, such as the content editor in `REAL_TIME_EDITING_GUIDE.md`. Ten of them print the hardcoded teacher login, which is already public in `src/components/LoginScreen.tsx` and in this plan until PR4 replaces it. Serves R3. (session-settled: user-directed — chosen over deleting them outright: the maintainer wants them kept in the repo for reference)
 - KTD3. **The README describes the repo as it is after the PR that last changed it.** The report files went wrong by describing features that did not exist. So the README labels anything not built yet (backend, database, deploy, automated tests) as planned and links to Delivery Sequence instead of documenting it. Each later PR updates the README sections for what it adds. Serves R2, R22.
 - KTD4. **The README names the file holding the hardcoded teacher login instead of printing the login.** The repo is public and PR4 removes the credential (R12), so the README should not add a second copy. Serves R12.
 - KTD5. **GitHub Pages stays out of PR1's diff.** The repo's Pages site at `https://steve-pixel24.github.io/Teacher_Steve/` still serves a 2026-09-25 deployment of the unbuilt root `index.html`, which renders a blank page. A Pages workflow was added to `main` and then deleted, so no file in the repo controls the site. (session-settled: user-approved — chosen over folding the takedown into PR1: it is a setting on Steve's repo, not a file change)
@@ -237,6 +237,7 @@ The repo root after PR1. Anything not listed is unchanged.
 README.md             rewritten (U3)
 .gitignore            unchanged
 docs/plans/           this plan
+docs/legacy/          the 23 former root reports plus a README (U1)
 frontend/README.md    new placeholder (U2); the React app moves here in PR2
 backend/README.md     new placeholder (U2); the FastAPI app arrives in PR3
 index.html            unchanged until PR2
@@ -261,15 +262,15 @@ public/index.html     unchanged until PR2 retires it
 
 ## Implementation Units
 
-### U1. Remove the root report files
+### U1. Move the root report files to `docs/legacy/`
 
-- **Goal:** The repo root holds no AI-generated report files.
+- **Goal:** The repo root holds no AI-generated report files, and the reports stay available under `docs/legacy/`.
 - **Requirements:** R3 (report-file part, per Delivery Sequence), KTD2.
 - **Dependencies:** None.
-- **Files:** Delete every root-level `.md` file except `README.md`. These are the 23 files matching `*_COMPLETE.md`, `*_GUIDE.md`, `*_SUMMARY.md`, and `*_REPORT.md`.
-- **Approach:** Delete the files without carrying any of their content elsewhere (KTD2). Nothing in `src/`, `public/`, or the root config files references them.
-- **Test expectation:** none -- documentation deletion with no code or behavior change.
-- **Verification:** `README.md` is the only `.md` file at the repo root, and a search of tracked files for the deleted filenames matches only this plan.
+- **Files:** Move every root-level `.md` file except `README.md` into `docs/legacy/`. These are the 23 files matching `*_COMPLETE.md`, `*_GUIDE.md`, `*_SUMMARY.md`, and `*_REPORT.md`. Create `docs/legacy/README.md`.
+- **Approach:** Move the files with their content unchanged (KTD2), and add a short `docs/legacy/README.md` saying they don't describe the current code. Nothing in `src/`, `public/`, or the root config files references them.
+- **Test expectation:** none -- documentation move with no code or behavior change.
+- **Verification:** `README.md` is the only `.md` file at the repo root, and `docs/legacy/` holds all 23 files byte-identical to their originals plus its README.
 
 ### U2. Add the `frontend/` and `backend/` folders
 
@@ -324,7 +325,7 @@ PR1 changes no app code, so each app check compares against `main`. Record the `
 | Dev server | `npm run dev`, then open `http://localhost:3000` | Login screen, teacher student management, and student practice behave as on `main` |
 | Build | `npm run build` | Same result as on `main` |
 | Type check | `npm run typecheck` | Same result as on `main`; any difference is a regression |
-| Root cleanup | List tracked files at the repo root | `README.md` is the only `.md` file, and `frontend/` and `backend/` exist |
+| Root cleanup | List tracked files at the repo root and in `docs/legacy/` | `README.md` is the only `.md` file at the root, `docs/legacy/` holds the 23 reports unchanged, and `frontend/` and `backend/` exist |
 | Links | Open each of the three READMEs on the PR branch on GitHub | Every relative link resolves |
 | No credential | Search the three READMEs | No teacher name and code pair, and no student code |
 
@@ -334,6 +335,6 @@ PR1 changes no app code, so each app check compares against `main`. Record the `
 
 - U1, U2, and U3 each meet their Verification.
 - Every row of the Verification Contract holds.
-- The diff touches only the deleted report files, `README.md`, `frontend/README.md`, `backend/README.md`, and this plan file. No app code, build config, dependency, or lock file changes.
+- The diff touches only the report files moved into `docs/legacy/`, `docs/legacy/README.md`, `README.md`, `frontend/README.md`, `backend/README.md`, and this plan file. No app code, build config, dependency, or lock file changes.
 - The PR description names what PR1 leaves for later: the rest of R3 (PR2) and the manual GitHub Pages step (Operational Notes).
 - No scratch, draft, or abandoned files remain in the diff.

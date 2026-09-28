@@ -31,6 +31,7 @@ Planned, not in the repo yet:
 ```text
 README.md            this file
 docs/plans/          the rebuild plan
+docs/legacy/         old AI-generated reports, kept for reference; they don't match the code
 frontend/            placeholder; the React app moves here in PR2
 backend/             placeholder; the FastAPI backend arrives in PR3
 index.html           the page Vite serves; it loads src/main.tsx
