@@ -1,0 +1,97 @@
+Hi Jan, so Claude helped me write this so AI WARNING!! 
+
+First, thank you. For helping me with building this , and I really appreciate it. I have no budget,
+so everything below is meant to work at $0 to start. This is a wishlist, not a deadline. If something is too big,
+too much, or needs a different approach, please tell me and we'll change it together. I'll help where I can: writing lessons, 
+tests and explanations, testing the app with my students, and giving feedback.
+
+The big picture
+My HTML app is the design and feature reference. I love how it looks and works, so please keep the look, colors, fonts, tags, 
+layout and feel as they are. What I'd like is to make it real: real logins, progress saved online, working on any phone or laptop, 
+and a way for me to add content without coding. Later, if students love it, I'd like to offer a subscription.
+
+Free first, money later
+Launch on free tools only (the free tiers you already chose). No cost to either of us.
+No payments at the start. The app launches free for my students.
+Subscriptions come later, only when students want more and there's a reason to charge. Free hosting plans don't allow charging, 
+so the first subscription money would pay for upgraded hosting.
+Please build so it's easy to add later, for example a "free or premium" flag on each item. That way nothing needs to be rebuilt.
+Jan, if any feature would cost money, please tell me first and we'll find a free way or leave it for later.
+1. Look and feel (keep as is)
+Orange/charcoal/sand branding, the geometric banner, Montserrat and Inter fonts, rounded cards.
+The colored tags (level A1–C1, type, category, genre) on every item.
+"Done" badges, progress bars and "Start / Continue / Review" buttons.
+Works well on phones, tablets and laptops.
+2. Accounts
+I'm the only teacher. I create students with a username and password, edit or delete them, and reset their passwords.
+Students can only see their own progress.
+No login details visible in the code.
+Later, when subscriptions come, self sign-up for a free taster would be great.
+3. Learning content
+Explanations (most important to me):
+
+When a student answers wrong, show why it's wrong and what the right answer is.
+When a student answers right, show why it's correct.
+Every question has an explanation field, so it's never forgotten when I add content.
+Categories (all from my HTML):
+
+Lessons: reading with tables and callouts, quizzes, flashcards, matching, discussion prompts, level and type tags.
+Vocabulary: themed sets with phonetics, part of speech, definition, example and synonyms. Modes: Learn, Quiz, Match.
+Stories: paged reader, font size control, level and genre tags.
+Tests: real questions (my HTML only has placeholders), scoring, and XP by score.
+Games: every game listed should work eventually (only Word Scramble does now), with real high scores per student.
+4. Adding content from the website (teacher only)
+I'd like to add and change content myself, without code:
+
+Add, edit, hide and delete lessons, vocabulary sets and words, stories, tests and questions, and games.
+Forms for title, description, level, category, icon, duration, XP and tags.
+Write the right and wrong answer explanations.
+Save drafts and preview before publishing.
+Mark items Free or Premium (for later).
+Fixing a typo must not erase students' progress.
+5. Progress and motivation (keep and make real)
+Progress saved per student, same on every device, never mixed between students on one browser.
+XP and 100 levels in tiers, with tier colors.
+Achievements, badges and login streaks.
+Leaderboard, profile avatar and title.
+Fun Fact carousel, Word of the Day, and the British/American dictionary.
+XP calculated on the server so it can't be edited by students.
+6. Homework (opt-in and automatic)
+Opt-in: a student (or I, for them) switches homework on. It's never forced.
+Automatic: when it's on, the app suggests what to practice based on what the student needs:
+Questions and topics they get wrong often.
+Things they started but didn't finish.
+Their level, and what comes next.
+Simple rules are enough. No paid AI needed.
+I can see a student's homework and add or remove things by hand.
+When they finish it, they earn XP.
+7. Free vs premium (for later)
+Free students get a taster in every category.
+Premium items show a lock and a friendly "Subscribe to unlock" message.
+I pick what's free or premium per item.
+Monthly and yearly plans, with automatic access and cancellation.
+Payment provider to be chosen by Jan. Ideally one with no monthly fee that works for me and my students.
+8. Teacher tools
+Student Management, as in my HTML.
+Each student's progress, scores, level and recent activity.
+Feedback dashboard: ratings, feature requests with votes, bug reports.
+9. Extras that would be lovely (only if easy and free)
+Audio pronunciation, using the free speech built into phones and browsers.
+A "Review your mistakes" section.
+Progress reports I can print.
+Certificates for finishing a level.
+A free trial of premium once subscriptions exist.
+10. A suggested order (Jan, change it if you see better)
+Same app, real logins, vocabulary progress saved online (your plan).
+The rest of the content moved online, with explanations on every question.
+The content editor, so I can add things myself.
+Homework.
+Free/premium, subscriptions, and paid hosting, only when there's income.
+Extras.
+A few questions for you, Jan
+Is username + password fine for now, with email added later for self sign-up?
+Can the database be designed now so the editor, homework and premium flags fit without a rebuild?
+When the time comes, what would hosting and payments cost, so we can plan?
+Thank you again. I'm really excited about this.
+
+Steve
