@@ -29,46 +29,49 @@ Planned, not in the repo yet:
 ## Repo layout
 
 ```text
-README.md            this file
-docs/plans/          the rebuild plan
-docs/legacy/         old AI-generated reports, kept for reference; they don't match the code
-frontend/            placeholder; the React app moves here in PR2
-backend/             placeholder; the FastAPI backend arrives in PR3
-index.html           the page Vite serves; it loads src/main.tsx
-src/                 the React app: components/, data/ (lesson content), utils/
-public/index.html    an older single-file copy of the app, not the real one; PR2 removes it
-package.json         dependencies and npm scripts
-package-lock.json    exact versions of every installed package
-vite.config.js       dev server and build settings
-tsconfig.json        TypeScript settings
+README.md              this file
+.gitignore             files git never tracks, such as node_modules/ and dist/
+docs/plans/            the rebuild plan
+docs/legacy/           old AI-generated reports, kept for reference; they don't match the code
+frontend/              the React app
+  index.html           the page Vite serves; it loads src/main.tsx
+  src/                 the app's code: components/, data/ (lesson content), utils/
+  package.json         dependencies and npm scripts
+  package-lock.json    exact versions of every installed package
+  vite.config.js       dev server and build settings
+  tsconfig.json        TypeScript settings
+backend/               placeholder; the FastAPI backend arrives in PR3
 ```
 
 ## Run the frontend
 
-You need [Node.js](https://nodejs.org/) 22 or newer, which comes with npm. Check with `node --version`.
+You need [Node.js](https://nodejs.org/) 22 or newer, which comes with npm. Check with `node --version`. Node 20 reached end of life in April 2026, so 22 is the oldest version still supported.
 
-From the repo root:
+Run every npm command from the `frontend/` folder. The repo root has no `package.json`, so npm commands fail there.
 
 ```bash
-npm install         # install dependencies into node_modules/
-npm run dev         # start the dev server at http://localhost:3000
+cd frontend
+npm install         # install dependencies into frontend/node_modules/
+npm run dev         # start the dev server at http://localhost:3005
 ```
 
-Other commands:
+Other commands, also from `frontend/`:
 
 ```bash
-npm run build       # production build into dist/
+npm run build       # production build into frontend/dist/
 npm run typecheck   # check TypeScript types without building
 ```
 
 Things you may notice:
 
-- The dev server listens on every network interface, so a phone on the same Wi-Fi can open `http://<your-computer's-IP>:3000`.
-- If port 3000 is already in use, the dev server exits with an error instead of picking another port. Stop whatever holds the port, or change both `port` and `hmr.port` under `server` in `vite.config.js`. Changing only `port` breaks live reload, because the live-reload connection still uses port 3000.
-- `npm install` may print audit warnings and a warning that `esbuild` and `fsevents` have install scripts that haven't been approved. The app still installs and runs.
+- The dev server listens on every network interface, so a phone on the same Wi-Fi can open `http://<your-computer's-IP>:3005`.
+- If port 3005 is already in use, the dev server exits with an error instead of picking another port. Stop whatever holds the port, or change both `port` and `hmr.port` under `server` in `frontend/vite.config.js`. Changing only `port` breaks live reload, because the live-reload connection still uses port 3005.
+- `npm install` may print a warning that `esbuild` and `fsevents` have install scripts that haven't been approved. The app still installs and runs.
 - `npm run build` warns that the main JavaScript file is larger than 500 kB. That is expected for now.
 
 ## For Python developers
+
+The JavaScript files in this table live in `frontend/`.
 
 | JavaScript side | Closest Python equivalent |
 |---|---|
@@ -82,11 +85,11 @@ Things you may notice:
 
 ## Checks
 
-There are no automated tests yet. `npm run typecheck` is the only check, and nothing runs it automatically on pull requests, so run it yourself before opening one.
+There are no automated tests yet. `npm run typecheck`, run from `frontend/`, is the only check, and nothing runs it automatically on pull requests, so run it yourself before opening one.
 
 ## Logging in locally
 
-The teacher login is hardcoded in `src/components/LoginScreen.tsx` until real accounts replace it in PR4. Log in as the teacher to create students. Each student gets a 4-digit code to log in with.
+The teacher login is hardcoded in `frontend/src/components/LoginScreen.tsx` until real accounts replace it in PR4. Log in as the teacher to create students. Each student gets a 4-digit code to log in with.
 
 Everything stays in the current browser's localStorage. Clearing the site's data or switching browsers starts from nothing.
 

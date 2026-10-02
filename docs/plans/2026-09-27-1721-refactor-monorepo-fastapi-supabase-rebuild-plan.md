@@ -15,9 +15,9 @@ execution: code
 - **Objective:** Steve's students log in from any device and keep their vocabulary progress. The app runs at $0/month, and the maintainer (a Python developer) can run, change, and deploy every part of it.
 - **Means:** Rebuild the repo as a monorepo. The existing React app becomes the frontend, a new FastAPI backend owns the data, Supabase stores the data and accounts, and Vercel hosts both parts. The work ships as a sequence of small PRs (see Delivery Sequence).
 - **Product authority:** The maintainer decides scope and product behavior. Steve is the app's only teacher and its main user-side stakeholder. Porting the features beyond vocabulary is follow-on work, not active scope for this plan.
-- **Execution scope:** The Implementation Units cover PR1 only. PR2 through PR5 get their units when each one is planned.
-- **Stop conditions:** Stop when the Definition of Done holds, and do not start PR2 work. Stop and ask if a PR1 unit seems to need a change to app code, build config, or dependencies.
-- **Ships:** The maintainer opens PR1 against `main` on `steve-pixel24/Teacher_Steve` and merges it after review.
+- **Execution scope:** The active units are U4 through U7, which deliver PR2 (GitHub issue #3). U1 through U3 delivered PR1 in GitHub PR #2. PR3 through PR5 get their units when each one is planned.
+- **Stop conditions:** Stop when PR2's Definition of Done holds, and do not start PR3 work. Stop and ask if a PR2 unit seems to need a content change under `src/`, a version change to a kept package, or a config edit beyond the package name and the dev-server port (KTD9). Also stop and ask if the JavaScript bundle's contents differ from `main`'s, the CSS loses a class that `frontend/src/` uses, or the lock file changes beyond what U6's Verification expects.
+- **Ships:** The maintainer opens PR2 against `main` on `steve-pixel24/Teacher_Steve`, closing issue #3, and merges it after review.
 - **Open blockers:** None.
 
 ---
@@ -28,7 +28,7 @@ execution: code
 
 Teacher Steve becomes a monorepo: the existing React app as the frontend, talking to a new FastAPI backend, with accounts and progress stored in Supabase and both parts deployed on the free tiers of Vercel and Supabase. The first release is a thin slice, deployed end to end. Steve logs in, creates a student, and the student logs in and practices vocabulary, with progress saved on the server. The remaining features are ported one PR at a time after that.
 
-Implementation planning currently covers PR1. The README is rewritten to describe the repo as it stands, the root report files move to `docs/legacy/`, and `frontend/` and `backend/` exist as placeholder folders. PR2 through PR5 are planned when each comes up.
+Implementation planning covers PR1 and PR2. In PR1 the README is rewritten to describe the repo as it stands, the root report files move to `docs/legacy/`, and `frontend/` and `backend/` exist as placeholder folders. In PR2 the React app moves into `frontend/` and runs from there, the single-file app and every unused package go, and the READMEs follow the new layout. PR3 through PR5 are planned when each comes up.
 
 ### Problem Frame
 
@@ -169,8 +169,11 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 
 **Deferred to Follow-Up Work**
 
-- PR2: moving the React app into `frontend/`, retiring `public/index.html`, pruning unused dependencies, and replacing the `sandbox-workspace` package name in `package.json`.
-- PR3: Python, virtualenv, and `.env` entries in `.gitignore`, automatic checks on PRs, and the README's backend and deploy sections.
+- PR3 (GitHub issue #4):
+  - Python, virtualenv, and `.env` entries in `.gitignore`, which is also the time to drop its unused `.next/` and `build/` entries.
+  - Automatic checks on PRs, with `frontend/` as the frontend's working directory.
+  - The Node version Vercel builds with, for example through `engines` in `frontend/package.json` (KTD8).
+  - The README's backend and deploy sections.
 - Unpublishing the GitHub Pages site, a manual step outside any PR (see Operational Notes).
 
 ### Dependencies / Assumptions
@@ -189,9 +192,8 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 
 **Deferred to Planning**
 
-- Does the frontend sign in through Supabase Auth directly and pass the session to FastAPI, or does FastAPI handle login itself? Supabase Auth expects an email or phone number, so usernames may need mapping. (resolve in PR4)
+- Does the frontend sign in through Supabase Auth directly and pass the session to FastAPI, or does FastAPI handle login itself? Supabase Auth expects an email or phone number, so usernames may need mapping. If the frontend signs in through Supabase Auth, PR4 adds `@supabase/supabase-js` back, since PR2 removes it (KTD7). (resolve in PR4)
 - Do the frontend and backend share one Vercel project or use two? (resolve in PR3)
-- Which unused frontend dependencies are removed? Per the repo scan, `@supabase/supabase-js`, `@dnd-kit/*`, `framer-motion`, `canvas-confetti`, and `recharts` have no imports. (resolve in PR2)
 - Which checks (backend tests, frontend type check, lint) run automatically on each PR, and where? (resolve in PR3)
 - Does vocabulary content live on the backend and get served by the API, or stay bundled with the frontend build? (resolve in PR5)
 
@@ -210,6 +212,7 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - Vercel monorepos (one project per folder via Root Directory): https://vercel.com/docs/monorepos
 - Supabase Free pausing and limits: https://supabase.com/docs/guides/platform/free-project-pausing and https://supabase.com/pricing
 - Supabase email sending limits: https://supabase.com/docs/guides/auth/auth-smtp
+- The paths above predate PR2. From PR2 on, `src/`, `index.html`, and the root config files live under `frontend/`, and `public/index.html` exists only in git history (`git show 3899655:public/index.html`).
 
 ---
 
@@ -221,6 +224,13 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - Outstanding Questions: KTD2 resolves the report-files question, so it was removed. Each remaining deferred question names the PR that resolves it.
 - Summary, Scope Boundaries, and Sources gained PR1 lines.
 
+Edits made while planning PR2, also with no scope change:
+
+- Summary gained a PR2 sentence.
+- Scope Boundaries: the PR2 follow-up line was removed, because U4 through U7 now own that work. The PR3 line gained the items PR2 hands forward.
+- Outstanding Questions: KTD7 resolves the dependency question, so it was removed. The PR4 auth question notes the package KTD7 removes.
+- Sources gained a line saying its paths predate PR2.
+
 ### Key Technical Decisions
 
 - KTD1. **Top-level `frontend/` and `backend/` folders, each holding a placeholder README until its PR fills it.** Git does not track empty folders, and a README tells a reader what the folder is for, which a `.gitkeep` cannot. The layout keeps PR3's one-or-two-Vercel-projects question open: Vercel creates one project per folder through its Root Directory setting, and a single project can reach a FastAPI app under `backend/` through `tool.vercel.entrypoint` in `pyproject.toml` (Vercel monorepos and FastAPI docs in Sources). Serves R1. (session-settled: user-approved — chosen over `apps/web` and `apps/api`: plain names are easier to follow for a Python developer new to JavaScript)
@@ -228,39 +238,68 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 - KTD3. **The README describes the repo as it is after the PR that last changed it.** The report files went wrong by describing features that did not exist. So the README labels anything not built yet (backend, database, deploy, automated tests) as planned and links to Delivery Sequence instead of documenting it. Each later PR updates the README sections for what it adds. Serves R2, R22.
 - KTD4. **The README names the file holding the hardcoded teacher login instead of printing the login.** The repo is public and PR4 removes the credential (R12), so the README should not add a second copy. Serves R12.
 - KTD5. **GitHub Pages stays out of PR1's diff.** The repo's Pages site at `https://steve-pixel24.github.io/Teacher_Steve/` still serves a 2026-09-25 deployment of the unbuilt root `index.html`, which renders a blank page. A Pages workflow was added to `main` and then deleted, so no file in the repo controls the site. (session-settled: user-approved — chosen over folding the takedown into PR1: it is a setting on Steve's repo, not a file change)
+- KTD6. **`frontend/` is a self-contained npm project, and the root has no `package.json`.** Every npm command runs from inside `frontend/`, so `npm run dev` at the repo root stops working. npm workspaces or root scripts that forward to `frontend/` would put JavaScript config back at the root, which R3 rules out, and the backend is Python, so a workspace would link nothing. A folder that holds its own `package.json` and lock file also fits the Vercel Root Directory option PR3 may pick (KTD1). Serves R1, R3, R4. (session-settled: user-approved — chosen over a root `package.json` with npm workspaces or forwarding scripts: the root keeps only the README and project-wide config)
+- KTD7. **Remove every package the app doesn't import, `@supabase/supabase-js` included.** `src/`, `index.html`, `vite.config.js`, and `src/index.css` import only `react`, `react-dom`, and the build tools. Keep these nine and remove the rest:
+
+  | Keep | Remove |
+  |---|---|
+  | `react`, `react-dom` | `@dnd-kit/core`, `@dnd-kit/sortable`, `@dnd-kit/utilities` |
+  | `vite`, `@vitejs/plugin-react` | `@supabase/supabase-js` |
+  | `tailwindcss`, `@tailwindcss/vite` | `canvas-confetti`, `@types/canvas-confetti` |
+  | `typescript`, `@types/react`, `@types/react-dom` | `date-fns`, `framer-motion`, `lucide-react`, `react-router-dom`, `recharts` |
+  | | `uuid`, `@types/uuid` |
+
+  Supabase goes too, because R7 sends server data through FastAPI and PR4 has not decided whether the frontend talks to Supabase Auth. If PR4 decides it should, adding the package back is one install. Keeping it unused would leave the README describing a package the app doesn't use (KTD3). Serves R4. (session-settled: user-approved — chosen over keeping `@supabase/supabase-js` until PR4 decides the login route: PR4 can add it back with one install)
+- KTD8. **The README keeps "Node 22 or newer", for a new reason, and PR2 adds no Node version to config.** Once the `@supabase/*` packages go, the remaining packages need Node 20 or newer (`@tailwindcss/oxide`). On Linux x64 only, Rollup's optional helper `@napi-rs/lzma-linux-x64-gnu` asks for `^22.20 || ^24.12 || >=25`, so npm warns on earlier 22.x releases there but still installs. Node 20 reached end-of-life on 2026-04-30, so 22 is the oldest Node line still supported. Recording the version in config, through `engines` in `frontend/package.json` or an `.nvmrc`, is how Vercel picks its Node version, so PR3 decides it together with the Vercel setup. Serves R2. (session-settled: user-approved — chosen over adding `engines` to `frontend/package.json` in PR2: PR3 sets the Node version together with Vercel)
+- KTD9. **The dev server runs on port 3005.** The maintainer chose it. `port` and `hmr.port` in `frontend/vite.config.js` both change, so live reload keeps working. Browsers keep localStorage per origin, so data saved at `http://localhost:3000` does not carry over to `http://localhost:3005`. Nothing is live, so only local test data is affected. Serves R4.
 
 ### Output Structure
 
-The repo root after PR1. Anything not listed is unchanged.
+The repo after PR2. Anything not listed is unchanged.
 
 ```text
-README.md             rewritten (U3)
-.gitignore            unchanged
-docs/plans/           this plan
-docs/legacy/          the 23 former root reports plus a README (U1)
-frontend/README.md    new placeholder (U2); the React app moves here in PR2
-backend/README.md     new placeholder (U2); the FastAPI app arrives in PR3
-index.html            unchanged until PR2
-package.json          unchanged until PR2
-package-lock.json     unchanged until PR2
-tsconfig.json         unchanged until PR2
-vite.config.js        unchanged until PR2
-src/                  unchanged until PR2
-public/index.html     unchanged until PR2 retires it
+README.md                   run steps now start in frontend/ (U7)
+.gitignore                  unchanged; its node_modules/ and dist/ patterns already match inside frontend/
+docs/plans/                 this plan
+docs/legacy/                the 23 former root reports plus a README (U1)
+frontend/README.md          placeholder from U2, rewritten (U7)
+frontend/index.html         moved from the root, unchanged (U5)
+frontend/src/               moved from the root, unchanged (U5)
+frontend/tsconfig.json      moved from the root, unchanged (U5)
+frontend/vite.config.js     moved from the root (U5); dev server on port 3005 (KTD9)
+frontend/package.json       moved (U5); unused packages removed and the name replaced (U6)
+frontend/package-lock.json  moved (U5); updated by the removals (U6)
+backend/README.md           placeholder from U2, unchanged; the FastAPI app arrives in PR3
 ```
+
+`public/index.html` is deleted (U4), and no app file remains at the root.
 
 ### Sequencing
 
 - PR1 starts from `origin/main`, not from the local branch `conditionals--probability---modals-d4bea`. That branch belongs to the already-merged PR #1, and `origin/main` has five commits it lacks. The two trees differ only by this plan file, so PR1 carries this plan file as well.
-- Units land in the order U1, U2, U3, because U3 describes the layout that U1 and U2 produce.
+- PR1's units land in the order U1, U2, U3, because U3 describes the layout that U1 and U2 produce.
+- PR2 branches from `main` at or after `3899655`, the merge of GitHub PR #2.
+- PR2's units land in the order U4, U5, U6, U7:
+  1. U4 goes first, so the move carries no file that is about to be deleted.
+  2. U5 lands as its own commit of pure moves, so git records renames and `git log --follow` keeps the history of `src/`. PR1 deleted the reports and re-added them in separate commits, so their history no longer follows them. Editing `package.json` in the same commit could drop it below git's rename-detection threshold.
+  3. U6 follows the move, so npm updates the lock file in its new place.
+  4. U7 goes last, because it describes the result.
 
 ### Operational Notes
 
-- **Unpublish the GitHub Pages site (manual, repo admin).** An admin of `steve-pixel24/Teacher_Steve` unpublishes the site from the repository's Pages settings on GitHub (KTD5). It does not block PR1. Doing it before PR3's first Vercel deploy leaves the app with one public URL.
+- **Unpublish the GitHub Pages site (manual, repo admin).** An admin of `steve-pixel24/Teacher_Steve` unpublishes the site from the repository's Pages settings on GitHub (KTD5). As of 2026-09-30 the site is still published. GitHub's Pages API reports it built and public, with a workflow as its source, and no workflow file exists, so merging PR2 does not redeploy it. Issue #4 tracks the takedown before PR3's first Vercel deploy, which leaves the app with one public URL. Unpublish rather than switch the source: after PR2 there is no root `index.html`, so a branch-based Pages build would publish `README.md` as the site.
+- **Existing clones after PR2 (PR description).** PR2's description tells anyone with an existing clone to do three things:
+  1. Stop the dev server before pulling. It serves the old root layout, which the pull removes.
+  2. Delete the root `node_modules/` and `dist/`. Git ignores them, so they survive the pull, and npm, Node, TypeScript, and Tailwind look for packages in parent folders. A stale root `node_modules/` can make `frontend/` seem to work without an install.
+  3. Run `npm install` in `frontend/`.
+- **One intended dev-server change (PR description).** On `main`, opening `http://localhost:3000/index.html` directly serves the old single-file app from `public/`, while `/` serves React. After U4 both serve the React app.
+- **Saved data starts empty on the new port (PR description).** The dev server moves from `http://localhost:3000` to `http://localhost:3005` (KTD9), so the app starts with empty localStorage. Data saved on port 3000 stays in the browser under that origin.
 
 ---
 
 ## Implementation Units
+
+U1 through U3 delivered PR1 and describe the repo as it stood then. U4 through U7 deliver PR2.
 
 ### U1. Move the root report files to `docs/legacy/`
 
@@ -296,7 +335,7 @@ public/index.html     unchanged until PR2 retires it
   1. **What it is:** an English-learning app for Steve's students (vocabulary, grammar, stories, tests, and games), plus a teacher screen for managing students.
   2. **Status:** frontend only. Everything saves to the browser's localStorage. There is no backend or database yet, and nothing is deployed. Link to Delivery Sequence for what comes next.
   3. **Stack:** today, React 18, TypeScript 5, Vite 6, and Tailwind CSS 4 (from `package.json`). FastAPI, Supabase, and Vercel appear too, each labeled as planned.
-  4. **Repo layout:** the root as shown in Output Structure. Say that `public/index.html` is an older single-file copy of the app that PR2 removes, so readers don't mistake it for the real app.
+  4. **Repo layout:** the root as PR1 leaves it: U1's and U2's results, with the app still at the root. Say that `public/index.html` is an older single-file copy of the app that PR2 removes, so readers don't mistake it for the real app.
   5. **Run the frontend:** requires Node.js 22 or newer, because `@supabase/supabase-js` and its sibling `@supabase/*` packages in `package-lock.json` require Node `>= 22`. npm comes with Node. Cover install, the dev server, build, and type-check using the scripts in `package.json`. The dev server listens on port 3000 on all network interfaces (`vite.config.js`), so a phone on the same Wi-Fi can open it. It exits instead of switching ports when 3000 is taken (`strictPort`).
   6. **For Python developers:** a short mapping. npm is like pip, `package.json` is like `pyproject.toml`, `package-lock.json` is the lock file, `node_modules/` is like a virtualenv's installed packages, and `npm run <script>` is like a Makefile target.
   7. **Checks:** there are no automated tests yet. Type-checking is the only check, and nothing runs it on PRs.
@@ -313,11 +352,83 @@ public/index.html     unchanged until PR2 retires it
   - The README contains no credential: no teacher name and code pair, and no student code.
   - Every part the README describes as present exists in the tree. Backend, database, deploy, and automated tests are labeled as planned.
 
+### U4. Retire the single-file app
+
+- **Goal:** `public/index.html` is gone, so the React app is the only copy of the app in the repo.
+- **Requirements:** R5.
+- **Dependencies:** None.
+- **Files:** Delete `public/index.html`. It is the only tracked file in `public/`, so the folder goes with it.
+- **Approach:** Delete the file and change nothing else. Nothing in `src/`, `index.html`, `vite.config.js`, or `tsconfig.json` refers to `public/`. The build output doesn't change. Vite copies `public/` into `dist/` before it writes the build, so the built `index.html` has always overwritten the old app's copy, and Vite skips the copy when `public/` is missing.
+- **Test expectation:** none -- removes a file that neither the React app nor its build uses.
+- **Verification:** No tracked file remains under `public/`. On the dev server, `/` and `/index.html` both serve the React app.
+
+### U5. Move the React app into `frontend/`
+
+- **Goal:** The React app lives in `frontend/` and installs, runs, builds, and type-checks from there, with its screens and look unchanged and its data still in localStorage.
+- **Requirements:** R4, R6, R1 (layout part), R3 (the frontend's files leave the root), KTD6.
+- **Dependencies:** U4.
+- **Files:** Move `src/`, `index.html`, `package.json`, `package-lock.json`, `tsconfig.json`, and `vite.config.js` into `frontend/`. `frontend/README.md` stays in place until U7 rewrites it.
+- **Approach:**
+  1. Move the six paths with their content unchanged, in a commit that contains nothing else (see Sequencing).
+  2. Edit no config in the move. The port change (KTD9) is a separate commit. `index.html` loads `/src/main.tsx` relative to Vite's root, which is the folder Vite runs in. `tsconfig.json` includes `src` relative to itself. `vite.config.js` sets no `root`, `publicDir`, or `build.outDir`. Once the npm scripts run from `frontend/` (KTD6), every path resolves as before.
+  3. Leave `.gitignore` at the root. Its `node_modules/` and `dist/` patterns aren't anchored, so they already cover `frontend/node_modules/` and `frontend/dist/`.
+  4. Expect one build difference. `src/index.css` imports Tailwind with no `source()` or `@source`, so Tailwind scans the folder Vite runs in. That folder was the whole repo, including `public/index.html` and `docs/`, and becomes `frontend/`. The built CSS therefore loses a few utilities that appear only in those files, such as `invisible`, `static`, and `visible`. `src/` uses none of them. Every class `src/` builds at runtime (`callout-*`, `tag-*`) comes from hand-written CSS in `src/index.css`, so no screen changes.
+- **Execution note:** This is file moves and packaging. Prove it with install, dev-server, and build checks in a fresh clone outside the repo folder, not with new tests. In an existing clone, the root `node_modules/` can make `frontend/` look fine without an install (Operational Notes).
+- **Patterns to follow:** None in the repo. PR1's report move is the counter-example: it deleted and re-added the files, so their history no longer follows them.
+- **Test expectation:** none -- moves files without changing their content, and the app has no automated tests.
+- **Verification:**
+  - The six paths exist only under `frontend/`, and git shows each as a rename with no content change.
+  - `git log --follow` on a file under `frontend/src/` shows its commits from before the move.
+  - In a fresh clone, install, dev server, build, and type check work from `frontend/` with the results the PR2 Verification Contract expects.
+
+### U6. Remove unused packages and replace the package name
+
+- **Goal:** `frontend/package.json` lists only what the app uses, under a real name.
+- **Requirements:** R4, KTD7.
+- **Dependencies:** U5.
+- **Files:** Modify `frontend/package.json` and `frontend/package-lock.json`.
+- **Approach:**
+  1. Replace the `sandbox-workspace` name with `teacher-steve-frontend` through npm, and keep `"private": true`. Do this before the uninstall. npm's rename writes only `package.json`, and the uninstall in step 2 then carries the new name into both copies of the name in the lock file.
+  2. Uninstall the 13 packages KTD7 lists with npm, from `frontend/`, against the existing lock file. Don't delete the lock file and reinstall. That would move every kept package, including Vite, Tailwind, and TypeScript, to the newest version its range allows, and a Tailwind update can change how the app looks.
+  3. Change nothing else. The scripts stay as they are, and every kept package keeps its locked version.
+- **Test expectation:** none -- the removed packages are never imported.
+- **Verification:**
+  - `frontend/package.json` lists `react` and `react-dom` as dependencies and the seven build tools KTD7 keeps as devDependencies.
+  - The lock file diff shows only removed entries, the name change, and two flag changes npm makes because only build tools still need these packages: `csstype` gains `"dev": true`, and `tslib` gains `"dev": true` and `"optional": true`. Every kept package has the same version as on `main`.
+  - Running `npm install` again in `frontend/` leaves the lock file unchanged.
+  - The lock file holds no `@supabase/*` entry (KTD8).
+
+### U7. Update the READMEs for the new layout
+
+- **Goal:** Someone who clones the repo can run the frontend from `frontend/` by following only the README.
+- **Requirements:** R2, KTD3, KTD4, KTD6, KTD8. Keeps the frontend half of the Success Criterion about running both parts from the README alone.
+- **Dependencies:** U4, U5, U6.
+- **Files:** Modify `README.md` and `frontend/README.md`. `backend/README.md` and `docs/legacy/README.md` stay unchanged, because every sentence and link in them still holds.
+- **Approach:**
+  1. **Repo layout** in `README.md`: list `README.md`, `.gitignore`, `docs/plans/`, `docs/legacy/`, `frontend/` (the React app, with its `index.html`, `src/`, and config inside), and `backend/` (still a placeholder until PR3). Drop the root `index.html`, `src/`, config, and `public/index.html` lines.
+  2. **Run the frontend** in `README.md`: start by changing into `frontend/`. The npm commands stay the same. Install and build now write to `frontend/node_modules/` and `frontend/dist/`, and the port note names `frontend/vite.config.js`. Say that npm fails at the repo root because the root has no `package.json` (KTD6).
+  3. **Node requirement** in `README.md`: keep "22 or newer", with KTD8's reason in plain words.
+  4. **Things you may notice** in `README.md`: re-check each note against a fresh install. The install-script warning for `esbuild` and `fsevents` and the 500 kB build warning should still appear. The audit warnings may change after the removals.
+  5. **For Python developers** in `README.md`: say these files live in `frontend/`.
+  6. **Checks** and **Logging in locally** in `README.md`: type-checking runs from `frontend/`. Name `frontend/src/components/LoginScreen.tsx` as the file with the login, without printing the login (KTD4).
+  7. `frontend/README.md`: say the React app lives here, give a short map of what's in the folder, and link to the root README's run section. The run steps stay in the root README only, so two copies can't drift apart.
+  8. Leave **Status**, **Stack**, and **Deploy** as they are. They still hold: frontend only, localStorage, not deployed.
+- **Execution note:** Prove the README by following it in a fresh clone outside the repo folder, as U3 did.
+- **Patterns to follow:** The README U3 wrote, with its section order and short-sentence style (KTD3).
+- **Test expectation:** none -- documentation only.
+- **Verification:**
+  - Following only the README in a fresh clone with Node 22 or newer installs the app and opens it at `http://localhost:3005`.
+  - Every repo path and relative link in `README.md`, `frontend/README.md`, and `backend/README.md` exists.
+  - No README mentions `public/index.html` or tells the reader to run npm from the repo root.
+  - No README contains a credential: no teacher name and code pair, and no student code.
+
 ---
 
 ## Verification Contract
 
-PR1 changes no app code, so each app check compares against `main`. Record the `main` results before starting. No CI runs on PRs yet (PR3 decides which checks run automatically), and preview deploys (R9) start in PR3, so every check below runs locally.
+No PR in this plan changes app behavior, so each app check compares against `main` as it was before the PR. Record `main`'s results before starting. No CI runs on PRs yet (PR3 decides which checks run automatically), and preview deploys (R9) start in PR3, so every check runs locally.
+
+### PR1
 
 | Check | How | Expected after PR1 |
 |---|---|---|
@@ -329,12 +440,45 @@ PR1 changes no app code, so each app check compares against `main`. Record the `
 | Links | Open each of the three READMEs on the PR branch on GitHub | Every relative link resolves |
 | No credential | Search the three READMEs | No teacher name and code pair, and no student code |
 
+### PR2
+
+Run every PR2 check in a fresh clone outside the repo folder (Operational Notes). Before changing anything, and before deleting the root `node_modules/`, record `main`'s results: a checksum of the built JavaScript file's contents, the list of class selectors in the built CSS, the type-check output, and the versions of the kept packages.
+
+| Check | How | Expected after PR2 |
+|---|---|---|
+| Install | `npm install` in `frontend/` on Node 22+ | Succeeds |
+| Lock file | Compare `frontend/package-lock.json` with `main`'s `package-lock.json`, then run `npm install` again | Only the removals, the name change, and the flag changes U6 names, with every kept package at its old version and no change from the second install |
+| Dev server | `npm run dev` in `frontend/`, then open `http://localhost:3005` and `http://localhost:3005/index.html` | Both URLs serve the React app. Login, teacher student management, and one activity each in vocabulary, grammar, stories, tests, and games behave as on `main`, and data saved in the app survives a page reload |
+| Phone | Open `http://<computer's IP>:3005` from a phone on the same Wi-Fi | The login screen loads |
+| Build | `npm run build` in `frontend/`, twice | Output lands in `frontend/dist/`. The JavaScript file's contents match `main`'s by checksum, though its file name changes, because Vite mixes the CSS file's name into it and the CSS changes by design (U5). Every CSS class that differs from `main` is absent from `frontend/src/`, and both builds produce the same CSS |
+| Type check | `npm run typecheck` in `frontend/` | Same output as on `main` |
+| Root cleanup | List tracked files at the repo root | Exactly `README.md`, `.gitignore`, `docs/`, `frontend/`, and `backend/`, with nothing under `public/` |
+| History | `git log --follow` on a file under `frontend/src/` | Shows the file's commits from before the move |
+| Links | Open each of the three READMEs on the PR branch on GitHub | Every relative link and named path resolves |
+| No credential | Search the three READMEs | No teacher name and code pair, and no student code |
+
 ---
 
 ## Definition of Done
 
+### PR1
+
 - U1, U2, and U3 each meet their Verification.
-- Every row of the Verification Contract holds.
+- Every row of the PR1 Verification Contract holds.
 - The diff touches only the report files moved into `docs/legacy/`, `docs/legacy/README.md`, `README.md`, `frontend/README.md`, `backend/README.md`, and this plan file. No app code, build config, dependency, or lock file changes.
 - The PR description names what PR1 leaves for later: the rest of R3 (PR2) and the manual GitHub Pages step (Operational Notes).
+- No scratch, draft, or abandoned files remain in the diff.
+
+### PR2
+
+- U4, U5, U6, and U7 each meet their Verification.
+- Every row of the PR2 Verification Contract holds.
+- The diff touches only these files, and no file under `frontend/src/` changes content:
+  - `public/index.html`, deleted.
+  - The six paths U5 moves into `frontend/`.
+  - `frontend/vite.config.js`, for the port change (KTD9).
+  - `frontend/package.json` and `frontend/package-lock.json`, for the removals and the name.
+  - `README.md` and `frontend/README.md`.
+  - This plan file.
+- The PR description closes issue #3 and names what PR2 leaves for later: the PR3 items in Scope Boundaries and the manual GitHub Pages step (issue #4). It also carries the upgrade steps for existing clones and the `/index.html` change from Operational Notes.
 - No scratch, draft, or abandoned files remain in the diff.
