@@ -52,7 +52,7 @@ Run every npm command from the `frontend/` folder. The repo root has no `package
 ```bash
 cd frontend
 npm install         # install dependencies into frontend/node_modules/
-npm run dev         # start the dev server at http://localhost:3000
+npm run dev         # start the dev server at http://localhost:3005
 ```
 
 Other commands, also from `frontend/`:
@@ -64,8 +64,8 @@ npm run typecheck   # check TypeScript types without building
 
 Things you may notice:
 
-- The dev server listens on every network interface, so a phone on the same Wi-Fi can open `http://<your-computer's-IP>:3000`.
-- If port 3000 is already in use, the dev server exits with an error instead of picking another port. Stop whatever holds the port, or change both `port` and `hmr.port` under `server` in `frontend/vite.config.js`. Changing only `port` breaks live reload, because the live-reload connection still uses port 3000.
+- The dev server listens on every network interface, so a phone on the same Wi-Fi can open `http://<your-computer's-IP>:3005`.
+- If port 3005 is already in use, the dev server exits with an error instead of picking another port. Stop whatever holds the port, or change both `port` and `hmr.port` under `server` in `frontend/vite.config.js`. Changing only `port` breaks live reload, because the live-reload connection still uses port 3005.
 - `npm install` may print a warning that `esbuild` and `fsevents` have install scripts that haven't been approved. The app still installs and runs.
 - `npm run build` warns that the main JavaScript file is larger than 500 kB. That is expected for now.
 
