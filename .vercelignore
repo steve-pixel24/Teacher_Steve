@@ -1,0 +1,15 @@
+# Keep local secrets, keys, and caches out of `vercel deploy` uploads.
+# Vercel doesn't read .gitignore, and its defaults skip .env.local but not .env.
+# Keep this the only .vercelignore: a nested one would replace it.
+.env
+.env.*
+*.pem
+*.key
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.ruff_cache/
+node_modules/
+.vercel/
