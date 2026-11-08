@@ -15,7 +15,7 @@ execution: code
 - **Objective:** Steve's students log in from any device and keep their vocabulary progress. The app runs at $0/month, and the maintainer (a Python developer) can run, change, and deploy every part of it.
 - **Means:** Rebuild the repo as a monorepo. The existing React app becomes the frontend, a new FastAPI backend owns the data, Supabase stores the data and accounts, and Vercel hosts both parts. The work ships as a sequence of small PRs (see Delivery Sequence).
 - **Product authority:** The maintainer decides scope and product behavior. Steve is the app's only teacher and its main user-side stakeholder. Porting the features beyond vocabulary is follow-on work, not active scope for this plan.
-- **Execution scope:** The active units are U4 through U7, which deliver PR2 (GitHub issue #3). U1 through U3 delivered PR1 in GitHub PR #2. PR3 through PR5 get their units when each one is planned.
+- **Execution scope:** The active units are U4 through U7, which deliver PR2 (GitHub issue #3). U1 through U3 delivered PR1 in GitHub PR #2. PR3 (GitHub issue #4) has its own plan, `docs/plans/2026-10-04-1324-feat-pr3-backend-skeleton-first-deploy-plan.md`. PR4 and PR5 get their units when each one is planned.
 - **Stop conditions:** Stop when PR2's Definition of Done holds, and do not start PR3 work. Stop and ask if a PR2 unit seems to need a content change under `src/`, a version change to a kept package, or a config edit beyond the package name and the dev-server port (KTD9). Also stop and ask if the JavaScript bundle's contents differ from `main`'s, the CSS loses a class that `frontend/src/` uses, or the lock file changes beyond what U6's Verification expects.
 - **Ships:** The maintainer opens PR2 against `main` on `steve-pixel24/Teacher_Steve`, closing issue #3, and merges it after review.
 - **Open blockers:** None.
@@ -193,8 +193,8 @@ Each PR is small, reviewable, and leaves the app runnable (R22). Planning adds t
 **Deferred to Planning**
 
 - Does the frontend sign in through Supabase Auth directly and pass the session to FastAPI, or does FastAPI handle login itself? Supabase Auth expects an email or phone number, so usernames may need mapping. If the frontend signs in through Supabase Auth, PR4 adds `@supabase/supabase-js` back, since PR2 removes it (KTD7). (resolve in PR4)
-- Do the frontend and backend share one Vercel project or use two? (resolve in PR3)
-- Which checks (backend tests, frontend type check, lint) run automatically on each PR, and where? (resolve in PR3)
+- Do the frontend and backend share one Vercel project or use two? Resolved in PR3: one project (KTD1 in `docs/plans/2026-10-04-1324-feat-pr3-backend-skeleton-first-deploy-plan.md`).
+- Which checks (backend tests, frontend type check, lint) run automatically on each PR, and where? Resolved in PR3: backend tests and lint, frontend type check and build, in GitHub Actions (KTD12 in `docs/plans/2026-10-04-1324-feat-pr3-backend-skeleton-first-deploy-plan.md`).
 - Does vocabulary content live on the backend and get served by the API, or stay bundled with the frontend build? (resolve in PR5)
 
 ### Sources / Research

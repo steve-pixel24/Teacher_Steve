@@ -1,0 +1,27 @@
+[project]
+name = "teacher-steve-backend"
+version = "0.1.0"
+description = "FastAPI backend for Teacher Steve"
+requires-python = ">=3.13,<3.14"
+dependencies = [
+    "fastapi[standard]>=0.143.1",
+    "psycopg[binary]>=3.3.6",
+    "pydantic-settings>=2.16.0",
+]
+
+[dependency-groups]
+dev = [
+    "httpx2>=2.13.1",
+    "pytest>=9.1.1",
+    "ruff>=0.16",
+]
+
+[tool.fastapi]
+entrypoint = "app.main:app"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["."]
+
+[tool.ruff]
+target-version = "py313"

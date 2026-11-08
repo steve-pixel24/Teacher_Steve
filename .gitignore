@@ -1,5 +1,21 @@
 node_modules/
-.next/
 dist/
-build/
 *.log
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+.pytest_cache/
+.ruff_cache/
+
+# Local settings and secrets
+.env
+.env.*
+!.env.example
+*.pem
+*.key
+
+# Vercel CLI
+.vercel/
