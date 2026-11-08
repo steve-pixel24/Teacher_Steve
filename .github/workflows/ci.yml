@@ -106,7 +106,8 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          url=$(vercel deploy --yes --format json | jq -r '.deployment.url // empty')
+          # The CLI prints {deployment: {url}} in agent shells and a flat {url} on a plain runner.
+          url=$(vercel deploy --yes --format json | jq -r '.deployment.url // .url // empty')
           if [[ "$url" != https://* ]]; then
             echo "::error::vercel deploy returned no deployment address"
             exit 1
@@ -201,7 +202,8 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          url=$(vercel deploy --prod --skip-domain --yes --format json | jq -r '.deployment.url // empty')
+          # The CLI prints {deployment: {url}} in agent shells and a flat {url} on a plain runner.
+          url=$(vercel deploy --prod --skip-domain --yes --format json | jq -r '.deployment.url // .url // empty')
           if [[ "$url" != https://* ]]; then
             echo "::error::vercel deploy returned no deployment address"
             exit 1
@@ -250,9 +252,10 @@ jobs:
         if: steps.tip.outputs.skip == 'false'
         run: |
           # No bypass header: this proves students can reach it without logging in.
+          base="${PRODUCTION_URL%/}"
           deadline=$((SECONDS + 60))
           while true; do
-            body=$(curl --silent --max-time 15 "$PRODUCTION_URL/api/health" || true)
+            body=$(curl --silent --max-time 15 "$base/api/health" || true)
             backend=$(jq -r '.backend // empty' <<<"$body" 2>/dev/null || true)
             database=$(jq -r '.database // empty' <<<"$body" 2>/dev/null || true)
             project=$(jq -r '.project // empty' <<<"$body" 2>/dev/null || true)
