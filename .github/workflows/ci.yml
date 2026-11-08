@@ -202,13 +202,16 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          # The CLI prints {deployment: {url}} in agent shells and a flat {url} on a plain runner.
-          url=$(vercel deploy --prod --skip-domain --yes --format json | jq -r '.deployment.url // .url // empty')
-          if [[ "$url" != https://* ]]; then
-            echo "::error::vercel deploy returned no deployment address"
+          # The CLI prints {deployment: {...}} in agent shells and a flat {...} on a plain runner.
+          out=$(vercel deploy --prod --skip-domain --yes --format json)
+          url=$(jq -r '.deployment.url // .url // empty' <<<"$out")
+          id=$(jq -r '.deployment.id // .id // empty' <<<"$out")
+          if [[ "$url" != https://* || "$id" != dpl_* ]]; then
+            echo "::error::vercel deploy returned no deployment address or ID"
             exit 1
           fi
           echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
           echo "Production deployment (not live yet): $url" >> "$GITHUB_STEP_SUMMARY"
 
       - name: Check the new deployment's health reply
@@ -244,9 +247,42 @@ jobs:
       - name: Go live
         if: steps.tip.outputs.skip == 'false'
         env:
-          URL: ${{ steps.deploy.outputs.url }}
+          DEPLOYMENT_ID: ${{ steps.deploy.outputs.id }}
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
-        run: vercel promote "$URL" --yes --timeout 3m
+        run: |
+          # Calls Vercel's API directly. `vercel promote` first looks up the token's user
+          # account, which fails with "User not found" for a token limited to one team.
+          api="https://api.vercel.com"
+          query="teamId=${VERCEL_ORG_ID}"
+          code=$(curl --silent --max-time 30 --output promote.json --write-out '%{http_code}' \
+            --request POST --header "Authorization: Bearer ${VERCEL_TOKEN}" \
+            --header "Content-Type: application/json" --data '{}' \
+            "$api/v10/projects/${VERCEL_PROJECT_ID}/promote/${DEPLOYMENT_ID}?$query" || true)
+          if [[ "$code" != 2* ]]; then
+            echo "::error::Vercel refused the promotion (HTTP ${code}): $(jq -r '.error.message // empty' promote.json 2>/dev/null)"
+            exit 1
+          fi
+          # Wait until Vercel reports this deployment as the one on the production address.
+          deadline=$((SECONDS + 180))
+          while true; do
+            project=$(curl --silent --max-time 15 --header "Authorization: Bearer ${VERCEL_TOKEN}" \
+              "$api/v9/projects/${VERCEL_PROJECT_ID}?$query" || true)
+            target=$(jq -r '.lastAliasRequest.toDeploymentId // empty' <<<"$project" 2>/dev/null || true)
+            status=$(jq -r '.lastAliasRequest.jobStatus // empty' <<<"$project" 2>/dev/null || true)
+            echo "promotion: deployment=${target:--} status=${status:--}"
+            if [[ "$target" == "$DEPLOYMENT_ID" && "$status" == "succeeded" ]]; then
+              exit 0
+            fi
+            if [[ "$target" == "$DEPLOYMENT_ID" && "$status" == "failed" ]]; then
+              echo "::error::Vercel reports the promotion failed."
+              exit 1
+            fi
+            if (( SECONDS >= deadline )); then
+              echo "::error::The promotion didn't finish within 3 minutes."
+              exit 1
+            fi
+            sleep 5
+          done
 
       - name: Check the public production address
         if: steps.tip.outputs.skip == 'false'

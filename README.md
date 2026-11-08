@@ -149,7 +149,7 @@ Everything stays in the current browser's localStorage. Clearing the site's data
 The app runs on Vercel at https://teacher-steve.vercel.app. GitHub Actions deploys it with the Vercel CLI. The Vercel project has no Git connection, because only the GitHub repo's owner could connect it, so Vercel never deploys on its own.
 
 - **A pull request becomes a preview.** The `preview` job deploys every PR from a branch in this repo, then checks that the preview's `/api/health` answers `ok`, `reachable`, `preview`. The preview's address is in the job's summary and in the PR's "View deployment" link. Previews sit behind Vercel's login, so only the maintainer's Vercel account can open them. PRs from forks and from Dependabot skip this job, because GitHub gives them no secrets.
-- **A merge to `main` becomes production.** After both checks pass, the `production` job deploys without going live and checks the new deployment's health reply. Only then does it run `vercel promote`, which puts it on the production address, and it checks the public address once more. If the commit is no longer the tip of `main`, the job skips itself, so re-running an old run can't put old code back.
+- **A merge to `main` becomes production.** After both checks pass, the `production` job deploys without going live and checks the new deployment's health reply. Only then does it promote it through Vercel's API, which puts it on the production address, waits until Vercel confirms the switch, and checks the public address once more. If the commit is no longer the tip of `main`, the job skips itself, so re-running an old run can't put old code back.
 
 ### What the deploy needs
 
