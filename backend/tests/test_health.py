@@ -6,7 +6,6 @@ Every test also asserts, after it runs, that captured logs and output contain
 nothing from the fake connection string.
 """
 
-import logging
 from pathlib import Path
 
 import psycopg
@@ -16,13 +15,7 @@ from fastapi.testclient import TestClient
 from app.database import DatabaseStatus, get_database_check
 from app.main import create_app
 from app.settings import Settings, get_settings
-
-FAKE_USER = "postgres.fakeproject"
-FAKE_PASSWORD = "hunter2-not-a-real-password"
-FAKE_HOST = "aws-0-fake-region.pooler.example.com"
-FAKE_URL = f"postgresql://{FAKE_USER}:{FAKE_PASSWORD}@{FAKE_HOST}:6543/postgres"
-FAKE_ERROR_TEXT = "boom-secret-error-text"
-SECRET_PARTS = (FAKE_URL, FAKE_USER, FAKE_PASSWORD, FAKE_HOST, FAKE_ERROR_TEXT)
+from tests.support import FAKE_URL, assert_no_secret_parts, fail_to_connect
 
 NOT_CONFIGURED = {
     "backend": "ok",
@@ -47,18 +40,6 @@ class FakeCheck:
 def clean_environment(monkeypatch: pytest.MonkeyPatch) -> None:
     for name in ("DATABASE_URL", "DATABASE_LABEL", "VERCEL", "VERCEL_ENV"):
         monkeypatch.delenv(name, raising=False)
-
-
-@pytest.fixture(autouse=True)
-def assert_nothing_leaked(
-    caplog: pytest.LogCaptureFixture, capfd: pytest.CaptureFixture
-):
-    caplog.set_level(logging.DEBUG)
-    yield
-    captured = capfd.readouterr()
-    output = caplog.text + captured.out + captured.err
-    for part in SECRET_PARTS:
-        assert part not in output
 
 
 @pytest.fixture(autouse=True)
@@ -89,11 +70,6 @@ def get_health(monkeypatch: pytest.MonkeyPatch):
         return TestClient(app).get("/api/health"), fake_check
 
     return call
-
-
-def assert_no_secret_parts(text: str) -> None:
-    for part in SECRET_PARTS:
-        assert part not in text
 
 
 # --- Health replies ---------------------------------------------------------
@@ -222,12 +198,6 @@ def test_real_check_failure_reaches_the_reply_as_a_word_only(
 ):
     # AE6 through the real check: psycopg fails with a message that carries the
     # host and the password, and only the exception's type name may surface.
-    async def fail_to_connect(*args, **kwargs):
-        raise psycopg.OperationalError(
-            f"connection to server at {FAKE_HOST} failed: {FAKE_ERROR_TEXT} "
-            f"for user {FAKE_USER} password {FAKE_PASSWORD}"
-        )
-
     monkeypatch.setattr(psycopg.AsyncConnection, "connect", fail_to_connect)
     monkeypatch.setenv("DATABASE_URL", FAKE_URL)
     monkeypatch.setenv("DATABASE_LABEL", "production")

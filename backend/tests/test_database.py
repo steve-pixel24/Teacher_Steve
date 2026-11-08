@@ -5,7 +5,6 @@ the check is pointed at a closed port on this machine.
 """
 
 import asyncio
-import logging
 import time
 
 import psycopg
@@ -13,25 +12,7 @@ import pytest
 
 from app import database
 from app.database import check_database
-
-FAKE_USER = "postgres.fakeproject"
-FAKE_PASSWORD = "hunter2-not-a-real-password"
-FAKE_HOST = "aws-0-fake-region.pooler.example.com"
-FAKE_URL = f"postgresql://{FAKE_USER}:{FAKE_PASSWORD}@{FAKE_HOST}:6543/postgres"
-FAKE_ERROR_TEXT = "boom-secret-error-text"
-SECRET_PARTS = (FAKE_URL, FAKE_USER, FAKE_PASSWORD, FAKE_HOST, FAKE_ERROR_TEXT)
-
-
-@pytest.fixture(autouse=True)
-def assert_nothing_leaked(
-    caplog: pytest.LogCaptureFixture, capfd: pytest.CaptureFixture
-):
-    caplog.set_level(logging.DEBUG)
-    yield
-    captured = capfd.readouterr()
-    output = caplog.text + captured.out + captured.err
-    for part in SECRET_PARTS:
-        assert part not in output
+from tests.support import FAKE_PASSWORD, FAKE_URL, FAKE_USER, fail_to_connect
 
 
 class StubConnection:
@@ -107,12 +88,6 @@ def test_failed_query_is_unreachable_and_still_closes_the_connection(monkeypatch
 
 
 def test_failure_logs_only_the_exception_type_name(monkeypatch, caplog):
-    async def fail_to_connect(*args, **kwargs):
-        raise psycopg.OperationalError(
-            f"connection to server at {FAKE_HOST} failed: {FAKE_ERROR_TEXT} "
-            f"for user {FAKE_USER} password {FAKE_PASSWORD}"
-        )
-
     monkeypatch.setattr(psycopg.AsyncConnection, "connect", fail_to_connect)
 
     assert asyncio.run(check_database(FAKE_URL)) == "unreachable"
